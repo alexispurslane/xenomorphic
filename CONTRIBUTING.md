@@ -1,3 +1,5 @@
+> **Note:** This project is **Xenomorphic**, a hard fork of Zed. Contribution guidelines from upstream may not fully apply. See [FORK_NOTICE.md](./FORK_NOTICE.md) for context.
+
 # Contributing to Zed
 
 Thank you for helping us make Zed better!

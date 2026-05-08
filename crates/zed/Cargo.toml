@@ -5,7 +5,7 @@ name = "zed"
 version = "1.3.0"
 publish.workspace = true
 license = "GPL-3.0-or-later"
-authors = ["Zed Team <hi@zed.dev>"]
+authors = ["Xenomorphic Contributors"]
 default-run = "zed"
 
 [lints]
@@ -274,35 +274,35 @@ repl = { workspace = true, features = ["test-support"] }
 
 [package.metadata.bundle-dev]
 icon = ["resources/app-icon-dev@2x.png", "resources/app-icon-dev.png"]
-identifier = "dev.zed.Zed-Dev"
-name = "Zed Dev"
+identifier = "dev.xenomorphic.Xenomorphic-Dev"
+name = "Xenomorphic Dev"
 osx_minimum_system_version = "10.15.7"
 osx_info_plist_exts = ["resources/info/*"]
-osx_url_schemes = ["zed"]
+osx_url_schemes = ["xenomorphic"]
 
 [package.metadata.bundle-nightly]
 icon = ["resources/app-icon-nightly@2x.png", "resources/app-icon-nightly.png"]
-identifier = "dev.zed.Zed-Nightly"
-name = "Zed Nightly"
+identifier = "dev.xenomorphic.Xenomorphic-Nightly"
+name = "Xenomorphic Nightly"
 osx_minimum_system_version = "10.15.7"
 osx_info_plist_exts = ["resources/info/*"]
-osx_url_schemes = ["zed"]
+osx_url_schemes = ["xenomorphic"]
 
 [package.metadata.bundle-preview]
 icon = ["resources/app-icon-preview@2x.png", "resources/app-icon-preview.png"]
-identifier = "dev.zed.Zed-Preview"
-name = "Zed Preview"
+identifier = "dev.xenomorphic.Xenomorphic-Preview"
+name = "Xenomorphic Preview"
 osx_minimum_system_version = "10.15.7"
 osx_info_plist_exts = ["resources/info/*"]
-osx_url_schemes = ["zed"]
+osx_url_schemes = ["xenomorphic"]
 
 [package.metadata.bundle-stable]
 icon = ["resources/app-icon@2x.png", "resources/app-icon.png"]
-identifier = "dev.zed.Zed"
-name = "Zed"
+identifier = "dev.xenomorphic.Xenomorphic"
+name = "Xenomorphic"
 osx_minimum_system_version = "10.15.7"
 osx_info_plist_exts = ["resources/info/*"]
-osx_url_schemes = ["zed"]
+osx_url_schemes = ["xenomorphic"]
 
 [package.metadata.cargo-machete]
 ignored = ["profiling", "zstd", "tracing"]

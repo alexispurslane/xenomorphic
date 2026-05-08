@@ -1110,7 +1110,7 @@ fn handle_open_request(request: OpenRequest, app_state: Arc<AppState>, cx: &mut 
                                     .project()
                                     .update(cx, |project, _| project.lsp_store())
                             })?;
-                            let uri = format!("zed://schemas/{}", schema_path);
+                            let uri = format!("xenomorphic://schemas/", schema_path);
                             let json_schema_content =
                                 json_schema_store::handle_schema_request(lsp_store, uri, cx)
                                     .await?;
@@ -1687,7 +1687,7 @@ fn stdout_is_a_pty() -> bool {
 }
 
 #[derive(Parser, Debug)]
-#[command(name = "zed", disable_version_flag = true, max_term_width = 100)]
+#[command(name = "xeno", disable_version_flag = true, max_term_width = 100)]
 struct Args {
     /// A sequence of space-separated paths or urls that you want to open.
     ///
@@ -1819,8 +1819,8 @@ fn parse_url_arg(arg: &str, cx: &App) -> String {
         Ok(path) => format!("file://{}", path.display()),
         Err(_) => {
             if arg.starts_with("file://")
-                || arg.starts_with("zed://")
-                || arg.starts_with("zed-cli://")
+                || arg.starts_with("xenomorphic://")
+                || arg.starts_with("xenomorphic-cli://")
                 || arg.starts_with("ssh://")
                 || parse_zed_link(arg, cx).is_some()
             {
