@@ -1,4 +1,4 @@
-# Xenomorphic
+![Xenomorphic Editor Banner](./xenomorphic.webp)
 
 *The control plane for posthuman programming.*
 
