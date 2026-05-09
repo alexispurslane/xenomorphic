@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::{borrow::Cow, fmt::Write as _, mem, path::Path, sync::Arc};
 use telemetry_events::EditPredictionRating;
 
-pub use zeta_prompt::udiff::{
+pub use xeta_prompt::udiff::{
     CURSOR_POSITION_MARKER, encode_cursor_in_patch, extract_cursor_from_patch,
 };
 pub const INLINE_CURSOR_MARKER: &str = "<|user_cursor|>";

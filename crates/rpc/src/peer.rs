@@ -735,7 +735,7 @@ mod tests {
     use gpui::TestAppContext;
 
     fn init_logger() {
-        zlog::init_test();
+        xlog::init_test();
     }
 
     #[gpui::test(iterations = 50)]

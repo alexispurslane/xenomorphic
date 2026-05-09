@@ -1,4 +1,4 @@
-//! The `language` crate provides a large chunk of Zed's language-related
+//! The `language` crate provides a large chunk of Xenomorphic's language-related
 //! features (the other big contributors being project and lsp crates that revolve around LSP features).
 //! Namely, this crate:
 //! - Provides [`Language`], [`Grammar`] and [`LanguageRegistry`] types that
@@ -27,7 +27,7 @@ pub mod buffer_tests;
 
 pub use crate::language_settings::{
     AutoIndentMode, EditPredictionPromptFormat, EditPredictionsMode, IndentGuideSettings,
-    ZetaVersion,
+    XetaVersion,
 };
 use anyhow::{Context as _, Result};
 use async_trait::async_trait;
@@ -120,7 +120,7 @@ pub(crate) fn to_settings_soft_wrap(value: language_core::SoftWrap) -> settings:
 static QUERY_CURSORS: Mutex<Vec<QueryCursor>> = Mutex::new(vec![]);
 static PARSERS: Mutex<Vec<Parser>> = Mutex::new(vec![]);
 
-#[ztracing::instrument(skip_all)]
+#[xtracing::instrument(skip_all)]
 pub fn with_parser<F, R>(func: F) -> R
 where
     F: FnOnce(&mut Parser) -> R,
@@ -587,7 +587,7 @@ pub trait LspAdapter: 'static + Send + Sync + DynLspInstaller {
 
     /// Method only implemented by the default JSON language server adapter.
     /// Used to provide dynamic reloading of the JSON schemas used to
-    /// provide autocompletion and diagnostics in Zed setting and keybind
+    /// provide autocompletion and diagnostics in Xenomorphic setting and keybind
     /// files
     fn is_primary_zed_json_schema_adapter(&self) -> bool {
         false
@@ -600,7 +600,7 @@ pub trait LspAdapter: 'static + Send + Sync + DynLspInstaller {
 
     /// Called when a user responds to a ShowMessageRequest from this language server.
     /// This allows adapters to intercept preference selections (like "Always" or "Never")
-    /// for settings that should be persisted to Zed's settings file.
+    /// for settings that should be persisted to Xenomorphic's settings file.
     fn process_prompt_response(&self, _context: &PromptResponseContext, _cx: &mut AsyncApp) {}
 }
 
@@ -723,7 +723,7 @@ where
             //
             //      worktree 1: user-installed at `.bin/gopls`
             //      worktree 2: user-installed at `~/bin/gopls`
-            //      worktree 3: no gopls found in PATH -> fallback to Zed installation
+            //      worktree 3: no gopls found in PATH -> fallback to Xenomorphic installation
             //
             // We only want to cache when we fall back to the global one,
             // because we don't want to download and overwrite our global one
@@ -1157,14 +1157,14 @@ impl LanguageScope {
     /// Returns additional regex patterns that act as prefix markers for creating
     /// boundaries during rewrapping.
     ///
-    /// By default, Zed treats as paragraph and comment prefixes as boundaries.
+    /// By default, Xenomorphic treats as paragraph and comment prefixes as boundaries.
     pub fn rewrap_prefixes(&self) -> &[Regex] {
         &self.language.config.rewrap_prefixes
     }
 
     /// Returns a list of language-specific word characters.
     ///
-    /// By default, Zed treats alphanumeric characters (and '_') as word characters for
+    /// By default, Xenomorphic treats alphanumeric characters (and '_') as word characters for
     /// the purpose of actions like 'move to next word end` or whole-word search.
     /// It additionally accounts for language's additional word characters.
     pub fn word_characters(&self) -> Option<&HashSet<char>> {
@@ -1503,7 +1503,7 @@ pub fn range_from_lsp(range: lsp::Range) -> Range<Unclipped<PointUtf16>> {
         // range_from_lsp calls (especially during completions), that can hang the main thread.
         //
         // See issue #36223.
-        zlog::debug!("range_from_lsp called with inverted range {start:?}-{end:?}");
+        xlog::debug!("range_from_lsp called with inverted range {start:?}-{end:?}");
         mem::swap(&mut start, &mut end);
     }
     start..end

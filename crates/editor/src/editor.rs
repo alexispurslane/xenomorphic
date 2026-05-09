@@ -1,6 +1,6 @@
 #![allow(rustdoc::private_intra_doc_links)]
 //! This is the place where everything editor-related is stored (data-wise) and displayed (ui-wise).
-//! The main point of interest in this crate is [`Editor`] type, which is used in every other Zed part as a user input element.
+//! The main point of interest in this crate is [`Editor`] type, which is used in every other Xenomorphic part as a user input element.
 //! It comes in different flavors: single line, multiline and a fixed height one.
 //!
 //! Editor contains of multiple large submodules:
@@ -250,8 +250,8 @@ use workspace::{
     notifications::{DetachAndPromptErr, NotificationId, NotifyResultExt, NotifyTaskExt},
     searchable::SearchEvent,
 };
-pub use zed_actions::editor::RevealInFileManager;
-use zed_actions::editor::{MoveDown, MoveUp};
+pub use xenomorphic_actions::editor::RevealInFileManager;
+use xenomorphic_actions::editor::{MoveDown, MoveUp};
 
 use crate::{
     code_context_menus::CompletionsMenuSource,
@@ -980,7 +980,7 @@ struct ActionFetchReady {
     actions: Rc<[AvailableCodeAction]>,
 }
 
-/// Zed's primary implementation of text input, allowing users to edit a [`MultiBuffer`].
+/// Xenomorphic's primary implementation of text input, allowing users to edit a [`MultiBuffer`].
 ///
 /// See the [module level documentation](self) for more information.
 pub struct Editor {
@@ -3040,7 +3040,7 @@ impl Editor {
             cx,
             |e, _, _| match e.error_code() {
                 ErrorCode::RemoteUpgradeRequired => Some(format!(
-                "The remote instance of Zed does not support this yet. It must be upgraded to {}",
+                "The remote instance of Xenomorphic does not support this yet. It must be upgraded to {}",
                 e.error_tag("required").unwrap_or("the latest version")
             )),
                 _ => None,
@@ -3120,7 +3120,7 @@ impl Editor {
         .detach_and_prompt_err("Failed to create buffer", window, cx, |e, _, _| {
             match e.error_code() {
                 ErrorCode::RemoteUpgradeRequired => Some(format!(
-                "The remote instance of Zed does not support this yet. It must be upgraded to {}",
+                "The remote instance of Xenomorphic does not support this yet. It must be upgraded to {}",
                 e.error_tag("required").unwrap_or("the latest version")
             )),
                 _ => None,
@@ -3893,7 +3893,7 @@ impl Editor {
         Some((query, selection_anchor_range))
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn update_selection_occurrence_highlights(
         &mut self,
         multi_buffer_snapshot: MultiBufferSnapshot,
@@ -3980,7 +3980,7 @@ impl Editor {
         })
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn refresh_outline_symbols_at_cursor(&mut self, cx: &mut Context<Editor>) {
         if !self.lsp_data_enabled() {
             return;
@@ -4011,7 +4011,7 @@ impl Editor {
         }
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn refresh_selected_text_highlights(
         &mut self,
         snapshot: &DisplaySnapshot,
@@ -6536,7 +6536,7 @@ impl Editor {
     ) -> edit_prediction_types::EditPredictionIconSet {
         match provider {
             Some(provider) => provider.provider.icons(cx),
-            None => edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict),
+            None => edit_prediction_types::EditPredictionIconSet::new(IconName::XenomorphicPredict),
         }
     }
 
@@ -6592,7 +6592,7 @@ impl Editor {
                                     }
                                 }
                                 EditPrediction::MoveOutside { .. } => {
-                                    // TODO [zeta2] custom icon for external jump?
+                                    // TODO [xeta2] custom icon for external jump?
                                     Icon::new(icons.base)
                                 }
                                 EditPrediction::Edit { .. } => Icon::new(icons.base),
@@ -10162,7 +10162,7 @@ impl Editor {
             .all::<MultiBufferOffset>(&self.display_snapshot(cx));
 
         if selections.is_empty() {
-            log::warn!("There should always be at least one selection in Zed. This is a bug.");
+            log::warn!("There should always be at least one selection in Xenomorphic. This is a bug.");
             return;
         };
 
@@ -14027,7 +14027,7 @@ impl Editor {
             if let Some(url) = url {
                 cx.update(|window, cx| {
                     if parse_zed_link(&url, cx).is_some() {
-                        window.dispatch_action(Box::new(zed_actions::OpenZedUrl { url }), cx);
+                        window.dispatch_action(Box::new(xenomorphic_actions::OpenZedUrl { url }), cx);
                     } else {
                         cx.open_url(&url);
                     }
@@ -14229,7 +14229,7 @@ impl Editor {
                         cx.update(|window, cx| {
                             if parse_zed_link(&url, cx).is_some() {
                                 window
-                                    .dispatch_action(Box::new(zed_actions::OpenZedUrl { url }), cx);
+                                    .dispatch_action(Box::new(xenomorphic_actions::OpenZedUrl { url }), cx);
                             } else {
                                 cx.open_url(&url);
                             }
@@ -15872,7 +15872,7 @@ impl Editor {
 
     fn copy_path(
         &mut self,
-        _: &zed_actions::workspace::CopyPath,
+        _: &xenomorphic_actions::workspace::CopyPath,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -15887,7 +15887,7 @@ impl Editor {
 
     fn copy_relative_path(
         &mut self,
-        _: &zed_actions::workspace::CopyRelativePath,
+        _: &xenomorphic_actions::workspace::CopyRelativePath,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -19769,7 +19769,7 @@ impl Render for MissingEditPredictionKeybindingTooltip {
                         .items_end()
                         .w_full()
                         .child(Button::new("open-keymap", "Assign Keybinding").size(ButtonSize::Compact).on_click(|_ev, window, cx| {
-                            window.dispatch_action(zed_actions::OpenKeymapFile.boxed_clone(), cx)
+                            window.dispatch_action(xenomorphic_actions::OpenKeymapFile.boxed_clone(), cx)
                         }))
                         .child(Button::new("see-docs", "See Docs").size(ButtonSize::Compact).on_click(|_ev, _window, cx| {
                             cx.open_url("https://zed.dev/docs/completions#edit-predictions-missing-keybinding");

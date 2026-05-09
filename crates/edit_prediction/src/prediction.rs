@@ -4,7 +4,7 @@ use cloud_llm_client::EditPredictionRejectReason;
 use edit_prediction_types::{PredictedCursorPosition, interpolate_edits};
 use gpui::{AsyncApp, Entity, SharedString};
 use language::{Anchor, Buffer, BufferSnapshot, EditPreview, TextBufferSnapshot};
-use zeta_prompt::ZetaPromptInput;
+use xeta_prompt::XetaPromptInput;
 
 #[derive(Clone, Default, Debug, PartialEq, Eq, Hash)]
 pub struct EditPredictionId(pub SharedString);
@@ -36,7 +36,7 @@ impl EditPredictionResult {
         edited_buffer_snapshot: &BufferSnapshot,
         edits: Arc<[(Range<Anchor>, Arc<str>)]>,
         cursor_position: Option<PredictedCursorPosition>,
-        inputs: ZetaPromptInput,
+        inputs: XetaPromptInput,
         model_version: Option<String>,
         e2e_latency: std::time::Duration,
         cx: &mut AsyncApp,
@@ -95,7 +95,7 @@ pub struct EditPrediction {
     pub snapshot: BufferSnapshot,
     pub edit_preview: EditPreview,
     pub buffer: Entity<Buffer>,
-    pub inputs: zeta_prompt::ZetaPromptInput,
+    pub inputs: xeta_prompt::XetaPromptInput,
     pub model_version: Option<String>,
 }
 
@@ -128,7 +128,7 @@ mod tests {
     use super::*;
     use gpui::{App, Entity, TestAppContext, prelude::*};
     use language::{Buffer, ToOffset as _};
-    use zeta_prompt::ZetaPromptInput;
+    use xeta_prompt::XetaPromptInput;
 
     #[gpui::test]
     async fn test_edit_prediction_basic_interpolation(cx: &mut TestAppContext) {
@@ -149,7 +149,7 @@ mod tests {
             buffer: buffer.clone(),
             edit_preview,
             model_version: None,
-            inputs: ZetaPromptInput {
+            inputs: XetaPromptInput {
                 events: vec![],
                 related_files: Some(vec![]),
                 active_buffer_diagnostics: vec![],

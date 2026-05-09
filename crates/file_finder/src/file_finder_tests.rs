@@ -15,7 +15,7 @@ use workspace::{
 
 #[ctor::ctor]
 fn init_logger() {
-    zlog::init_test();
+    xlog::init_test();
 }
 
 #[test]
@@ -4321,7 +4321,7 @@ async fn test_exact_filename_stem_preferred(cx: &mut TestAppContext) {
                     }
                 },
                 "crates": {
-                    "zed": {
+                    "xenomorphic": {
                         "resources": {
                             "app-icon-nightly@2x.png": "",
                             "app-icon-preview@2x.png": "",

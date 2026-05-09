@@ -341,7 +341,7 @@ struct CommitDataHandler {
     pending_requests: HashSet<Oid>,
 }
 
-/// Represents the handler of a git cat-file --batch process within Zed
+/// Represents the handler of a git cat-file --batch process within Xenomorphic
 /// It's used to lazily fetch commit data as needed (whatever a user is viewing)
 enum CommitDataHandlerState {
     /// The handler is open and processing requests
@@ -999,7 +999,7 @@ impl GitStore {
         cx.background_spawn(async move { task.await.map_err(|e| anyhow!("{e}")) })
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn open_uncommitted_diff(
         &mut self,
         buffer: Entity<Buffer>,
@@ -1052,7 +1052,7 @@ impl GitStore {
         cx.background_spawn(async move { task.await.map_err(|e| anyhow!("{e}")) })
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     async fn open_diff_internal(
         this: WeakEntity<Self>,
         kind: DiffKind,
@@ -3697,7 +3697,7 @@ impl BufferGitState {
         }
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn buffer_language_changed(&mut self, buffer: Entity<Buffer>, cx: &mut Context<Self>) {
         self.language = buffer.read(cx).language().cloned();
         self.language_changed = true;
@@ -3858,7 +3858,7 @@ impl BufferGitState {
         self.recalculate_diffs(buffer, cx)
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn recalculate_diffs(&mut self, buffer: text::BufferSnapshot, cx: &mut Context<Self>) {
         *self.recalculating_tx.borrow_mut() = true;
 
@@ -8195,7 +8195,7 @@ impl Repository {
         self.send_job("access", None, move |git_repo, _cx| async move {
             match git_repo {
                 // TODO: Correctly handle remote repositories, where the user
-                // that's running the Zed remote may not own the `.git/`
+                // that's running the Xenomorphic remote may not own the `.git/`
                 // directory. For now we just return `GitAccess::Yes` so that
                 // remoting continues working as expected.
                 RepositoryState::Remote(..) => GitAccess::Yes,

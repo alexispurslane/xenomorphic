@@ -1,7 +1,7 @@
 use std::sync::Arc;
 use std::time::Duration;
 
-use client::{Client, TelemetrySettings, UserStore, zed_urls};
+use client::{Client, TelemetrySettings, UserStore, xenomorphic_urls};
 use cloud_api_types::Plan;
 use collections::HashMap;
 use fs::Fs;
@@ -250,7 +250,7 @@ fn render_telemetry_section(tab_index: &mut isize, cx: &App) -> impl IntoElement
             SwitchField::new(
                 "onboarding-telemetry-metrics",
                 None::<&str>,
-                Some("Help improve Zed by sending anonymous usage data".into()),
+                Some("Help improve Xenomorphic by sending anonymous usage data".into()),
                 if TelemetrySettings::get_global(cx).metrics {
                     ui::ToggleState::Selected
                 } else {
@@ -290,7 +290,7 @@ fn render_telemetry_section(tab_index: &mut isize, cx: &App) -> impl IntoElement
                 "onboarding-telemetry-crash-reports",
                 None::<&str>,
                 Some(
-                    "Help fix Zed by sending crash reports so we can fix critical issues fast"
+                    "Help fix Xenomorphic by sending crash reports so we can fix critical issues fast"
                         .into(),
                 ),
                 if TelemetrySettings::get_global(cx).diagnostics {
@@ -431,12 +431,12 @@ fn render_worktree_auto_trust_switch(tab_index: &mut isize, cx: &mut App) -> imp
         ui::ToggleState::Unselected
     };
 
-    let tooltip_description = "Zed can only allow services like language servers, project settings, and MCP servers to run after you mark a new project as trusted.";
+    let tooltip_description = "Xenomorphic can only allow services like language servers, project settings, and MCP servers to run after you mark a new project as trusted.";
 
     SwitchField::new(
         "onboarding-auto-trust-worktrees",
         Some("Trust All Projects By Default"),
-        Some("Automatically mark all new projects as trusted to unlock all Zed's features".into()),
+        Some("Automatically mark all new projects as trusted to unlock all Xenomorphic's features".into()),
         toggle_state,
         {
             let fs = <dyn Fs>::global(cx);
@@ -589,9 +589,9 @@ fn render_zed_agent_button(user_store: &Entity<UserStore>, cx: &mut App) -> impl
     let status = *client.status().borrow();
 
     let plan = user_store.read(cx).plan();
-    let is_free = matches!(plan, Some(Plan::ZedFree) | None);
-    let is_pro = matches!(plan, Some(Plan::ZedPro));
-    let is_trial = matches!(plan, Some(Plan::ZedProTrial));
+    let is_free = matches!(plan, Some(Plan::XenomorphicFree) | None);
+    let is_pro = matches!(plan, Some(Plan::XenomorphicPro));
+    let is_trial = matches!(plan, Some(Plan::XenomorphicProTrial));
 
     let is_signed_out = status.is_signed_out()
         || matches!(
@@ -632,22 +632,22 @@ fn render_zed_agent_button(user_store: &Entity<UserStore>, cx: &mut App) -> impl
 
     AgentSetupButton::new("zed-agent-onboarding")
         .icon(
-            Icon::new(IconName::ZedAgent)
+            Icon::new(IconName::XenomorphicAgent)
                 .size(IconSize::XSmall)
                 .color(Color::Muted),
         )
-        .name("Zed Agent")
+        .name("Xenomorphic Agent")
         .state(state_element)
         .disabled(is_trial || is_pro)
         .map(|this| {
             if is_signed_in && is_free {
                 this.on_click(move |_, _window, cx| {
                     telemetry::event!("Start Trial Clicked", state = "post-sign-in");
-                    cx.open_url(&zed_urls::start_trial_url(cx))
+                    cx.open_url(&xenomorphic_urls::start_trial_url(cx))
                 })
             } else {
                 this.on_click(move |_, _, cx| {
-                    telemetry::event!("Welcome Zed Agent Sign In Clicked");
+                    telemetry::event!("Welcome Xenomorphic Agent Sign In Clicked");
                     let client = Client::global(cx);
                     cx.spawn(async move |cx| client.sign_in_with_optional_connect(true, cx).await)
                         .detach_and_log_err(cx);

@@ -23,7 +23,7 @@ use itertools::Itertools;
 use language::LanguageRegistry;
 use language_model::{
     IconOrSvg, LanguageModelProvider, LanguageModelProviderId, LanguageModelRegistry,
-    ZED_CLOUD_PROVIDER_ID,
+    XENOMORPHIC_CLOUD_PROVIDER_ID,
 };
 use language_models::AllLanguageModelSettings;
 use notifications::status_toast::StatusToast;
@@ -39,7 +39,7 @@ use ui::{
 };
 use util::ResultExt as _;
 use workspace::{Workspace, create_and_open_local_file};
-use zed_actions::{ExtensionCategoryFilter, OpenBrowser};
+use xenomorphic_actions::{ExtensionCategoryFilter, OpenBrowser};
 
 pub(crate) use configure_context_server_modal::ConfigureContextServerModal;
 pub(crate) use configure_context_server_tools_modal::ConfigureContextServerToolsModal;
@@ -140,7 +140,7 @@ impl AgentConfiguration {
         cx: &mut Context<Self>,
     ) {
         let configuration_view = provider.configuration_view(
-            language_model::ConfigurationViewTargetAgent::ZedAgent,
+            language_model::ConfigurationViewTargetAgent::XenomorphicAgent,
             window,
             cx,
         );
@@ -217,8 +217,8 @@ impl AgentConfiguration {
             .copied()
             .unwrap_or(false);
 
-        let is_zed_provider = provider.id() == ZED_CLOUD_PROVIDER_ID;
-        let current_plan = if is_zed_provider {
+        let is_xenomorphic_provider = provider.id() == XENOMORPHIC_CLOUD_PROVIDER_ID;
+        let current_plan = if is_xenomorphic_provider {
             self.workspace
                 .upgrade()
                 .and_then(|workspace| workspace.read(cx).user_store().read(cx).plan())
@@ -280,7 +280,7 @@ impl AgentConfiguration {
                                             .gap_1()
                                             .child(Label::new(provider_name.clone()))
                                             .map(|this| {
-                                                if is_zed_provider && is_signed_in {
+                                                if is_xenomorphic_provider && is_signed_in {
                                                     this.child(
                                                         self.render_zed_plan_info(current_plan, cx),
                                                     )
@@ -474,7 +474,7 @@ impl AgentConfiguration {
             .w_full()
             .child(self.render_section_title(
                 "LLM Providers",
-                "Add at least one provider to use AI-powered features with Zed's native agent.",
+                "Add at least one provider to use AI-powered features with Xenomorphic's native agent.",
                 popover_menu.into_any_element(),
             ))
             .child(
@@ -507,11 +507,11 @@ impl AgentConfiguration {
                 .blend(cx.theme().colors().text_accent.opacity(0.2));
 
             let (plan_name, label_color, bg_color) = match plan {
-                Plan::ZedFree => ("Free", Color::Default, free_chip_bg),
-                Plan::ZedProTrial => ("Pro Trial", Color::Accent, pro_chip_bg),
-                Plan::ZedPro => ("Pro", Color::Accent, pro_chip_bg),
-                Plan::ZedBusiness => ("Business", Color::Accent, pro_chip_bg),
-                Plan::ZedStudent => ("Student", Color::Accent, pro_chip_bg),
+                Plan::XenomorphicFree => ("Free", Color::Default, free_chip_bg),
+                Plan::XenomorphicProTrial => ("Pro Trial", Color::Accent, pro_chip_bg),
+                Plan::XenomorphicPro => ("Pro", Color::Accent, pro_chip_bg),
+                Plan::XenomorphicBusiness => ("Business", Color::Accent, pro_chip_bg),
+                Plan::XenomorphicStudent => ("Student", Color::Accent, pro_chip_bg),
             };
 
             Chip::new(plan_name.to_string())
@@ -548,7 +548,7 @@ impl AgentConfiguration {
                         .entry("Install from Extensions", None, {
                             |window, cx| {
                                 window.dispatch_action(
-                                    zed_actions::Extensions {
+                                    xenomorphic_actions::Extensions {
                                         category_filter: Some(
                                             ExtensionCategoryFilter::ContextServers,
                                         ),
@@ -574,7 +574,7 @@ impl AgentConfiguration {
             .border_color(cx.theme().colors().border)
             .child(self.render_section_title(
                 "Model Context Protocol (MCP) Servers",
-                "All MCP servers connected directly or via a Zed extension.",
+                "All MCP servers connected directly or via a Xenomorphic extension.",
                 add_server_popover.into_any_element(),
             ))
             .child(
@@ -1020,7 +1020,7 @@ impl AgentConfiguration {
                     Some(ContextMenu::build(window, cx, |menu, _window, _cx| {
                         menu.entry("Install from Registry", None, {
                             |window, cx| {
-                                window.dispatch_action(Box::new(zed_actions::AcpRegistry), cx)
+                                window.dispatch_action(Box::new(xenomorphic_actions::AcpRegistry), cx)
                             }
                         })
                         .entry("Add Custom Agent", None, {

@@ -815,7 +815,7 @@ impl LspAdapter for TypeScriptLspAdapter {
         let tsdk_path = self.tsdk_path(adapter).await;
         Ok(Some(json!({
             "provideFormatter": true,
-            "hostInfo": "zed",
+            "hostInfo": "xenomorphic",
             "tsserver": {
                 "path": tsdk_path,
             },
@@ -1527,19 +1527,19 @@ mod tests {
             [
                 (
                     "vitest file test".into(),
-                    Some("$ZED_CUSTOM_TYPESCRIPT_VITEST_PACKAGE_PATH".into()),
+                    Some("${XENOMORPHIC_CUSTOM_TYPESCRIPT_VITEST_PACKAGE_PATH".into()),
                 ),
                 (
-                    "vitest test $ZED_SYMBOL".into(),
-                    Some("$ZED_CUSTOM_TYPESCRIPT_VITEST_PACKAGE_PATH".into()),
+                    "vitest test ${XENOMORPHIC_SYMBOL".into(),
+                    Some("${XENOMORPHIC_CUSTOM_TYPESCRIPT_VITEST_PACKAGE_PATH".into()),
                 ),
                 (
                     "mocha file test".into(),
-                    Some("$ZED_CUSTOM_TYPESCRIPT_MOCHA_PACKAGE_PATH".into()),
+                    Some("${XENOMORPHIC_CUSTOM_TYPESCRIPT_MOCHA_PACKAGE_PATH".into()),
                 ),
                 (
-                    "mocha test $ZED_SYMBOL".into(),
-                    Some("$ZED_CUSTOM_TYPESCRIPT_MOCHA_PACKAGE_PATH".into()),
+                    "mocha test ${XENOMORPHIC_SYMBOL".into(),
+                    Some("${XENOMORPHIC_CUSTOM_TYPESCRIPT_MOCHA_PACKAGE_PATH".into()),
                 ),
                 (
                     "root/package.json > test".into(),

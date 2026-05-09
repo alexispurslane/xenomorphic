@@ -18,7 +18,7 @@ use serde::{Deserialize, Serialize};
 use settings::Settings;
 use ui::{ButtonLike, Divider, DividerColor, KeyBinding, Vector, VectorName, prelude::*};
 use util::ResultExt;
-use zed_actions::{
+use xenomorphic_actions::{
     Extensions, OpenKeymap, OpenOnboarding, OpenSettings, assistant::ToggleFocus, command_palette,
 };
 
@@ -32,7 +32,7 @@ pub struct OpenRecentProject {
 actions!(
     zed,
     [
-        /// Show the Zed welcome screen
+        /// Show the Xenomorphic welcome screen
         ShowWelcome
     ]
 );
@@ -315,7 +315,7 @@ impl WelcomePage {
                         })
                         .log_err();
                 } else {
-                    use zed_actions::OpenRecent;
+                    use xenomorphic_actions::OpenRecent;
                     window.dispatch_action(OpenRecent::default().boxed_clone(), cx);
                 }
             }
@@ -343,7 +343,7 @@ impl WelcomePage {
                 h_flex()
                     .gap_1p5()
                     .child(
-                        Icon::new(IconName::ZedAssistant)
+                        Icon::new(IconName::XenomorphicAssistant)
                             .color(Color::Muted)
                             .size(IconSize::Small),
                     )
@@ -444,9 +444,9 @@ impl Render for WelcomePage {
         };
 
         let welcome_label = if self.fallback_to_recent_projects {
-            "Welcome back to Zed"
+            "Welcome back to Xenomorphic"
         } else {
-            "Welcome to Zed"
+            "Welcome to Xenomorphic"
         };
 
         h_flex()
@@ -473,7 +473,7 @@ impl Render for WelcomePage {
                             .justify_center()
                             .mb_4()
                             .gap_4()
-                            .child(Vector::square(VectorName::ZedLogo, rems_from_px(45.)))
+                            .child(Vector::square(VectorName::XenomorphicLogo, rems_from_px(45.)))
                             .child(
                                 v_flex().child(Headline::new(welcome_label)).child(
                                     Label::new("The editor for what's next")

@@ -36,7 +36,7 @@ use gaoya::minhash::{
     MinHashIndex, MinHasher, MinHasher32, calculate_minhash_params, compute_minhash_similarity,
 };
 use gpui::{AppContext as _, BackgroundExecutor, Task};
-use zeta_prompt::ZetaFormat;
+use xeta_prompt::XetaFormat;
 
 use reqwest_client::ReqwestClient;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
@@ -142,7 +142,7 @@ Inputs can be file paths or special specifiers:
   rated-after:{timestamp}
       Fetch user-rated edit predictions from Snowflake after the given RFC3339 timestamp.
       These are predictions that users explicitly rated as positive or negative via the
-      rate completions modal. Only zeta2 predictions are included.
+      rate completions modal. Only xeta2 predictions are included.
       - Positive ratings: output becomes expected_patches
       - Negative ratings: output becomes rejected_patch
 
@@ -226,8 +226,8 @@ enum Command {
     Qa(qa::QaArgs),
     /// Repair predictions that received poor QA scores by generating improved predictions
     Repair(repair::RepairArgs),
-    /// Print all valid zeta formats (lowercase, one per line)
-    PrintZetaFormats,
+    /// Print all valid xeta formats (lowercase, one per line)
+    PrintXetaFormats,
 }
 
 impl Display for Command {
@@ -270,8 +270,8 @@ impl Display for Command {
             Command::Repair(_) => {
                 write!(f, "repair")
             }
-            Command::PrintZetaFormats => {
-                write!(f, "print-zeta-formats")
+            Command::PrintXetaFormats => {
+                write!(f, "print-xeta-formats")
             }
         }
     }
@@ -360,19 +360,19 @@ impl TeacherBackend {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 enum PredictionProvider {
     Mercury,
-    Zeta1,
-    Zeta2(ZetaFormat),
-    Baseten(ZetaFormat),
-    Teacher(TeacherBackend, ZetaFormat),
+    Xeta1,
+    Xeta2(XetaFormat),
+    Baseten(XetaFormat),
+    Teacher(TeacherBackend, XetaFormat),
     TeacherMultiRegion(TeacherBackend),
-    TeacherNonBatching(TeacherBackend, ZetaFormat),
+    TeacherNonBatching(TeacherBackend, XetaFormat),
     TeacherMultiRegionNonBatching(TeacherBackend),
     Repair,
 }
 
 impl Default for PredictionProvider {
     fn default() -> Self {
-        PredictionProvider::Zeta2(ZetaFormat::default())
+        PredictionProvider::Xeta2(XetaFormat::default())
     }
 }
 
@@ -380,8 +380,8 @@ impl std::fmt::Display for PredictionProvider {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             PredictionProvider::Mercury => write!(f, "mercury"),
-            PredictionProvider::Zeta1 => write!(f, "zeta1"),
-            PredictionProvider::Zeta2(format) => write!(f, "zeta2:{format}"),
+            PredictionProvider::Xeta1 => write!(f, "xeta1"),
+            PredictionProvider::Xeta2(format) => write!(f, "xeta2:{format}"),
             PredictionProvider::Baseten(format) => write!(f, "baseten:{format}"),
             PredictionProvider::Teacher(backend, format) => {
                 write!(f, "teacher:{backend}:{format:?}")
@@ -409,10 +409,10 @@ impl std::str::FromStr for PredictionProvider {
         let provider_lower = provider.to_lowercase();
         match provider_lower.as_str() {
             "mercury" => Ok(PredictionProvider::Mercury),
-            "zeta1" => Ok(PredictionProvider::Zeta1),
-            "zeta2" => {
-                let format = arg.map(ZetaFormat::parse).transpose()?.unwrap_or_default();
-                Ok(PredictionProvider::Zeta2(format))
+            "xeta1" => Ok(PredictionProvider::Xeta1),
+            "xeta2" => {
+                let format = arg.map(XetaFormat::parse).transpose()?.unwrap_or_default();
+                Ok(PredictionProvider::Xeta2(format))
             }
             "teacher" => {
                 let (backend, format) = parse_teacher_args(arg)?;
@@ -439,27 +439,27 @@ impl std::str::FromStr for PredictionProvider {
             "repair" => Ok(PredictionProvider::Repair),
             "baseten" => {
                 let format = arg
-                    .map(ZetaFormat::parse)
+                    .map(XetaFormat::parse)
                     .transpose()?
-                    .unwrap_or(ZetaFormat::default());
+                    .unwrap_or(XetaFormat::default());
                 Ok(PredictionProvider::Baseten(format))
             }
             _ => {
                 anyhow::bail!(
-                    "unknown provider `{provider}`. Valid options: mercury, zeta1, zeta2, zeta2:<version>, teacher, teacher:<backend>, teacher-multi-region, teacher-multi-region:<backend>, teacher-non-batching, teacher-multi-region-non-batching, repair\n\
-                 For zeta2, you can optionally specify a version like `zeta2:ordered` or `zeta2:V0113_Ordered`.\n\
+                    "unknown provider `{provider}`. Valid options: mercury, xeta1, xeta2, xeta2:<version>, teacher, teacher:<backend>, teacher-multi-region, teacher-multi-region:<backend>, teacher-non-batching, teacher-multi-region-non-batching, repair\n\
+                 For xeta2, you can optionally specify a version like `xeta2:ordered` or `xeta2:V0113_Ordered`.\n\
                  For teacher providers, you can specify a backend like `teacher:sonnet46`, `teacher-multi-region:sonnet46`, `teacher-multi-region-non-batching:sonnet46`, or `teacher:gpt52`.\n\
-                 Available zeta versions:\n{}",
-                    ZetaFormat::options_as_string()
+                 Available xeta versions:\n{}",
+                    XetaFormat::options_as_string()
                 )
             }
         }
     }
 }
 
-fn parse_teacher_args(arg: Option<&str>) -> Result<(TeacherBackend, ZetaFormat), anyhow::Error> {
+fn parse_teacher_args(arg: Option<&str>) -> Result<(TeacherBackend, XetaFormat), anyhow::Error> {
     let mut backend = TeacherBackend::default();
-    let mut format = ZetaFormat::default();
+    let mut format = XetaFormat::default();
 
     for arg in arg.unwrap_or_default().split(':') {
         if arg.is_empty() {
@@ -468,10 +468,10 @@ fn parse_teacher_args(arg: Option<&str>) -> Result<(TeacherBackend, ZetaFormat),
 
         if let Ok(parsed_backend) = TeacherBackend::from_str(arg) {
             backend = parsed_backend;
-        } else if let Ok(parsed_format) = ZetaFormat::parse(arg) {
+        } else if let Ok(parsed_format) = XetaFormat::parse(arg) {
             format = parsed_format;
         } else {
-            anyhow::bail!("unknown teacher backend or zeta format `{arg}`");
+            anyhow::bail!("unknown teacher backend or xeta format `{arg}`");
         }
     }
 
@@ -580,7 +580,7 @@ impl EpArgs {
     }
 }
 
-/// Minimum Zed version required for Snowflake queries.
+/// Minimum Xenomorphic version required for Snowflake queries.
 /// This version introduced the current request schema with predicted edits in the edit
 /// history, and open source repos distinguished.
 const MIN_CAPTURE_VERSION: pull_examples::MinCaptureVersion = pull_examples::MinCaptureVersion {
@@ -1017,9 +1017,9 @@ fn main() {
             std::fs::remove_dir_all(&*paths::DATA_DIR).unwrap();
             return;
         }
-        Command::PrintZetaFormats => {
+        Command::PrintXetaFormats => {
             use strum::IntoEnumIterator as _;
-            for format in ZetaFormat::iter() {
+            for format in XetaFormat::iter() {
                 println!("{}", format.to_string().to_lowercase());
             }
             return;
@@ -1270,7 +1270,7 @@ fn main() {
                                         | Command::TruncatePatch(_)
                                         | Command::FilterLanguages(_)
                                         | Command::ImportBatch(_)
-                                        | Command::PrintZetaFormats => {
+                                        | Command::PrintXetaFormats => {
                                             unreachable!()
                                         }
                                     }

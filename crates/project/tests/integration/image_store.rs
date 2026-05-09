@@ -8,7 +8,7 @@ use settings::SettingsStore;
 use util::rel_path::rel_path;
 
 pub fn init_test(cx: &mut TestAppContext) {
-    zlog::init_test();
+    xlog::init_test();
 
     cx.update(|cx| {
         let settings_store = SettingsStore::test(cx);

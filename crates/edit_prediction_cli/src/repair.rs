@@ -538,7 +538,7 @@ mod tests {
     use crate::{PredictionProvider, TeacherBackend};
     use edit_prediction::example_spec::ExampleSpec;
     use std::{path::Path, sync::Arc};
-    use zeta_prompt::ZetaFormat;
+    use xeta_prompt::XetaFormat;
 
     fn example_with_previous_prediction() -> Example {
         Example {
@@ -573,7 +573,7 @@ mod tests {
                 error: None,
                 provider: PredictionProvider::Teacher(
                     TeacherBackend::Sonnet45,
-                    ZetaFormat::default(),
+                    XetaFormat::default(),
                 ),
                 cumulative_logprob: None,
                 avg_logprob: None,

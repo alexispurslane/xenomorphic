@@ -1,4 +1,4 @@
-package zed:extension;
+package xenomorphic:extension;
 
 world extension {
     import github;

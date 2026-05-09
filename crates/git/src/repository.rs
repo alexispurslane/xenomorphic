@@ -578,8 +578,8 @@ pub struct GitExcludeOverride {
 }
 
 impl GitExcludeOverride {
-    const START_BLOCK_MARKER: &str = "\n\n#  ====== Auto-added by Zed: =======\n";
-    const END_BLOCK_MARKER: &str = "\n#  ====== End of auto-added by Zed =======\n";
+    const START_BLOCK_MARKER: &str = "\n\n#  ====== Auto-added by Xenomorphic: =======\n";
+    const END_BLOCK_MARKER: &str = "\n#  ====== End of auto-added by Xenomorphic =======\n";
 
     pub async fn new(git_exclude_path: PathBuf) -> Result<Self> {
         let original_excludes =
@@ -643,7 +643,7 @@ impl GitExcludeOverride {
             }
         }
 
-        // Older versions of Zed didn't have end-of-block markers,
+        // Older versions of Xenomorphic didn't have end-of-block markers,
         // so it's impossible to determine auto-generated lines.
         // Conservatively remove the standard list of excludes
         let standard_excludes = format!(
@@ -1180,7 +1180,7 @@ pub async fn get_git_committer(cx: &AsyncApp) -> GitCommitter {
     }
 
     let git_binary_path =
-        if cfg!(target_os = "macos") && option_env!("ZED_BUNDLE").as_deref() == Some("true") {
+        if cfg!(target_os = "macos") && option_env!("XENOMORPHIC_BUNDLE").as_deref() == Some("true") {
             cx.update(|cx| {
                 cx.path_for_auxiliary_executable("git")
                     .context("could not find git binary path")

@@ -92,7 +92,7 @@ dependencies = [
  "text",
  "util",
  "watch",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -215,8 +215,8 @@ dependencies = [
  "uuid",
  "watch",
  "web_search",
- "zed_env_vars",
- "zlog",
+ "xenomorphic_env_vars",
+ "xlog",
  "zstd",
 ]
 
@@ -311,7 +311,7 @@ dependencies = [
  "util",
  "uuid",
  "watch",
- "zed_credentials_provider",
+ "xenomorphic_credentials_provider",
 ]
 
 [[package]]
@@ -439,7 +439,7 @@ dependencies = [
  "vim",
  "watch",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -490,7 +490,7 @@ dependencies = [
  "smallvec",
  "telemetry",
  "ui",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -1254,7 +1254,7 @@ dependencies = [
  "util",
  "which 6.0.3",
  "workspace",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -1295,7 +1295,7 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -2266,8 +2266,8 @@ dependencies = [
  "tracing",
  "unindent",
  "util",
- "zlog",
- "ztracing",
+ "xlog",
+ "xtracing",
 ]
 
 [[package]]
@@ -3020,7 +3020,7 @@ dependencies = [
  "util",
  "windows 0.61.3",
  "worktree",
- "zed_credentials_provider",
+ "xenomorphic_credentials_provider",
 ]
 
 [[package]]
@@ -3072,7 +3072,7 @@ dependencies = [
  "serde_json",
  "strum 0.27.2",
  "uuid",
- "zeta_prompt",
+ "xeta_prompt",
 ]
 
 [[package]]
@@ -3181,8 +3181,8 @@ dependencies = [
  "serde",
  "serde_json",
  "text",
- "zed_credentials_provider",
- "zeta_prompt",
+ "xenomorphic_credentials_provider",
+ "xeta_prompt",
 ]
 
 [[package]]
@@ -3280,8 +3280,8 @@ dependencies = [
  "uuid",
  "workspace",
  "worktree",
- "zed_actions",
- "zlog",
+ "xenomorphic_actions",
+ "xlog",
 ]
 
 [[package]]
@@ -3318,7 +3318,7 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -3389,7 +3389,7 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -3657,7 +3657,7 @@ dependencies = [
  "theme_settings",
  "util",
  "workspace",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -4478,7 +4478,7 @@ dependencies = [
  "task",
  "telemetry",
  "util",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -4669,7 +4669,7 @@ dependencies = [
  "tempfile",
  "util",
  "uuid",
- "zed_env_vars",
+ "xenomorphic_env_vars",
 ]
 
 [[package]]
@@ -4769,8 +4769,8 @@ dependencies = [
  "unindent",
  "util",
  "workspace",
- "zed_actions",
- "zlog",
+ "xenomorphic_actions",
+ "xlog",
 ]
 
 [[package]]
@@ -4962,8 +4962,8 @@ dependencies = [
  "unindent",
  "util",
  "workspace",
- "zed_actions",
- "zlog",
+ "xenomorphic_actions",
+ "xlog",
 ]
 
 [[package]]
@@ -5078,7 +5078,7 @@ dependencies = [
  "task",
  "theme",
  "util",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -5296,10 +5296,10 @@ dependencies = [
  "uuid",
  "workspace",
  "worktree",
- "zed_actions",
- "zed_credentials_provider",
- "zeta_prompt",
- "zlog",
+ "xenomorphic_actions",
+ "xenomorphic_credentials_provider",
+ "xeta_prompt",
+ "xlog",
  "zstd",
 ]
 
@@ -5363,7 +5363,7 @@ dependencies = [
  "wasmtime",
  "watch",
  "workspace",
- "zeta_prompt",
+ "xeta_prompt",
 ]
 
 [[package]]
@@ -5390,7 +5390,7 @@ dependencies = [
  "text",
  "tree-sitter",
  "util",
- "zeta_prompt",
+ "xeta_prompt",
 ]
 
 [[package]]
@@ -5404,7 +5404,7 @@ dependencies = [
  "serde_json",
  "similar",
  "tree-sitter",
- "zeta_prompt",
+ "xeta_prompt",
 ]
 
 [[package]]
@@ -5456,8 +5456,8 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
- "zeta_prompt",
+ "xenomorphic_actions",
+ "xeta_prompt",
 ]
 
 [[package]]
@@ -5544,9 +5544,9 @@ dependencies = [
  "uuid",
  "vim_mode_setting",
  "workspace",
- "zed_actions",
- "zlog",
- "ztracing",
+ "xenomorphic_actions",
+ "xlog",
+ "xtracing",
 ]
 
 [[package]]
@@ -6048,7 +6048,7 @@ dependencies = [
  "util",
  "wasm-encoder 0.221.3",
  "wasmparser 0.221.3",
- "ztracing",
+ "xtracing",
 ]
 
 [[package]]
@@ -6128,8 +6128,8 @@ dependencies = [
  "wasmparser 0.221.3",
  "wasmtime",
  "wasmtime-wasi",
- "zlog",
- "ztracing",
+ "xlog",
+ "xtracing",
 ]
 
 [[package]]
@@ -6164,7 +6164,7 @@ dependencies = [
  "util",
  "vim_mode_setting",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -6296,7 +6296,7 @@ dependencies = [
  "urlencoding",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -6340,8 +6340,8 @@ dependencies = [
  "ui_input",
  "util",
  "workspace",
- "zed_actions",
- "zlog",
+ "xenomorphic_actions",
+ "xlog",
 ]
 
 [[package]]
@@ -7311,7 +7311,7 @@ dependencies = [
  "urlencoding",
  "util",
  "uuid",
- "ztracing",
+ "xtracing",
 ]
 
 [[package]]
@@ -7442,10 +7442,10 @@ dependencies = [
  "watch",
  "windows 0.61.3",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
+ "xlog",
+ "xtracing",
  "zeroize",
- "zlog",
- "ztracing",
 ]
 
 [[package]]
@@ -8225,9 +8225,6 @@ name = "heck"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "95505c38b4572b2d910cecb0281560f54b440a19336cbbcb27bf6ce6adc6f5a8"
-dependencies = [
- "unicode-segmentation",
-]
 
 [[package]]
 name = "heck"
@@ -8965,7 +8962,7 @@ dependencies = [
  "util",
  "util_macros",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -9412,7 +9409,7 @@ dependencies = [
  "ui_input",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -9534,8 +9531,8 @@ dependencies = [
  "unindent",
  "util",
  "watch",
- "zlog",
- "ztracing",
+ "xlog",
+ "xtracing",
 ]
 
 [[package]]
@@ -9576,7 +9573,7 @@ dependencies = [
  "serde_json",
  "tracing",
  "util",
- "ztracing",
+ "xtracing",
 ]
 
 [[package]]
@@ -9762,8 +9759,8 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
- "zlog",
+ "xenomorphic_actions",
+ "xlog",
 ]
 
 [[package]]
@@ -10295,7 +10292,7 @@ dependencies = [
  "serde_json",
  "smol",
  "util",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -10463,7 +10460,7 @@ dependencies = [
  "urlencoding",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -10823,7 +10820,7 @@ dependencies = [
  "theme_settings",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -10948,8 +10945,8 @@ dependencies = [
  "tree-sitter",
  "unicode-segmentation",
  "util",
- "zlog",
- "ztracing",
+ "xlog",
+ "xtracing",
 ]
 
 [[package]]
@@ -11197,7 +11194,7 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -11757,8 +11754,8 @@ dependencies = [
  "util",
  "vim_mode_setting",
  "workspace",
- "zed_actions",
- "zlog",
+ "xenomorphic_actions",
+ "xlog",
 ]
 
 [[package]]
@@ -12050,7 +12047,7 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -12085,7 +12082,7 @@ dependencies = [
  "util",
  "workspace",
  "worktree",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -12962,7 +12959,7 @@ dependencies = [
  "ui",
  "ui_input",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -13070,7 +13067,7 @@ dependencies = [
  "ui",
  "windows 0.61.3",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -13507,10 +13504,10 @@ dependencies = [
  "wax",
  "which 6.0.3",
  "worktree",
- "zed_credentials_provider",
+ "xenomorphic_credentials_provider",
+ "xlog",
+ "xtracing",
  "zeroize",
- "zlog",
- "ztracing",
 ]
 
 [[package]]
@@ -13575,7 +13572,7 @@ dependencies = [
  "util",
  "workspace",
  "worktree",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -14411,7 +14408,7 @@ dependencies = [
  "windows-registry 0.6.1",
  "workspace",
  "worktree",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -14668,7 +14665,7 @@ dependencies = [
  "watch",
  "windows 0.61.3",
  "worktree",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -14738,7 +14735,7 @@ dependencies = [
  "util",
  "uuid",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -15005,8 +15002,8 @@ dependencies = [
  "tracing",
  "unicode-segmentation",
  "util",
- "zlog",
- "ztracing",
+ "xlog",
+ "xtracing",
 ]
 
 [[package]]
@@ -15046,7 +15043,7 @@ dependencies = [
  "strum 0.27.2",
  "tracing",
  "util",
- "zlog",
+ "xlog",
  "zstd",
 ]
 
@@ -15110,7 +15107,7 @@ dependencies = [
  "ui_input",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -15763,8 +15760,8 @@ dependencies = [
  "util",
  "util_macros",
  "workspace",
- "zed_actions",
- "ztracing",
+ "xenomorphic_actions",
+ "xtracing",
 ]
 
 [[package]]
@@ -16081,7 +16078,7 @@ dependencies = [
  "smallvec",
  "unindent",
  "util",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -16145,7 +16142,7 @@ dependencies = [
  "theme_settings",
  "ui",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -16196,8 +16193,8 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
- "zed_credentials_provider",
+ "xenomorphic_actions",
+ "xenomorphic_credentials_provider",
 ]
 
 [[package]]
@@ -16340,7 +16337,7 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -17108,8 +17105,8 @@ dependencies = [
  "rand 0.9.4",
  "rayon",
  "tracing",
- "zlog",
- "ztracing",
+ "xlog",
+ "xtracing",
 ]
 
 [[package]]
@@ -17206,7 +17203,7 @@ dependencies = [
  "multi_buffer",
  "ui",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -17614,7 +17611,7 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -17685,7 +17682,7 @@ dependencies = [
  "sha2",
  "shellexpand",
  "util",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -17711,7 +17708,7 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -17846,7 +17843,7 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -17867,7 +17864,7 @@ dependencies = [
  "smallvec",
  "sum_tree",
  "util",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -17943,7 +17940,7 @@ dependencies = [
  "ui",
  "util",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -18193,7 +18190,7 @@ dependencies = [
  "util",
  "windows 0.61.3",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -19526,7 +19523,7 @@ dependencies = [
  "util_macros",
  "vim_mode_setting",
  "workspace",
- "zed_actions",
+ "xenomorphic_actions",
 ]
 
 [[package]]
@@ -19739,15 +19736,6 @@ dependencies = [
 
 [[package]]
 name = "wasm-encoder"
-version = "0.201.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b9c7d2731df60006819b013f64ccc2019691deccf6e11a1804bc850cd6748f1a"
-dependencies = [
- "leb128",
-]
-
-[[package]]
-name = "wasm-encoder"
 version = "0.221.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc8444fe4920de80a4fe5ab564fff2ae58b6b73166b89751f8c6c93509da32e5"
@@ -19784,22 +19772,6 @@ checksum = "990065f2fe63003fe337b932cfb5e3b80e0b4d0f5ff650e6985b1048f62c8319"
 dependencies = [
  "leb128fmt",
  "wasmparser 0.244.0",
-]
-
-[[package]]
-name = "wasm-metadata"
-version = "0.201.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0fd83062c17b9f4985d438603cde0a5e8c5c8198201a6937f778b607924c7da2"
-dependencies = [
- "anyhow",
- "indexmap 2.11.4",
- "serde",
- "serde_derive",
- "serde_json",
- "spdx",
- "wasm-encoder 0.201.0",
- "wasmparser 0.201.0",
 ]
 
 [[package]]
@@ -19856,17 +19828,6 @@ dependencies = [
  "js-sys",
  "wasm-bindgen",
  "web-sys",
-]
-
-[[package]]
-name = "wasmparser"
-version = "0.201.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "84e5df6dba6c0d7fafc63a450f1738451ed7a0b52295d83e868218fa286bf708"
-dependencies = [
- "bitflags 2.10.0",
- "indexmap 2.11.4",
- "semver",
 ]
 
 [[package]]
@@ -20253,7 +20214,7 @@ dependencies = [
  "futures 0.3.32",
  "gpui",
  "parking_lot",
- "zlog",
+ "xlog",
 ]
 
 [[package]]
@@ -21588,22 +21549,11 @@ dependencies = [
 
 [[package]]
 name = "wit-bindgen"
-version = "0.22.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "288f992ea30e6b5c531b52cdd5f3be81c148554b09ea416f058d16556ba92c27"
-dependencies = [
- "bitflags 2.10.0",
- "wit-bindgen-rt 0.22.0",
- "wit-bindgen-rust-macro 0.22.0",
-]
-
-[[package]]
-name = "wit-bindgen"
 version = "0.41.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "10fb6648689b3929d56bbc7eb1acf70c9a42a29eb5358c67c10f54dbd5d695de"
 dependencies = [
- "wit-bindgen-rt 0.41.0",
+ "wit-bindgen-rt",
  "wit-bindgen-rust-macro 0.41.0",
 ]
 
@@ -21620,16 +21570,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d7249219f66ced02969388cf2bb044a09756a083d0fab1e566056b04d9fbcaa5"
 dependencies = [
  "wit-bindgen-rust-macro 0.51.0",
-]
-
-[[package]]
-name = "wit-bindgen-core"
-version = "0.22.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e85e72719ffbccf279359ad071497e47eb0675fe22106dea4ed2d8a7fcb60ba4"
-dependencies = [
- "anyhow",
- "wit-parser 0.201.0",
 ]
 
 [[package]]
@@ -21656,12 +21596,6 @@ dependencies = [
 
 [[package]]
 name = "wit-bindgen-rt"
-version = "0.22.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fcb8738270f32a2d6739973cbbb7c1b6dd8959ce515578a6e19165853272ee64"
-
-[[package]]
-name = "wit-bindgen-rt"
 version = "0.41.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c4db52a11d4dfb0a59f194c064055794ee6564eb1ced88c25da2cf76e50c5621"
@@ -21669,20 +21603,6 @@ dependencies = [
  "bitflags 2.10.0",
  "futures 0.3.32",
  "once_cell",
-]
-
-[[package]]
-name = "wit-bindgen-rust"
-version = "0.22.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d8a39a15d1ae2077688213611209849cad40e9e5cccf6e61951a425850677ff3"
-dependencies = [
- "anyhow",
- "heck 0.4.1",
- "indexmap 2.11.4",
- "wasm-metadata 0.201.0",
- "wit-bindgen-core 0.22.0",
- "wit-component 0.201.0",
 ]
 
 [[package]]
@@ -21719,20 +21639,6 @@ dependencies = [
 
 [[package]]
 name = "wit-bindgen-rust-macro"
-version = "0.22.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d376d3ae5850526dfd00d937faea0d81a06fa18f7ac1e26f386d760f241a8f4b"
-dependencies = [
- "anyhow",
- "proc-macro2",
- "quote",
- "syn 2.0.117",
- "wit-bindgen-core 0.22.0",
- "wit-bindgen-rust 0.22.0",
-]
-
-[[package]]
-name = "wit-bindgen-rust-macro"
 version = "0.41.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ad19eec017904e04c60719592a803ee5da76cb51c81e3f6fbf9457f59db49799"
@@ -21759,25 +21665,6 @@ dependencies = [
  "syn 2.0.117",
  "wit-bindgen-core 0.51.0",
  "wit-bindgen-rust 0.51.0",
-]
-
-[[package]]
-name = "wit-component"
-version = "0.201.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "421c0c848a0660a8c22e2fd217929a0191f14476b68962afd2af89fd22e39825"
-dependencies = [
- "anyhow",
- "bitflags 2.10.0",
- "indexmap 2.11.4",
- "log",
- "serde",
- "serde_derive",
- "serde_json",
- "wasm-encoder 0.201.0",
- "wasm-metadata 0.201.0",
- "wasmparser 0.201.0",
- "wit-parser 0.201.0",
 ]
 
 [[package]]
@@ -21816,24 +21703,6 @@ dependencies = [
  "wasm-metadata 0.244.0",
  "wasmparser 0.244.0",
  "wit-parser 0.244.0",
-]
-
-[[package]]
-name = "wit-parser"
-version = "0.201.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "196d3ecfc4b759a8573bf86a9b3f8996b304b3732e4c7de81655f875f6efdca6"
-dependencies = [
- "anyhow",
- "id-arena",
- "indexmap 2.11.4",
- "log",
- "semver",
- "serde",
- "serde_derive",
- "serde_json",
- "unicode-xid",
- "wasmparser 0.201.0",
 ]
 
 [[package]]
@@ -21952,8 +21821,8 @@ dependencies = [
  "util",
  "uuid",
  "windows 0.61.3",
- "zed_actions",
- "zlog",
+ "xenomorphic_actions",
+ "xlog",
 ]
 
 [[package]]
@@ -21990,8 +21859,8 @@ dependencies = [
  "tracing",
  "util",
  "worktree",
- "zlog",
- "ztracing",
+ "xlog",
+ "xtracing",
 ]
 
 [[package]]
@@ -22272,12 +22141,64 @@ dependencies = [
  "windows 0.61.3",
  "windows_resources",
  "workspace",
+ "xenomorphic_actions",
+ "xenomorphic_env_vars",
+ "xlog",
+ "xlog_settings",
+ "xtracing",
  "zed-reqwest",
- "zed_actions",
- "zed_env_vars",
- "zlog",
- "zlog_settings",
- "ztracing",
+]
+
+[[package]]
+name = "xenomorphic_actions"
+version = "0.1.0"
+dependencies = [
+ "gpui",
+ "schemars 1.0.4",
+ "serde",
+ "util",
+ "uuid",
+]
+
+[[package]]
+name = "xenomorphic_credentials_provider"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "credentials_provider",
+ "futures 0.3.32",
+ "gpui",
+ "paths",
+ "release_channel",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "xenomorphic_env_vars"
+version = "0.1.0"
+dependencies = [
+ "env_var",
+]
+
+[[package]]
+name = "xenomorphic_extension_api"
+version = "0.8.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "wit-bindgen 0.41.0",
+]
+
+[[package]]
+name = "xeta_prompt"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "imara-diff",
+ "indoc",
+ "serde",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -22313,6 +22234,27 @@ name = "xkeysym"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b9cc00251562a284751c9973bace760d86c0276c471b4be569fe6b068ee97a56"
+
+[[package]]
+name = "xlog"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "collections",
+ "log",
+ "tempfile",
+]
+
+[[package]]
+name = "xlog_settings"
+version = "0.1.0"
+dependencies = [
+ "collections",
+ "gpui",
+ "settings",
+ "xlog",
+]
 
 [[package]]
 name = "xml-rs"
@@ -22367,6 +22309,22 @@ dependencies = [
  "toml 0.8.23",
  "toml_edit 0.22.27",
 ]
+
+[[package]]
+name = "xtracing"
+version = "0.1.0"
+dependencies = [
+ "tracing",
+ "tracing-subscriber",
+ "tracing-tracy",
+ "tracy-client",
+ "xlog",
+ "xtracing_macro",
+]
+
+[[package]]
+name = "xtracing_macro"
+version = "0.1.0"
 
 [[package]]
 name = "y4m"
@@ -22654,94 +22612,31 @@ dependencies = [
 ]
 
 [[package]]
-name = "zed_actions"
-version = "0.1.0"
-dependencies = [
- "gpui",
- "schemars 1.0.4",
- "serde",
- "util",
- "uuid",
-]
-
-[[package]]
-name = "zed_credentials_provider"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "credentials_provider",
- "futures 0.3.32",
- "gpui",
- "paths",
- "release_channel",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "zed_env_vars"
-version = "0.1.0"
-dependencies = [
- "env_var",
-]
-
-[[package]]
-name = "zed_extension_api"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "594fd10dd0f2f853eb243e2425e7c95938cef49adb81d9602921d002c5e6d9d9"
-dependencies = [
- "serde",
- "serde_json",
- "wit-bindgen 0.22.0",
-]
-
-[[package]]
-name = "zed_extension_api"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0729d50b4ca0a7e28e590bbe32e3ca0194d97ef654961451a424c661a366fca0"
-dependencies = [
- "serde",
- "serde_json",
- "wit-bindgen 0.41.0",
-]
-
-[[package]]
-name = "zed_extension_api"
-version = "0.8.0"
-dependencies = [
- "serde",
- "serde_json",
- "wit-bindgen 0.41.0",
-]
-
-[[package]]
 name = "zed_glsl"
 version = "0.2.3"
 dependencies = [
- "zed_extension_api 0.1.0",
+ "xenomorphic_extension_api",
 ]
 
 [[package]]
 name = "zed_html"
 version = "0.3.1"
 dependencies = [
- "zed_extension_api 0.7.0",
+ "xenomorphic_extension_api",
 ]
 
 [[package]]
 name = "zed_proto"
 version = "0.3.2"
 dependencies = [
- "zed_extension_api 0.7.0",
+ "xenomorphic_extension_api",
 ]
 
 [[package]]
 name = "zed_test_extension"
 version = "0.1.0"
 dependencies = [
- "zed_extension_api 0.8.0",
+ "xenomorphic_extension_api",
 ]
 
 [[package]]
@@ -22869,17 +22764,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "zeta_prompt"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "imara-diff",
- "indoc",
- "serde",
- "strum 0.27.2",
-]
-
-[[package]]
 name = "zip"
 version = "0.6.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -22915,27 +22799,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "zlog"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "chrono",
- "collections",
- "log",
- "tempfile",
-]
-
-[[package]]
-name = "zlog_settings"
-version = "0.1.0"
-dependencies = [
- "collections",
- "gpui",
- "settings",
- "zlog",
-]
-
-[[package]]
 name = "zstd"
 version = "0.11.2+zstd.1.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -22963,22 +22826,6 @@ dependencies = [
  "cc",
  "pkg-config",
 ]
-
-[[package]]
-name = "ztracing"
-version = "0.1.0"
-dependencies = [
- "tracing",
- "tracing-subscriber",
- "tracing-tracy",
- "tracy-client",
- "zlog",
- "ztracing_macro",
-]
-
-[[package]]
-name = "ztracing_macro"
-version = "0.1.0"
 
 [[package]]
 name = "zune-core"

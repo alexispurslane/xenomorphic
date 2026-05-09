@@ -61,10 +61,10 @@ use workspace::{
     notifications::NotificationId, sidebar_side_context_menu,
 };
 
-use zed_actions::OpenRecent;
-use zed_actions::editor::{MoveDown, MoveUp};
+use xenomorphic_actions::OpenRecent;
+use xenomorphic_actions::editor::{MoveDown, MoveUp};
 
-use zed_actions::agents_sidebar::{FocusSidebarFilter, ToggleThreadSwitcher};
+use xenomorphic_actions::agents_sidebar::{FocusSidebarFilter, ToggleThreadSwitcher};
 
 use crate::thread_switcher::{ThreadSwitcher, ThreadSwitcherEntry, ThreadSwitcherEvent};
 
@@ -1133,10 +1133,10 @@ impl Sidebar {
         let resolve_agent_icon = |agent_id: &AgentId| -> (IconName, Option<SharedString>) {
             let agent = Agent::from(agent_id.clone());
             let icon = match agent {
-                Agent::NativeAgent => IconName::ZedAgent,
+                Agent::NativeAgent => IconName::XenomorphicAgent,
                 Agent::Custom { .. } => IconName::Terminal,
 
-                _ => IconName::ZedAgent,
+                _ => IconName::XenomorphicAgent,
             };
             let icon_from_external_svg = agent_server_store
                 .as_ref()
@@ -5080,7 +5080,7 @@ impl Sidebar {
         render_import_onboarding_banner(
             "acp",
             "Looking for threads from external agents?",
-            "Import threads from agents like Claude Agent, Codex, and more, whether started in Zed or another client.",
+            "Import threads from agents like Claude Agent, Codex, and more, whether started in Xenomorphic or another client.",
             if verbose_labels {
                 "Import Threads from External Agents"
             } else {

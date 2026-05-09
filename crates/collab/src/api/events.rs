@@ -25,12 +25,12 @@ pub fn router() -> Router {
         .route("/telemetry/hangs", post(post_panic))
 }
 
-pub struct ZedChecksumHeader(Vec<u8>);
+pub struct XenomorphicChecksumHeader(Vec<u8>);
 
-impl Header for ZedChecksumHeader {
+impl Header for XenomorphicChecksumHeader {
     fn name() -> &'static HeaderName {
-        static ZED_CHECKSUM_HEADER: OnceLock<HeaderName> = OnceLock::new();
-        ZED_CHECKSUM_HEADER.get_or_init(|| HeaderName::from_static("x-zed-checksum"))
+        static XENOMORPHIC_CHECKSUM_HEADER: OnceLock<HeaderName> = OnceLock::new();
+        XENOMORPHIC_CHECKSUM_HEADER.get_or_init(|| HeaderName::from_static("x-xenomorphic-checksum"))
     }
 
     fn decode<'i, I>(values: &mut I) -> Result<Self, axum::headers::Error>
@@ -61,7 +61,7 @@ pub async fn post_panic() -> Result<()> {
 
 pub async fn post_events(
     Extension(app): Extension<Arc<AppState>>,
-    TypedHeader(ZedChecksumHeader(checksum)): TypedHeader<ZedChecksumHeader>,
+    TypedHeader(XenomorphicChecksumHeader(checksum)): TypedHeader<XenomorphicChecksumHeader>,
     country_code_header: Option<TypedHeader<CloudflareIpCountryHeader>>,
     body: Bytes,
 ) -> Result<()> {

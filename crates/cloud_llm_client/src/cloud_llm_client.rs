@@ -9,8 +9,8 @@ use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, EnumString};
 use uuid::Uuid;
 
-/// The name of the header used to indicate which version of Zed the client is running.
-pub const ZED_VERSION_HEADER_NAME: &str = "x-zed-version";
+/// The name of the header used to indicate which version of Xenomorphic the client is running.
+pub const XENOMORPHIC_VERSION_HEADER_NAME: &str = "x-zed-version";
 
 /// The name of the header used to indicate which edit prediction experiment should be used.
 pub const PREFERRED_EXPERIMENT_HEADER_NAME: &str = "x-zed-preferred-experiment";
@@ -37,26 +37,26 @@ pub const EDIT_PREDICTIONS_USAGE_AMOUNT_HEADER_NAME: &str = "x-zed-edit-predicti
 
 pub const EDIT_PREDICTIONS_RESOURCE_HEADER_VALUE: &str = "edit_predictions";
 
-/// The name of the header used to indicate the minimum required Zed version.
+/// The name of the header used to indicate the minimum required Xenomorphic version.
 ///
-/// This can be used to force a Zed upgrade in order to continue communicating
+/// This can be used to force a Xenomorphic upgrade in order to continue communicating
 /// with the LLM service.
 pub const MINIMUM_REQUIRED_VERSION_HEADER_NAME: &str = "x-zed-minimum-required-version";
 
 /// The name of the header used by the client to indicate to the server that it supports receiving status messages.
 pub const CLIENT_SUPPORTS_STATUS_MESSAGES_HEADER_NAME: &str =
-    "x-zed-client-supports-status-messages";
+    "x-xenomorphic-client-supports-status-messages";
 
 /// The name of the header used by the client to indicate to the server that it supports receiving a "stream_ended" request completion status.
 pub const CLIENT_SUPPORTS_STATUS_STREAM_ENDED_HEADER_NAME: &str =
-    "x-zed-client-supports-stream-ended-request-completion-status";
+    "x-xenomorphic-client-supports-stream-ended-request-completion-status";
 
 /// The name of the header used by the server to indicate to the client that it supports sending status messages.
 pub const SERVER_SUPPORTS_STATUS_MESSAGES_HEADER_NAME: &str =
     "x-zed-server-supports-status-messages";
 
 /// The name of the header used by the client to indicate that it supports receiving xAI models.
-pub const CLIENT_SUPPORTS_X_AI_HEADER_NAME: &str = "x-zed-client-supports-x-ai";
+pub const CLIENT_SUPPORTS_X_AI_HEADER_NAME: &str = "x-xenomorphic-client-supports-x-ai";
 
 /// The maximum number of edit predictions that can be rejected per request.
 pub const MAX_EDIT_PREDICTION_REJECTIONS_PER_REQUEST: usize = 100;

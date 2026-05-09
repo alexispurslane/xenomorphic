@@ -48,7 +48,7 @@ pub fn codestral_api_key(cx: &App) -> Option<Arc<str>> {
 }
 
 pub fn load_codestral_api_key(cx: &mut App) -> Task<Result<(), AuthenticateError>> {
-    let credentials_provider = zed_credentials_provider::global(cx);
+    let credentials_provider = xenomorphic_credentials_provider::global(cx);
     let api_url = codestral_api_url(cx);
     codestral_api_key_state(cx).update(cx, |key_state, cx| {
         key_state.load_if_needed(api_url, |s| s, credentials_provider, cx)
@@ -272,7 +272,7 @@ impl EditPredictionDelegate for CodestralEditPredictionDelegate {
                 &excerpt_offset_range,
             );
             let excerpt_text: String = snapshot.text_for_range(excerpt_point_range).collect();
-            let (_, context_range) = zeta_prompt::compute_editable_and_context_ranges(
+            let (_, context_range) = xeta_prompt::compute_editable_and_context_ranges(
                 &excerpt_text,
                 cursor_offset_in_excerpt,
                 &syntax_ranges,

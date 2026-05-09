@@ -3,10 +3,10 @@ use std::sync::Arc;
 use client::{Client, UserStore};
 use cloud_api_types::Plan;
 use gpui::{Entity, IntoElement, ParentElement};
-use language_model::{LanguageModelRegistry, ZED_CLOUD_PROVIDER_ID};
+use language_model::{LanguageModelRegistry, XENOMORPHIC_CLOUD_PROVIDER_ID};
 use ui::prelude::*;
 
-use crate::{AgentPanelOnboardingCard, ApiKeysWithoutProviders, ZedAiOnboarding};
+use crate::{AgentPanelOnboardingCard, ApiKeysWithoutProviders, XenomorphicAiOnboarding};
 
 pub struct AgentPanelOnboarding {
     user_store: Entity<UserStore>,
@@ -48,7 +48,7 @@ impl AgentPanelOnboarding {
         LanguageModelRegistry::read_global(cx)
             .visible_providers()
             .iter()
-            .any(|provider| provider.is_authenticated(cx) && provider.id() != ZED_CLOUD_PROVIDER_ID)
+            .any(|provider| provider.is_authenticated(cx) && provider.id() != XENOMORPHIC_CLOUD_PROVIDER_ID)
     }
 }
 
@@ -58,15 +58,15 @@ impl Render for AgentPanelOnboarding {
             .user_store
             .read(cx)
             .plan()
-            .is_some_and(|plan| plan == Plan::ZedProTrial);
+            .is_some_and(|plan| plan == Plan::XenomorphicProTrial);
 
         let is_pro_user = self
             .user_store
             .read(cx)
             .plan()
-            .is_some_and(|plan| plan == Plan::ZedPro);
+            .is_some_and(|plan| plan == Plan::XenomorphicPro);
 
-        let onboarding = ZedAiOnboarding::new(
+        let onboarding = XenomorphicAiOnboarding::new(
             self.client.clone(),
             &self.user_store,
             self.continue_with_zed_ai.clone(),

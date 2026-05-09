@@ -17,7 +17,7 @@ use util::path;
 
 #[gpui::test]
 async fn test_lsp_log_view(cx: &mut TestAppContext) {
-    zlog::init_test();
+    xlog::init_test();
 
     init_test(cx);
 

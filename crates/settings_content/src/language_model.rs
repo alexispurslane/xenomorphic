@@ -24,7 +24,7 @@ pub struct AllLanguageModelSettingsContent {
     pub vercel_ai_gateway: Option<VercelAiGatewaySettingsContent>,
     pub x_ai: Option<XAiSettingsContent>,
     #[serde(rename = "zed.dev")]
-    pub zed_dot_dev: Option<ZedDotDevSettingsContent>,
+    pub zed_dot_dev: Option<XenomorphicCloudSettingsContent>,
 }
 
 #[with_fallible_options]
@@ -39,7 +39,7 @@ pub struct AnthropicSettingsContent {
 pub struct AnthropicAvailableModel {
     /// The model's name in the Anthropic API. e.g. claude-3-5-sonnet-latest, claude-3-opus-20240229, etc
     pub name: String,
-    /// The model's name in Zed's UI, such as in the model selector dropdown menu in the agent panel.
+    /// The model's name in Xenomorphic's UI, such as in the model selector dropdown menu in the agent panel.
     pub display_name: Option<String>,
     /// The model's context window size.
     pub max_tokens: u64,
@@ -107,7 +107,7 @@ pub struct OllamaSettingsContent {
 pub struct OllamaAvailableModel {
     /// The model name in the Ollama API (e.g. "llama3.2:latest")
     pub name: String,
-    /// The model's name in Zed's UI, such as in the model selector dropdown menu in the agent panel.
+    /// The model's name in Xenomorphic's UI, such as in the model selector dropdown menu in the agent panel.
     pub display_name: Option<String>,
     /// The Context Length parameter to the model (aka num_ctx or n_ctx)
     pub max_tokens: u64,
@@ -387,15 +387,15 @@ pub struct XaiAvailableModel {
 
 #[with_fallible_options]
 #[derive(Default, Clone, Debug, Serialize, Deserialize, PartialEq, JsonSchema, MergeFrom)]
-pub struct ZedDotDevSettingsContent {
-    pub available_models: Option<Vec<ZedDotDevAvailableModel>>,
+pub struct XenomorphicCloudSettingsContent {
+    pub available_models: Option<Vec<XenomorphicAvailableModel>>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
-pub struct ZedDotDevAvailableModel {
+pub struct XenomorphicAvailableModel {
     /// The provider of the language model.
-    pub provider: ZedDotDevAvailableProvider,
+    pub provider: XenomorphicAvailableProvider,
     /// The model's name in the provider's API. e.g. claude-3-5-sonnet-20240620
     pub name: String,
     /// The name displayed in the UI, such as in the agent panel model dropdown menu.
@@ -422,7 +422,7 @@ pub struct ZedDotDevAvailableModel {
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "lowercase")]
-pub enum ZedDotDevAvailableProvider {
+pub enum XenomorphicAvailableProvider {
     Anthropic,
     OpenAi,
     Google,

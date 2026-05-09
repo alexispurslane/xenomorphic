@@ -7,7 +7,7 @@ use rope::Point;
 use sum_tree::{Dimensions, SumTree};
 use text::{Bias, BufferId, Edit, OffsetRangeExt, Patch};
 use util::rel_path::RelPath;
-use ztracing::instrument;
+use xtracing::instrument;
 
 use crate::{
     Anchor, BufferState, BufferStateSnapshot, DiffChangeKind, Event, Excerpt, ExcerptOffset,

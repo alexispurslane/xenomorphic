@@ -20,7 +20,7 @@ const MAX_TABS: NonZeroU32 = NonZeroU32::new(SPACES.len() as u32).unwrap();
 pub struct TabMap(TabSnapshot);
 
 impl TabMap {
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn new(fold_snapshot: FoldSnapshot, tab_size: NonZeroU32) -> (Self, TabSnapshot) {
         let snapshot = TabSnapshot {
             fold_snapshot,
@@ -37,7 +37,7 @@ impl TabMap {
         self.0.clone()
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn sync(
         &mut self,
         fold_snapshot: FoldSnapshot,
@@ -211,12 +211,12 @@ impl std::ops::Deref for TabSnapshot {
 }
 
 impl TabSnapshot {
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn buffer_snapshot(&self) -> &MultiBufferSnapshot {
         &self.fold_snapshot.inlay_snapshot.buffer
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn line_len(&self, row: u32) -> u32 {
         let max_point = self.max_point();
         if row < max_point.row() {
@@ -228,12 +228,12 @@ impl TabSnapshot {
         }
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn text_summary(&self) -> TextSummary {
         self.text_summary_for_range(TabPoint::zero()..self.max_point())
     }
 
-    #[ztracing::instrument(skip_all, fields(rows))]
+    #[xtracing::instrument(skip_all, fields(rows))]
     pub fn text_summary_for_range(&self, range: Range<TabPoint>) -> TextSummary {
         let input_start = self.tab_point_to_fold_point(range.start, Bias::Left).0;
         let input_end = self.tab_point_to_fold_point(range.end, Bias::Right).0;
@@ -283,7 +283,7 @@ impl TabSnapshot {
         }
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub(crate) fn chunks<'a>(
         &'a self,
         range: Range<TabPoint>,
@@ -327,13 +327,13 @@ impl TabSnapshot {
         }
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn rows(&self, row: u32) -> fold_map::FoldRows<'_> {
         self.fold_snapshot.row_infos(row)
     }
 
     #[cfg(test)]
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn text(&self) -> String {
         self.chunks(
             TabPoint::zero()..self.max_point(),
@@ -347,12 +347,12 @@ impl TabSnapshot {
         .collect()
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn max_point(&self) -> TabPoint {
         self.fold_point_to_tab_point(self.fold_snapshot.max_point())
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn clip_point(&self, point: TabPoint, bias: Bias) -> TabPoint {
         self.fold_point_to_tab_point(
             self.fold_snapshot
@@ -360,7 +360,7 @@ impl TabSnapshot {
         )
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn fold_point_to_tab_point(&self, input: FoldPoint) -> TabPoint {
         let chunks = self.fold_snapshot.chunks_at(FoldPoint::new(input.row(), 0));
         let tab_cursor = TabStopCursor::new(chunks);
@@ -368,12 +368,12 @@ impl TabSnapshot {
         TabPoint::new(input.row(), expanded)
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn tab_point_cursor(&self) -> TabPointCursor<'_> {
         TabPointCursor { this: self }
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn tab_point_to_fold_point(&self, output: TabPoint, bias: Bias) -> (FoldPoint, u32, u32) {
         let chunks = self
             .fold_snapshot
@@ -391,14 +391,14 @@ impl TabSnapshot {
         )
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn point_to_tab_point(&self, point: Point, bias: Bias) -> TabPoint {
         let inlay_point = self.fold_snapshot.inlay_snapshot.to_inlay_point(point);
         let fold_point = self.fold_snapshot.to_fold_point(inlay_point, bias);
         self.fold_point_to_tab_point(fold_point)
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn tab_point_to_point(&self, point: TabPoint, bias: Bias) -> Point {
         let fold_point = self.tab_point_to_fold_point(point, bias).0;
         let inlay_point = fold_point.to_inlay_point(&self.fold_snapshot);
@@ -407,7 +407,7 @@ impl TabSnapshot {
             .to_buffer_point(inlay_point)
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn expand_tabs<'a>(&self, mut cursor: TabStopCursor<'a>, column: u32) -> u32 {
         // we only ever act on a single row at a time
         // so the main difference is that other layers build a transform sumtree, and can then just run through that
@@ -442,7 +442,7 @@ impl TabSnapshot {
         expanded_bytes + column.saturating_sub(collapsed_bytes)
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn collapse_tabs<'a>(
         &self,
         mut cursor: TabStopCursor<'a>,
@@ -505,7 +505,7 @@ pub struct TabPointCursor<'this> {
 }
 
 impl TabPointCursor<'_> {
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn map(&mut self, point: FoldPoint) -> TabPoint {
         self.this.fold_point_to_tab_point(point)
     }
@@ -550,7 +550,7 @@ pub struct TextSummary {
 }
 
 impl<'a> From<&'a str> for TextSummary {
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn from(text: &'a str) -> Self {
         let sum = text::TextSummary::from(text);
 
@@ -565,7 +565,7 @@ impl<'a> From<&'a str> for TextSummary {
 }
 
 impl<'a> std::ops::AddAssign<&'a Self> for TextSummary {
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn add_assign(&mut self, other: &'a Self) {
         let joined_chars = self.last_line_chars + other.first_line_chars;
         if joined_chars > self.longest_row_chars {
@@ -607,7 +607,7 @@ pub struct TabChunks<'a> {
 }
 
 impl TabChunks<'_> {
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub(crate) fn seek(&mut self, range: Range<TabPoint>) {
         let (input_start, expanded_char_column, to_next_stop) = self
             .snapshot
@@ -643,7 +643,7 @@ impl TabChunks<'_> {
 impl<'a> Iterator for TabChunks<'a> {
     type Item = Chunk<'a>;
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn next(&mut self) -> Option<Self::Item> {
         while self.chunk.text.is_empty() {
             let chunk = self.fold_chunks.next()?;
@@ -814,7 +814,7 @@ impl<'a> TabStopCursor<'a> {
     }
 
     /// distance: length to move forward while searching for the next tab stop
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     fn seek_forward(&mut self, distance: u32) -> Option<TabStop> {
         if distance == 0 {
             return None;

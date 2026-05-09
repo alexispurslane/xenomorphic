@@ -676,7 +676,7 @@ mod tests {
 
     #[ctor::ctor]
     fn init_logger() {
-        zlog::init_test();
+        xlog::init_test();
     }
 
     fn init_test(cx: &mut TestAppContext) {

@@ -9,7 +9,7 @@ use imara_diff::{
     intern::{InternedInput, Token},
     sources::lines_with_terminator,
 };
-use zeta_prompt::udiff::apply_diff_to_string;
+use xeta_prompt::udiff::apply_diff_to_string;
 
 fn text_diff(old_text: &str, new_text: &str) -> Vec<(Range<usize>, Arc<str>)> {
     let empty: Arc<str> = Arc::default();
@@ -717,13 +717,13 @@ fn compute_lcs_length(a: &str, b: &str) -> usize {
 }
 
 fn filter_edit_history_by_path<'a>(
-    edit_history: &'a [Arc<zeta_prompt::Event>],
+    edit_history: &'a [Arc<xeta_prompt::Event>],
     cursor_path: &std::path::Path,
-) -> Vec<&'a zeta_prompt::Event> {
+) -> Vec<&'a xeta_prompt::Event> {
     edit_history
         .iter()
         .filter(|event| match event.as_ref() {
-            zeta_prompt::Event::BufferChange { path, .. } => {
+            xeta_prompt::Event::BufferChange { path, .. } => {
                 let event_path = path.as_ref();
                 if event_path == cursor_path {
                     return true;
@@ -739,21 +739,21 @@ fn filter_edit_history_by_path<'a>(
         .collect()
 }
 
-fn extract_diff_from_event(event: &zeta_prompt::Event) -> &str {
+fn extract_diff_from_event(event: &xeta_prompt::Event) -> &str {
     match event {
-        zeta_prompt::Event::BufferChange { diff, .. } => diff.as_str(),
+        xeta_prompt::Event::BufferChange { diff, .. } => diff.as_str(),
     }
 }
 
-fn is_predicted_event(event: &zeta_prompt::Event) -> bool {
+fn is_predicted_event(event: &xeta_prompt::Event) -> bool {
     match event {
-        zeta_prompt::Event::BufferChange { predicted, .. } => *predicted,
+        xeta_prompt::Event::BufferChange { predicted, .. } => *predicted,
     }
 }
 
 pub fn compute_prediction_reversal_ratio_from_history(
     current_content: &str,
-    edit_history: &[Arc<zeta_prompt::Event>],
+    edit_history: &[Arc<xeta_prompt::Event>],
     excerpt_start_row: Option<u32>,
     predicted_content: &str,
     cursor_path: &Path,
@@ -796,11 +796,11 @@ pub fn compute_prediction_reversal_ratio_from_history(
 mod tests {
     use super::*;
     use indoc::indoc;
-    use zeta_prompt::udiff::{apply_diff_to_string, unified_diff_with_context};
-    use zeta_prompt::{ExcerptRanges, ZetaPromptInput};
+    use xeta_prompt::udiff::{apply_diff_to_string, unified_diff_with_context};
+    use xeta_prompt::{ExcerptRanges, XetaPromptInput};
 
     fn compute_prediction_reversal_ratio(
-        prompt_inputs: &ZetaPromptInput,
+        prompt_inputs: &XetaPromptInput,
         predicted_content: &str,
         cursor_path: &Path,
     ) -> f32 {
@@ -815,10 +815,10 @@ mod tests {
 
     fn make_test_prompt_inputs(
         content: &str,
-        events: Vec<Arc<zeta_prompt::Event>>,
+        events: Vec<Arc<xeta_prompt::Event>>,
         excerpt_start_row: Option<u32>,
-    ) -> ZetaPromptInput {
-        ZetaPromptInput {
+    ) -> XetaPromptInput {
+        XetaPromptInput {
             cursor_path: Arc::from(Path::new("src/test.rs")),
             cursor_excerpt: content.into(),
             cursor_offset_in_excerpt: 0,
@@ -1173,7 +1173,7 @@ mod tests {
         // the edit history has paths with a repo prefix (e.g., "repo/src/file.rs")
         // but the cursor_path doesn't have the repo prefix (e.g., "src/file.rs")
         let events = vec![
-            Arc::new(zeta_prompt::Event::BufferChange {
+            Arc::new(xeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("myrepo/src/file.rs")),
                 old_path: Arc::from(Path::new("myrepo/src/file.rs")),
                 diff: indoc! {"
@@ -1184,7 +1184,7 @@ mod tests {
                 predicted: false,
                 in_open_source_repo: true,
             }),
-            Arc::new(zeta_prompt::Event::BufferChange {
+            Arc::new(xeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("myrepo/other.rs")),
                 old_path: Arc::from(Path::new("myrepo/other.rs")),
                 diff: indoc! {"
@@ -1195,7 +1195,7 @@ mod tests {
                 predicted: false,
                 in_open_source_repo: true,
             }),
-            Arc::new(zeta_prompt::Event::BufferChange {
+            Arc::new(xeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("src/file.rs")),
                 old_path: Arc::from(Path::new("src/file.rs")),
                 diff: indoc! {"
@@ -1921,7 +1921,7 @@ mod tests {
                  user_added
                  line2
              "},
-            vec![Arc::new(zeta_prompt::Event::BufferChange {
+            vec![Arc::new(xeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("src/test.rs")),
                 old_path: Arc::from(Path::new("src/test.rs")),
                 diff: indoc! {"
@@ -1959,7 +1959,7 @@ mod tests {
                  user_added
                  line11
              "},
-            vec![Arc::new(zeta_prompt::Event::BufferChange {
+            vec![Arc::new(xeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("src/test.rs")),
                 old_path: Arc::from(Path::new("src/test.rs")),
                 diff: indoc! {"
@@ -2019,7 +2019,7 @@ mod tests {
                  user_added
                  line2
              "},
-            vec![Arc::new(zeta_prompt::Event::BufferChange {
+            vec![Arc::new(xeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("src/other.rs")),
                 old_path: Arc::from(Path::new("src/other.rs")),
                 diff: indoc! {"
@@ -2056,7 +2056,7 @@ mod tests {
                  user_added
                  actual_line2
              "},
-            vec![Arc::new(zeta_prompt::Event::BufferChange {
+            vec![Arc::new(xeta_prompt::Event::BufferChange {
                 path: Arc::from(Path::new("src/test.rs")),
                 old_path: Arc::from(Path::new("src/test.rs")),
                 diff: indoc! {"
@@ -2124,7 +2124,7 @@ mod tests {
                  line2
              "},
             vec![
-                Arc::new(zeta_prompt::Event::BufferChange {
+                Arc::new(xeta_prompt::Event::BufferChange {
                     path: Arc::from(Path::new("src/test.rs")),
                     old_path: Arc::from(Path::new("src/test.rs")),
                     diff: indoc! {"
@@ -2137,7 +2137,7 @@ mod tests {
                     predicted: false,
                     in_open_source_repo: false,
                 }),
-                Arc::new(zeta_prompt::Event::BufferChange {
+                Arc::new(xeta_prompt::Event::BufferChange {
                     path: Arc::from(Path::new("src/test.rs")),
                     old_path: Arc::from(Path::new("src/test.rs")),
                     diff: indoc! {"

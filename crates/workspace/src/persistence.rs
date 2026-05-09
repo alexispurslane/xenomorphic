@@ -532,9 +532,9 @@ impl Domain for WorkspaceDb {
             CREATE TABLE workspaces(
                 workspace_id INTEGER PRIMARY KEY,
                 workspace_location BLOB UNIQUE,
-                dock_visible INTEGER, // Deprecated. Preserving so users can downgrade Zed.
-                dock_anchor TEXT, // Deprecated. Preserving so users can downgrade Zed.
-                dock_pane INTEGER, // Deprecated.  Preserving so users can downgrade Zed.
+                dock_visible INTEGER, // Deprecated. Preserving so users can downgrade Xenomorphic.
+                dock_anchor TEXT, // Deprecated. Preserving so users can downgrade Xenomorphic.
+                dock_pane INTEGER, // Deprecated.  Preserving so users can downgrade Xenomorphic.
                 left_sidebar_open INTEGER, // Boolean
                 timestamp TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
                 FOREIGN KEY(dock_pane) REFERENCES panes(pane_id)
@@ -598,9 +598,9 @@ impl Domain for WorkspaceDb {
             CREATE TABLE workspaces_2(
                 workspace_id INTEGER PRIMARY KEY,
                 workspace_location BLOB UNIQUE,
-                dock_visible INTEGER, // Deprecated. Preserving so users can downgrade Zed.
-                dock_anchor TEXT, // Deprecated. Preserving so users can downgrade Zed.
-                dock_pane INTEGER, // Deprecated.  Preserving so users can downgrade Zed.
+                dock_visible INTEGER, // Deprecated. Preserving so users can downgrade Xenomorphic.
+                dock_anchor TEXT, // Deprecated. Preserving so users can downgrade Xenomorphic.
+                dock_pane INTEGER, // Deprecated.  Preserving so users can downgrade Xenomorphic.
                 left_sidebar_open INTEGER, // Boolean
                 timestamp TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
                 window_state TEXT,
@@ -635,7 +635,7 @@ impl Domain for WorkspaceDb {
         ),
         // Add fullscreen field to workspace
         // Deprecated, `WindowBounds` holds the fullscreen state now.
-        // Preserving so users can downgrade Zed.
+        // Preserving so users can downgrade Xenomorphic.
         sql!(
             ALTER TABLE workspaces ADD COLUMN fullscreen INTEGER; //bool
         ),
@@ -2156,7 +2156,7 @@ impl WorkspaceDb {
     }
 
     // Returns the locations of the workspaces that were still opened when the last
-    // session was closed (i.e. when Zed was quit).
+    // session was closed (i.e. when Xenomorphic was quit).
     // If `last_session_window_order` is provided, the returned locations are ordered
     // according to that.
     pub async fn last_session_workspace_locations(
@@ -2843,7 +2843,7 @@ mod tests {
 
     #[gpui::test]
     async fn test_breakpoints() {
-        zlog::init_test();
+        xlog::init_test();
 
         let db = WorkspaceDb::open_test_db("test_breakpoints").await;
         let id = db.next_id().await.unwrap();
@@ -3032,7 +3032,7 @@ mod tests {
 
     #[gpui::test]
     async fn test_remove_last_breakpoint() {
-        zlog::init_test();
+        xlog::init_test();
 
         let db = WorkspaceDb::open_test_db("test_remove_last_breakpoint").await;
         let id = db.next_id().await.unwrap();
@@ -3127,7 +3127,7 @@ mod tests {
 
     #[gpui::test]
     async fn test_next_id_stability() {
-        zlog::init_test();
+        xlog::init_test();
 
         let db = WorkspaceDb::open_test_db("test_next_id_stability").await;
 
@@ -3176,7 +3176,7 @@ mod tests {
 
     #[gpui::test]
     async fn test_workspace_id_stability() {
-        zlog::init_test();
+        xlog::init_test();
 
         let db = WorkspaceDb::open_test_db("test_workspace_id_stability").await;
 
@@ -3279,7 +3279,7 @@ mod tests {
 
     #[gpui::test]
     async fn test_full_workspace_serialization() {
-        zlog::init_test();
+        xlog::init_test();
 
         let db = WorkspaceDb::open_test_db("test_full_workspace_serialization").await;
 
@@ -3355,7 +3355,7 @@ mod tests {
 
     #[gpui::test]
     async fn test_workspace_assignment() {
-        zlog::init_test();
+        xlog::init_test();
 
         let db = WorkspaceDb::open_test_db("test_basic_functionality").await;
 
@@ -3456,7 +3456,7 @@ mod tests {
 
     #[gpui::test]
     async fn test_session_workspaces() {
-        zlog::init_test();
+        xlog::init_test();
 
         let db = WorkspaceDb::open_test_db("test_serializing_workspaces_session_id").await;
 
@@ -4258,7 +4258,7 @@ mod tests {
 
     #[gpui::test]
     async fn test_simple_split() {
-        zlog::init_test();
+        xlog::init_test();
 
         let db = WorkspaceDb::open_test_db("simple_split").await;
 
@@ -4313,7 +4313,7 @@ mod tests {
 
     #[gpui::test]
     async fn test_cleanup_panes() {
-        zlog::init_test();
+        xlog::init_test();
 
         let db = WorkspaceDb::open_test_db("test_cleanup_panes").await;
 
@@ -4389,7 +4389,7 @@ mod tests {
 
     #[gpui::test]
     async fn test_empty_workspace_window_bounds() {
-        zlog::init_test();
+        xlog::init_test();
 
         let db = WorkspaceDb::open_test_db("test_empty_workspace_window_bounds").await;
         let id = db.next_id().await.unwrap();

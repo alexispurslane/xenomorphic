@@ -4,19 +4,19 @@ use gpui::{App, ClipboardItem, PromptLevel, actions};
 use system_specs::{CopySystemSpecsIntoClipboard, SystemSpecs};
 use util::ResultExt;
 use workspace::Workspace;
-use zed_actions::feedback::{EmailZed, FileBugReport, RequestFeature};
+use xenomorphic_actions::feedback::{EmailZed, FileBugReport, RequestFeature};
 
 actions!(
     zed,
     [
-        /// Opens the Zed repository on GitHub.
+        /// Opens the Xenomorphic repository on GitHub.
         OpenZedRepo,
         /// Copies installed extensions to the clipboard for bug reports.
         CopyInstalledExtensionsIntoClipboard
     ]
 );
 
-const ZED_REPO_URL: &str = "https://github.com/zed-industries/zed";
+const XENOMORPHIC_REPO_URL: &str = "https://github.com/zed-industries/zed";
 
 const REQUEST_FEATURE_URL: &str = "https://github.com/zed-industries/zed/discussions/new/choose";
 
@@ -109,7 +109,7 @@ pub fn init(cx: &mut App) {
                 .detach();
             })
             .register_action(move |_, _: &OpenZedRepo, _, cx| {
-                cx.open_url(ZED_REPO_URL);
+                cx.open_url(XENOMORPHIC_REPO_URL);
             });
     })
     .detach();

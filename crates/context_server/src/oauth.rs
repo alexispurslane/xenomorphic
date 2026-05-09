@@ -33,7 +33,7 @@ use std::time::{Duration, SystemTime};
 use url::Url;
 use util::ResultExt as _;
 
-/// The CIMD URL where Zed's OAuth client metadata document is hosted.
+/// The CIMD URL where Xenomorphic's OAuth client metadata document is hosted.
 pub const CIMD_URL: &str = "https://zed.dev/oauth/client-metadata.json";
 
 /// Validate that a URL is safe to use as an OAuth endpoint.
@@ -66,7 +66,7 @@ fn require_https_or_loopback(url: &Url) -> Result<()> {
 /// protections against private/reserved IP ranges.
 ///
 /// This wraps [`require_https_or_loopback`] and adds IP-range checks to prevent
-/// an attacker-controlled MCP server from directing Zed to fetch internal
+/// an attacker-controlled MCP server from directing Xenomorphic to fetch internal
 /// network resources via metadata URLs.
 ///
 /// **Known limitation:** Domain-name URLs that resolve to private IPs are *not*
@@ -1108,14 +1108,14 @@ pub async fn start_callback_server() -> Result<(
                 Ok(_) => (
                     200,
                     "<html><body><h1>Authorization successful</h1>\
-                     <p>You can close this tab and return to Zed.</p></body></html>",
+                     <p>You can close this tab and return to Xenomorphic.</p></body></html>",
                 ),
                 Err(err) => {
                     log::error!("OAuth callback error: {}", err);
                     (
                         400,
                         "<html><body><h1>Authorization failed</h1>\
-                         <p>Something went wrong. Please try again from Zed.</p></body></html>",
+                         <p>Something went wrong. Please try again from Xenomorphic.</p></body></html>",
                     )
                 }
             };

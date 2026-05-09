@@ -1,5 +1,5 @@
 use crate::multibuffer_hint::MultibufferHint;
-use client::{Client, UserStore, zed_urls};
+use client::{Client, UserStore, xenomorphic_urls};
 use cloud_api_types::Plan;
 use db::kvp::KeyValueStore;
 use fs::Fs;
@@ -28,7 +28,7 @@ use workspace::{
     notifications::NotifyResultExt as _,
     open_new, register_serializable_item, with_active_or_new_workspace,
 };
-use zed_actions::OpenOnboarding;
+use xenomorphic_actions::OpenOnboarding;
 
 mod base_keymap_picker;
 mod basics_page;
@@ -235,11 +235,11 @@ impl Onboarding {
             "signing_in"
         } else {
             match plan {
-                Some(Plan::ZedPro) => "pro",
-                Some(Plan::ZedProTrial) => "trial",
-                Some(Plan::ZedBusiness) => "business",
-                Some(Plan::ZedStudent) => "student",
-                Some(Plan::ZedFree) | None => "free",
+                Some(Plan::XenomorphicPro) => "pro",
+                Some(Plan::XenomorphicProTrial) => "trial",
+                Some(Plan::XenomorphicBusiness) => "business",
+                Some(Plan::XenomorphicStudent) => "student",
+                Some(Plan::XenomorphicFree) | None => "free",
             }
         };
         let agents_installed = basics_page::FEATURED_AGENT_IDS
@@ -293,7 +293,7 @@ impl Onboarding {
     }
 
     fn handle_open_account(_: &OpenAccount, _: &mut Window, cx: &mut App) {
-        cx.open_url(&zed_urls::account_url(cx))
+        cx.open_url(&xenomorphic_urls::account_url(cx))
     }
 
     fn render_page(&mut self, cx: &mut Context<Self>) -> AnyElement {
@@ -347,11 +347,11 @@ impl Render for Onboarding {
                                     .child(
                                         h_flex()
                                             .gap_4()
-                                            .child(Vector::square(VectorName::ZedLogo, rems(2.5)))
+                                            .child(Vector::square(VectorName::XenomorphicLogo, rems(2.5)))
                                             .child(
                                                 v_flex()
                                                     .child(
-                                                        Headline::new("Welcome to Zed")
+                                                        Headline::new("Welcome to Xenomorphic")
                                                             .size(HeadlineSize::Small),
                                                     )
                                                     .child(
@@ -481,7 +481,7 @@ pub async fn handle_import_vscode_settings(
         match settings::VsCodeSettings::load_user_settings(source, fs.clone()).await {
             Ok(vscode_settings) => vscode_settings,
             Err(err) => {
-                zlog::error!("{err:?}");
+                xlog::error!("{err:?}");
                 let _ = cx.prompt(
                     gpui::PromptLevel::Info,
                     &format!("Could not find or load a {source} settings file"),
@@ -516,7 +516,7 @@ pub async fn handle_import_vscode_settings(
         let result_channel = cx
             .global::<SettingsStore>()
             .import_vscode_settings(fs, vscode_settings);
-        zlog::info!("Imported {source} settings from {}", path.display());
+        xlog::info!("Imported {source} settings from {}", path.display());
         result_channel
     }) else {
         return;

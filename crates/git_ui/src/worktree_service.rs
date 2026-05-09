@@ -12,7 +12,7 @@ use project::trusted_worktrees::{PathTrust, TrustedWorktrees};
 use remote::RemoteConnectionOptions;
 use settings::Settings;
 use workspace::{MultiWorkspace, OpenMode, PreviousWorkspaceState, Workspace, dock::DockPosition};
-use zed_actions::NewWorktreeBranchTarget;
+use xenomorphic_actions::NewWorktreeBranchTarget;
 
 use util::ResultExt as _;
 
@@ -292,7 +292,7 @@ fn maybe_propagate_worktree_trust(
 /// Creates a new git worktree, opens the workspace, restores layout and files.
 pub fn handle_create_worktree(
     workspace: &mut Workspace,
-    action: &zed_actions::CreateWorktree,
+    action: &xenomorphic_actions::CreateWorktree,
     window: &mut gpui::Window,
     fallback_focused_dock: Option<DockPosition>,
     cx: &mut gpui::Context<Workspace>,
@@ -388,7 +388,7 @@ pub fn handle_create_worktree(
 
 pub fn handle_switch_worktree(
     workspace: &mut Workspace,
-    action: &zed_actions::SwitchWorktree,
+    action: &xenomorphic_actions::SwitchWorktree,
     window: &mut gpui::Window,
     fallback_focused_dock: Option<DockPosition>,
     cx: &mut gpui::Context<Workspace>,
@@ -844,7 +844,7 @@ mod tests {
     }
 
     fn init_test(cx: &mut TestAppContext) {
-        zlog::init_test();
+        xlog::init_test();
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
@@ -895,7 +895,7 @@ mod tests {
                     .update_file_based_tasks(
                         TaskSettingsLocation::Worktree(SettingsLocation {
                             worktree_id,
-                            path: rel_path(".zed"),
+                            path: rel_path(".xenomorphic"),
                         }),
                         Some(hook_tasks_json),
                     )
@@ -918,7 +918,7 @@ mod tests {
             json!({
                 "project": {
                     ".git": {},
-                    ".zed": {
+                    ".xenomorphic": {
                         "tasks.json": hook_tasks_json,
                     },
                     "src": {
@@ -956,7 +956,7 @@ mod tests {
         main_workspace.update_in(cx, |workspace, window, cx| {
             handle_create_worktree(
                 workspace,
-                &zed_actions::CreateWorktree {
+                &xenomorphic_actions::CreateWorktree {
                     worktree_name: Some("feature".to_string()),
                     branch_target: NewWorktreeBranchTarget::CurrentBranch,
                 },
@@ -995,7 +995,7 @@ mod tests {
         active_workspace.update_in(cx, |workspace, window, cx| {
             handle_switch_worktree(
                 workspace,
-                &zed_actions::SwitchWorktree {
+                &xenomorphic_actions::SwitchWorktree {
                     path: main_project_root.clone(),
                     display_name: "project".to_string(),
                 },

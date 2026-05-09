@@ -1,7 +1,7 @@
 use crate::{
     DebugEvent, EditPredictionFinishedDebugEvent, EditPredictionId, EditPredictionModelInput,
     EditPredictionStartedDebugEvent, EditPredictionStore, open_ai_response::text_from_response,
-    prediction::EditPredictionResult, zeta::compute_edits,
+    prediction::EditPredictionResult, xeta::compute_edits,
 };
 use anyhow::{Context as _, Result};
 use cloud_llm_client::EditPredictionRejectReason;
@@ -16,7 +16,7 @@ use language_model::{ApiKeyState, EnvVar, env_var};
 use release_channel::AppVersion;
 use serde::{Deserialize, Serialize};
 use std::{mem, ops::Range, path::Path, sync::Arc};
-use zeta_prompt::ZetaPromptInput;
+use xeta_prompt::XetaPromptInput;
 
 const MERCURY_API_URL: &str = "https://api.inceptionlabs.ai/v1/edit/completions";
 
@@ -77,7 +77,7 @@ impl Mercury {
             let (excerpt_point_range, excerpt_offset_range, cursor_offset_in_excerpt) =
                 crate::cursor_excerpt::compute_cursor_excerpt(&snapshot, cursor_offset);
 
-            let related_files = zeta_prompt::filter_redundant_excerpts(
+            let related_files = xeta_prompt::filter_redundant_excerpts(
                 related_files,
                 full_path.as_ref(),
                 excerpt_point_range.start.row..excerpt_point_range.end.row,
@@ -92,7 +92,7 @@ impl Mercury {
                 cursor_offset,
                 &excerpt_offset_range,
             );
-            let excerpt_ranges = zeta_prompt::compute_legacy_excerpt_ranges(
+            let excerpt_ranges = xeta_prompt::compute_legacy_excerpt_ranges(
                 &cursor_excerpt,
                 cursor_offset_in_excerpt,
                 &syntax_ranges,
@@ -102,7 +102,7 @@ impl Mercury {
                 + excerpt_ranges.editable_350.start)
                 ..(excerpt_offset_range.start + excerpt_ranges.editable_350.end);
 
-            let inputs = zeta_prompt::ZetaPromptInput {
+            let inputs = xeta_prompt::XetaPromptInput {
                 events,
                 related_files: Some(related_files),
                 cursor_offset_in_excerpt: cursor_point.to_offset(&snapshot)
@@ -260,7 +260,7 @@ impl Mercury {
     }
 }
 
-fn build_prompt(inputs: &ZetaPromptInput) -> String {
+fn build_prompt(inputs: &XetaPromptInput) -> String {
     const RECENTLY_VIEWED_SNIPPETS_START: &str = "<|recently_viewed_code_snippets|>\n";
     const RECENTLY_VIEWED_SNIPPETS_END: &str = "<|/recently_viewed_code_snippets|>\n";
     const RECENTLY_VIEWED_SNIPPET_START: &str = "<|recently_viewed_code_snippet|>\n";
@@ -326,7 +326,7 @@ fn build_prompt(inputs: &ZetaPromptInput) -> String {
         EDIT_DIFF_HISTORY_START..EDIT_DIFF_HISTORY_END,
         |prompt| {
             for event in inputs.events.iter() {
-                zeta_prompt::write_event(prompt, &event);
+                xeta_prompt::write_event(prompt, &event);
             }
         },
     );
@@ -388,7 +388,7 @@ pub fn mercury_api_token(cx: &mut App) -> Entity<ApiKeyState> {
 }
 
 pub fn load_mercury_api_token(cx: &mut App) -> Task<Result<(), language_model::AuthenticateError>> {
-    let credentials_provider = zed_credentials_provider::global(cx);
+    let credentials_provider = xenomorphic_credentials_provider::global(cx);
     mercury_api_token(cx).update(cx, |key_state, cx| {
         key_state.load_if_needed(MERCURY_CREDENTIALS_URL, |s| s, credentials_provider, cx)
     })
@@ -449,7 +449,7 @@ fn send_feedback(
     cx.background_spawn(async move {
         let body = FeedbackRequest {
             request_id,
-            provider_name: "zed",
+            provider_name: "xenomorphic",
             user_action: action,
             provider_version: app_version.to_string(),
         };

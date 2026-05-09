@@ -279,7 +279,7 @@ impl BufferDiffSnapshot {
         &self.inner.buffer_snapshot
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn hunks_intersecting_range<'a>(
         &'a self,
         range: Range<Anchor>,
@@ -1139,7 +1139,7 @@ fn compute_hunks(
         )
         .log_err();
 
-        // A common case in Zed is that the empty buffer is represented as just a newline,
+        // A common case in Xenomorphic is that the empty buffer is represented as just a newline,
         // but if we just compute a naive diff you get a "preserved" line in the middle,
         // which is a bit odd.
         if buffer_text == "\n" && diff_base.ends_with("\n") && diff_base.len() > 1 {
@@ -1759,7 +1759,7 @@ impl BufferDiff {
         })
     }
 
-    #[ztracing::instrument(skip_all)]
+    #[xtracing::instrument(skip_all)]
     pub fn language_changed(
         &mut self,
         language: Option<Arc<Language>>,
@@ -2192,7 +2192,7 @@ mod tests {
 
     #[ctor::ctor]
     fn init_logger() {
-        zlog::init_test();
+        xlog::init_test();
     }
 
     #[gpui::test]

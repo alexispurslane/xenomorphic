@@ -267,7 +267,7 @@ async fn save_named_thread_metadata(
 /// alive for the duration of the test) and the `RemoteConnectionOptions`
 /// used for the fake server. Passing those options back into
 /// `reuse_opts` on a subsequent call makes the new project share the
-/// same `RemoteConnectionIdentity`, matching how Zed treats multiple
+/// same `RemoteConnectionIdentity`, matching how Xenomorphic treats multiple
 /// projects on the same SSH host.
 async fn start_remote_project(
     server_fs: &Arc<FakeFs>,
@@ -366,7 +366,7 @@ fn save_thread_metadata(
         let metadata = ThreadMetadata {
             thread_id,
             session_id: Some(session_id),
-            agent_id: agent::ZED_AGENT_ID.clone(),
+            agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
             title,
             updated_at,
             created_at,
@@ -401,7 +401,7 @@ fn save_thread_metadata_with_main_paths(
     let metadata = ThreadMetadata {
         thread_id,
         session_id: Some(session_id),
-        agent_id: agent::ZED_AGENT_ID.clone(),
+        agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
         title: Some(title),
         updated_at,
         created_at: None,
@@ -887,7 +887,7 @@ async fn test_visible_entries_as_strings(cx: &mut TestAppContext) {
                     archived: false,
                     remote_connection: None,
                 },
-                icon: IconName::ZedAgent,
+                icon: IconName::XenomorphicAgent,
                 icon_from_external_svg: None,
                 status: AgentThreadStatus::Completed,
                 workspace: ThreadEntryWorkspace::Open(workspace.clone()),
@@ -912,7 +912,7 @@ async fn test_visible_entries_as_strings(cx: &mut TestAppContext) {
                     archived: false,
                     remote_connection: None,
                 },
-                icon: IconName::ZedAgent,
+                icon: IconName::XenomorphicAgent,
                 icon_from_external_svg: None,
                 status: AgentThreadStatus::Running,
                 workspace: ThreadEntryWorkspace::Open(workspace.clone()),
@@ -937,7 +937,7 @@ async fn test_visible_entries_as_strings(cx: &mut TestAppContext) {
                     archived: false,
                     remote_connection: None,
                 },
-                icon: IconName::ZedAgent,
+                icon: IconName::XenomorphicAgent,
                 icon_from_external_svg: None,
                 status: AgentThreadStatus::Error,
                 workspace: ThreadEntryWorkspace::Open(workspace.clone()),
@@ -963,7 +963,7 @@ async fn test_visible_entries_as_strings(cx: &mut TestAppContext) {
                     archived: false,
                     remote_connection: None,
                 },
-                icon: IconName::ZedAgent,
+                icon: IconName::XenomorphicAgent,
                 icon_from_external_svg: None,
                 status: AgentThreadStatus::WaitingForConfirmation,
                 workspace: ThreadEntryWorkspace::Open(workspace.clone()),
@@ -989,7 +989,7 @@ async fn test_visible_entries_as_strings(cx: &mut TestAppContext) {
                     archived: false,
                     remote_connection: None,
                 },
-                icon: IconName::ZedAgent,
+                icon: IconName::XenomorphicAgent,
                 icon_from_external_svg: None,
                 status: AgentThreadStatus::Completed,
                 workspace: ThreadEntryWorkspace::Open(workspace.clone()),
@@ -4233,7 +4233,7 @@ async fn test_sidebar_keeps_multi_root_thread_with_stale_main_paths(cx: &mut Tes
     // Separate /zed repo whose linked worktree will form the second
     // workspace root. /zed itself is NOT opened as a workspace root.
     fs.insert_tree(
-        "/zed",
+        ".xenomorphic",
         serde_json::json!({
             ".git": {},
             "src": {},
@@ -4282,7 +4282,7 @@ async fn test_sidebar_keeps_multi_root_thread_with_stale_main_paths(cx: &mut Tes
 
     // Sanity-check the shapes the rest of the test depends on.
     let group_key = workspace.read_with(cx, |ws, cx| ws.project_group_key(cx));
-    let expected_main_paths = PathList::new(&[PathBuf::from("/cloud"), PathBuf::from("/zed")]);
+    let expected_main_paths = PathList::new(&[PathBuf::from("/cloud"), PathBuf::from(".xenomorphic")]);
     assert_eq!(
         group_key.path_list(),
         &expected_main_paths,
@@ -4315,7 +4315,7 @@ async fn test_sidebar_keeps_multi_root_thread_with_stale_main_paths(cx: &mut Tes
                 ThreadMetadata {
                     thread_id,
                     session_id: Some(session_id.clone()),
-                    agent_id: agent::ZED_AGENT_ID.clone(),
+                    agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                     title: Some("Stale Multi-Root Thread".into()),
                     updated_at: Utc::now(),
                     created_at: None,
@@ -4395,7 +4395,7 @@ async fn test_activate_archived_thread_with_saved_paths_activates_matching_works
             ThreadMetadata {
                 thread_id: ThreadId::new(),
                 session_id: Some(session_id.clone()),
-                agent_id: agent::ZED_AGENT_ID.clone(),
+                agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                 title: Some("Archived Thread".into()),
                 updated_at: Utc::now(),
                 created_at: None,
@@ -4464,7 +4464,7 @@ async fn test_activate_archived_thread_cwd_fallback_with_matching_workspace(
             ThreadMetadata {
                 thread_id: ThreadId::new(),
                 session_id: Some(acp::SessionId::new(Arc::from("unknown-session"))),
-                agent_id: agent::ZED_AGENT_ID.clone(),
+                agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                 title: Some("CWD Thread".into()),
                 updated_at: Utc::now(),
                 created_at: None,
@@ -4531,7 +4531,7 @@ async fn test_activate_archived_thread_no_paths_no_cwd_uses_active_workspace(
             ThreadMetadata {
                 thread_id: ThreadId::new(),
                 session_id: Some(acp::SessionId::new(Arc::from("no-context-session"))),
-                agent_id: agent::ZED_AGENT_ID.clone(),
+                agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                 title: Some("Contextless Thread".into()),
                 updated_at: Utc::now(),
                 created_at: None,
@@ -4588,7 +4588,7 @@ async fn test_activate_archived_thread_saved_paths_opens_new_workspace(cx: &mut 
             ThreadMetadata {
                 thread_id: ThreadId::new(),
                 session_id: Some(session_id.clone()),
-                agent_id: agent::ZED_AGENT_ID.clone(),
+                agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                 title: Some("New WS Thread".into()),
                 updated_at: Utc::now(),
                 created_at: None,
@@ -4644,7 +4644,7 @@ async fn test_activate_archived_thread_reuses_workspace_in_another_window(cx: &m
             ThreadMetadata {
                 thread_id: ThreadId::new(),
                 session_id: Some(session_id.clone()),
-                agent_id: agent::ZED_AGENT_ID.clone(),
+                agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                 title: Some("Cross Window Thread".into()),
                 updated_at: Utc::now(),
                 created_at: None,
@@ -4725,7 +4725,7 @@ async fn test_activate_archived_thread_reuses_workspace_in_another_window_with_t
             ThreadMetadata {
                 thread_id: ThreadId::new(),
                 session_id: Some(session_id.clone()),
-                agent_id: agent::ZED_AGENT_ID.clone(),
+                agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                 title: Some("Cross Window Thread".into()),
                 updated_at: Utc::now(),
                 created_at: None,
@@ -4809,7 +4809,7 @@ async fn test_activate_archived_thread_prefers_current_window_for_matching_paths
             ThreadMetadata {
                 thread_id: ThreadId::new(),
                 session_id: Some(session_id.clone()),
-                agent_id: agent::ZED_AGENT_ID.clone(),
+                agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                 title: Some("Current Window Thread".into()),
                 updated_at: Utc::now(),
                 created_at: None,
@@ -5745,7 +5745,7 @@ async fn test_archive_last_worktree_thread_not_blocked_by_remote_thread_at_same_
         let metadata = ThreadMetadata {
             thread_id: ThreadId::new(),
             session_id: Some(acp::SessionId::new(Arc::from("remote-wt-thread"))),
-            agent_id: agent::ZED_AGENT_ID.clone(),
+            agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
             title: Some("Remote Worktree Thread".into()),
             updated_at: chrono::TimeZone::with_ymd_and_hms(&Utc, 2024, 1, 1, 0, 0, 0).unwrap(),
             created_at: None,
@@ -6555,7 +6555,7 @@ async fn test_unarchive_first_thread_in_group_does_not_create_spurious_draft(
                 ThreadMetadata {
                     thread_id,
                     session_id: Some(session_id.clone()),
-                    agent_id: agent::ZED_AGENT_ID.clone(),
+                    agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                     title: Some("Unarchived Thread".into()),
                     updated_at: Utc::now(),
                     created_at: None,
@@ -6648,7 +6648,7 @@ async fn test_unarchive_into_new_workspace_does_not_create_duplicate_real_thread
                 ThreadMetadata {
                     thread_id: original_thread_id,
                     session_id: Some(session_id.clone()),
-                    agent_id: agent::ZED_AGENT_ID.clone(),
+                    agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                     title: Some("Unarchived Thread".into()),
                     updated_at: Utc::now(),
                     created_at: None,
@@ -6874,7 +6874,7 @@ async fn test_unarchive_into_inactive_existing_workspace_does_not_leave_active_d
                 ThreadMetadata {
                     thread_id,
                     session_id: Some(session_id.clone()),
-                    agent_id: agent::ZED_AGENT_ID.clone(),
+                    agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                     title: Some("Restored In Inactive Workspace".into()),
                     updated_at: Utc::now(),
                     created_at: None,
@@ -7722,7 +7722,7 @@ async fn test_unarchive_linked_worktree_thread_into_project_group_shows_only_res
                 ThreadMetadata {
                     thread_id: original_thread_id,
                     session_id: Some(session_id.clone()),
-                    agent_id: agent::ZED_AGENT_ID.clone(),
+                    agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
                     title: Some("Unarchived Linked Thread".into()),
                     updated_at: Utc::now(),
                     created_at: None,
@@ -8388,7 +8388,7 @@ async fn test_legacy_thread_with_canonical_path_opens_main_repo_workspace(cx: &m
         let metadata = ThreadMetadata {
             thread_id: ThreadId::new(),
             session_id: Some(legacy_session.clone()),
-            agent_id: agent::ZED_AGENT_ID.clone(),
+            agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
             title: Some("Legacy Main Thread".into()),
             updated_at: chrono::TimeZone::with_ymd_and_hms(&Utc, 2024, 1, 1, 0, 0, 0).unwrap(),
             created_at: None,
@@ -9377,7 +9377,7 @@ mod property_test {
         let metadata = ThreadMetadata {
             thread_id: ThreadId::new(),
             session_id: Some(session_id),
-            agent_id: agent::ZED_AGENT_ID.clone(),
+            agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
             title: Some(title),
             updated_at,
             created_at: None,
@@ -10290,7 +10290,7 @@ async fn test_remote_project_integration_does_not_briefly_render_as_separate_pro
         let metadata = ThreadMetadata {
             thread_id: ThreadId::new(),
             session_id: Some(remote_thread_id.clone()),
-            agent_id: agent::ZED_AGENT_ID.clone(),
+            agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
             title: Some("Worktree Thread".into()),
             updated_at: chrono::TimeZone::with_ymd_and_hms(&Utc, 2024, 1, 1, 0, 0, 1).unwrap(),
             created_at: None,
@@ -10896,7 +10896,7 @@ async fn test_remote_archive_thread_with_active_connection(
     // The mock remote transport only supports one live `RemoteClient` per
     // connection at a time (each client's `start_proxy` replaces the
     // previous server channel), so we can't split the main repo and the
-    // linked worktree across two remote projects the way Zed does in
+    // linked worktree across two remote projects the way Xenomorphic does in
     // production. Opening both as visible worktrees of a single remote
     // project still exercises every interesting path of the archive flow
     // while staying within the mock's multiplexing limits.
@@ -11011,7 +11011,7 @@ async fn test_remote_archive_thread_with_active_connection(
         let metadata = ThreadMetadata {
             thread_id: ThreadId::new(),
             session_id: Some(wt_thread_id.clone()),
-            agent_id: agent::ZED_AGENT_ID.clone(),
+            agent_id: agent::XENOMORPHIC_AGENT_ID.clone(),
             title: Some("Worktree Thread".into()),
             updated_at: chrono::TimeZone::with_ymd_and_hms(&chrono::Utc, 2024, 1, 1, 0, 0, 0)
                 .unwrap(),

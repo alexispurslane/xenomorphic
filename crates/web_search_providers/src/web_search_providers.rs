@@ -19,7 +19,7 @@ fn register_web_search_providers(
     user_store: Entity<UserStore>,
     cx: &mut Context<WebSearchRegistry>,
 ) {
-    register_zed_web_search_provider(
+    register_xenomorphic_web_search_provider(
         registry,
         client.clone(),
         user_store.clone(),
@@ -31,7 +31,7 @@ fn register_web_search_providers(
         &LanguageModelRegistry::global(cx),
         move |this, registry, event, cx| {
             if let language_model::Event::DefaultModelChanged = event {
-                register_zed_web_search_provider(
+                register_xenomorphic_web_search_provider(
                     this,
                     client.clone(),
                     user_store.clone(),
@@ -44,7 +44,7 @@ fn register_web_search_providers(
     .detach();
 }
 
-fn register_zed_web_search_provider(
+fn register_xenomorphic_web_search_provider(
     registry: &mut WebSearchRegistry,
     client: Arc<Client>,
     user_store: Entity<UserStore>,
@@ -62,7 +62,7 @@ fn register_zed_web_search_provider(
         )
     } else {
         registry.unregister_provider(WebSearchProviderId(
-            cloud::ZED_WEB_SEARCH_PROVIDER_ID.into(),
+            cloud::XENOMORPHIC_WEB_SEARCH_PROVIDER_ID.into(),
         ));
     }
 }

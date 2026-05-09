@@ -1744,7 +1744,7 @@ mod tests {
 
     #[test]
     fn keymap_update() {
-        zlog::init_test();
+        xlog::init_test();
 
         check_keymap_update(
             "[]",
@@ -1877,7 +1877,7 @@ mod tests {
             KeybindUpdateOperation::add(KeybindUpdateTarget {
                 keystrokes: &parse_keystrokes("ctrl-b"),
                 action_name: "zed::SomeOtherAction",
-                context: Some("Zed > Editor && some_condition = true"),
+                context: Some("Xenomorphic > Editor && some_condition = true"),
                 action_arguments: Some(r#"{"foo": "bar"}"#),
             }),
             r#"[
@@ -1887,7 +1887,7 @@ mod tests {
                     }
                 },
                 {
-                    "context": "Zed > Editor && some_condition = true",
+                    "context": "Xenomorphic > Editor && some_condition = true",
                     "bindings": {
                         "ctrl-b": [
                             "zed::SomeOtherAction",
@@ -2545,7 +2545,7 @@ mod tests {
 
     #[test]
     fn test_keymap_remove() {
-        zlog::init_test();
+        xlog::init_test();
 
         check_keymap_update(
             r#"

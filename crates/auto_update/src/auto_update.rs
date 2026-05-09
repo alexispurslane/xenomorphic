@@ -246,8 +246,8 @@ pub fn init(client: Arc<Client>, cx: &mut App) {
             .map(|channel| channel.poll_for_updates())
             .unwrap_or(false);
 
-        if option_env!("ZED_UPDATE_EXPLANATION").is_none()
-            && env::var("ZED_UPDATE_EXPLANATION").is_err()
+        if option_env!("XENOMORPHIC_UPDATE_EXPLANATION").is_none()
+            && env::var("XENOMORPHIC_UPDATE_EXPLANATION").is_err()
             && poll_for_updates
         {
             let mut update_subscription = AutoUpdateSetting::get_global(cx)
@@ -272,13 +272,13 @@ pub fn init(client: Arc<Client>, cx: &mut App) {
 }
 
 pub fn check(_: &Check, window: &mut Window, cx: &mut App) {
-    if let Some(message) = option_env!("ZED_UPDATE_EXPLANATION")
+    if let Some(message) = option_env!("XENOMORPHIC_UPDATE_EXPLANATION")
         .map(ToOwned::to_owned)
-        .or_else(|| env::var("ZED_UPDATE_EXPLANATION").ok())
+        .or_else(|| env::var("XENOMORPHIC_UPDATE_EXPLANATION").ok())
     {
         drop(window.prompt(
             gpui::PromptLevel::Info,
-            "Zed was installed via a package manager.",
+            "Xenomorphic was installed via a package manager.",
             Some(&message),
             &["Ok"],
             cx,
@@ -341,7 +341,7 @@ impl InstallerDir {
     async fn new() -> Result<Self> {
         Ok(Self(
             tempfile::Builder::new()
-                .prefix("zed-auto-update")
+                .prefix("xenomorphic-auto-update")
                 .tempdir()?,
         ))
     }
@@ -359,7 +359,7 @@ impl InstallerDir {
     async fn new() -> Result<Self> {
         let installer_dir = std::env::current_exe()?
             .parent()
-            .context("No parent dir for Zed.exe")?
+            .context("No parent dir for Xenomorphic.exe")?
             .join("updates");
         if smol::fs::metadata(&installer_dir).await.is_ok() {
             smol::fs::remove_dir_all(&installer_dir).await?;
@@ -394,7 +394,7 @@ impl AutoUpdater {
         // On windows, executable files cannot be overwritten while they are
         // running, so we must wait to overwrite the application until quitting
         // or restarting. When quitting the app, we spawn the auto update helper
-        // to finish the auto update process after Zed exits. When restarting
+        // to finish the auto update process after Xenomorphic exits. When restarting
         // the app after an update, we use `set_restart_path` to run the auto
         // update helper instead of the app, so that it can overwrite the app
         // and then spawn the new binary.
@@ -503,7 +503,7 @@ impl AutoUpdater {
         true
     }
 
-    // If you are packaging Zed and need to override the place it downloads SSH remotes from,
+    // If you are packaging Xenomorphic and need to override the place it downloads SSH remotes from,
     // you can override this function. You should also update get_remote_server_release_url to return
     // Ok(None).
     pub async fn download_remote_server_release(
@@ -526,7 +526,7 @@ impl AutoUpdater {
             &this,
             release_channel,
             version,
-            "zed-remote-server",
+            "xenomorphic-remote-server",
             os,
             arch,
             cx,
@@ -543,7 +543,7 @@ impl AutoUpdater {
 
         if smol::fs::metadata(&version_path).await.is_err() {
             log::info!(
-                "downloading zed-remote-server {os} {arch} version {}",
+                "downloading xenomorphic-remote-server {os} {arch} version {}",
                 release.version
             );
             set_status("Downloading remote server", cx);
@@ -578,7 +578,7 @@ impl AutoUpdater {
         })?;
 
         let release =
-            Self::get_release_asset(&this, channel, version, "zed-remote-server", os, arch, cx)
+            Self::get_release_asset(&this, channel, version, "xenomorphic-remote-server", os, arch, cx)
                 .await?;
 
         Ok(Some(release.url))
@@ -667,7 +667,7 @@ impl AutoUpdater {
         });
 
         let fetched_release_data =
-            Self::get_release_asset(&this, release_channel, None, "zed", OS, ARCH, cx).await?;
+            Self::get_release_asset(&this, release_channel, None, "xenomorphic", OS, ARCH, cx).await?;
         let fetched_version = fetched_release_data.clone().version;
         let app_commit_sha = Ok(cx.update(|cx| AppCommitSha::try_global(cx).map(|sha| sha.full())));
         let newer_version = Self::check_if_fetched_version_is_newer(
@@ -803,9 +803,9 @@ impl AutoUpdater {
 
     async fn target_path(installer_dir: &InstallerDir) -> Result<PathBuf> {
         let filename = match OS {
-            "macos" => anyhow::Ok("Zed.dmg"),
+            "macos" => anyhow::Ok("Xenomorphic.dmg"),
             "linux" => Ok("zed.tar.gz"),
-            "windows" => Ok("Zed.exe"),
+            "windows" => Ok("Xenomorphic.exe"),
             unsupported_os => anyhow::bail!("not supported: {unsupported_os}"),
         }?;
 
@@ -977,7 +977,7 @@ async fn install_release_linux(
     let home_dir = PathBuf::from(env::var("HOME").context("no HOME env var set")?);
     let running_app_path = cx.update(|cx| cx.app_path())?;
 
-    let extracted = temp_dir.path().join("zed");
+    let extracted = temp_dir.path().join("xenomorphic");
     fs::create_dir_all(&extracted)
         .await
         .context("failed to create directory into which to extract update")?;
@@ -1010,7 +1010,7 @@ async fn install_release_linux(
     let from = extracted.join(&app_folder_name);
     let mut to = home_dir.join(".local");
 
-    let expected_suffix = format!("{}/libexec/zed-editor", app_folder_name);
+    let expected_suffix = format!("{}/libexec/xenomorphic-editor", app_folder_name);
 
     if let Some(prefix) = running_app_path
         .to_str()
@@ -1028,7 +1028,7 @@ async fn install_release_linux(
 
     anyhow::ensure!(
         output.status.success(),
-        "failed to copy Zed update from {:?} to {:?}: {:?}",
+        "failed to copy Xenomorphic update from {:?} to {:?}: {:?}",
         from,
         to,
         String::from_utf8_lossy(&output.stderr)
@@ -1094,7 +1094,7 @@ async fn install_release_macos(
 async fn cleanup_windows() -> Result<()> {
     let parent = std::env::current_exe()?
         .parent()
-        .context("No parent dir for Zed.exe")?
+        .context("No parent dir for Xenomorphic.exe")?
         .to_owned();
 
     // keep in sync with crates/auto_update_helper/src/updater.rs
@@ -1122,7 +1122,7 @@ async fn install_release_windows(downloaded_installer: &Path) -> Result<Option<P
     // deleting the old one, and launching the new binary.
     let helper_path = std::env::current_exe()?
         .parent()
-        .context("No parent dir for Zed.exe")?
+        .context("No parent dir for Xenomorphic.exe")?
         .join("tools")
         .join("auto_update_helper.exe");
     Ok(Some(helper_path))
@@ -1171,7 +1171,7 @@ mod tests {
 
     #[ctor::ctor]
     fn init_logger() {
-        zlog::init_test();
+        xlog::init_test();
     }
 
     use super::*;
@@ -1197,7 +1197,7 @@ mod tests {
     #[gpui::test]
     async fn test_auto_update_downloads(cx: &mut TestAppContext) {
         cx.background_executor.allow_parking();
-        zlog::init_test();
+        xlog::init_test();
         let release_available = Arc::new(AtomicBool::new(false));
 
         let (dmg_tx, dmg_rx) = oneshot::channel::<String>();
@@ -1275,7 +1275,7 @@ mod tests {
             let tmp_dir = tmp_dir.clone();
             cx.set_global(InstallOverride(Rc::new(move |target_path, _cx| {
                 let tmp_dir = tmp_dir.clone();
-                let dest_path = tmp_dir.path().join("zed");
+                let dest_path = tmp_dir.path().join("xenomorphic");
                 std::fs::copy(&target_path, &dest_path)?;
                 Ok(Some(dest_path))
             })));
@@ -1299,7 +1299,7 @@ mod tests {
         let will_restart = cx.expect_restart();
         cx.update(|cx| cx.restart());
         let path = will_restart.await.unwrap().unwrap();
-        assert_eq!(path, tmp_dir.path().join("zed"));
+        assert_eq!(path, tmp_dir.path().join("xenomorphic"));
         assert_eq!(std::fs::read_to_string(path).unwrap(), "<fake-zed-update>");
     }
 

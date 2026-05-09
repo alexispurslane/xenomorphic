@@ -9,13 +9,13 @@ use anyhow::{Context as _, Result, anyhow};
 use gpui::AsyncApp;
 use std::ops::Range;
 use std::sync::Arc;
-use zeta_prompt::{
-    ZetaFormat, format_expected_output, format_zeta_prompt, multi_region, resolve_cursor_region,
+use xeta_prompt::{
+    XetaFormat, format_expected_output, format_xeta_prompt, multi_region, resolve_cursor_region,
 };
 
 fn resolved_excerpt_ranges_for_format(
-    input: &zeta_prompt::ZetaPromptInput,
-    format: ZetaFormat,
+    input: &xeta_prompt::XetaPromptInput,
+    format: XetaFormat,
 ) -> (Range<usize>, Range<usize>) {
     let (_, editable_range_in_context, context_range, _) = resolve_cursor_region(input, format);
     let editable_range = (context_range.start + editable_range_in_context.start)
@@ -40,14 +40,14 @@ pub async fn run_format_prompt(
         .context("prompt_inputs must be set after context retrieval")?;
 
     match args.provider {
-        PredictionProvider::Teacher(_, zeta_format)
-        | PredictionProvider::TeacherNonBatching(_, zeta_format) => {
+        PredictionProvider::Teacher(_, xeta_format)
+        | PredictionProvider::TeacherNonBatching(_, xeta_format) => {
             step_progress.set_substatus("formatting teacher prompt");
 
             let (editable_range, context_range) =
-                resolved_excerpt_ranges_for_format(prompt_inputs, zeta_format);
+                resolved_excerpt_ranges_for_format(prompt_inputs, xeta_format);
 
-            let include_diagnostics = matches!(zeta_format, ZetaFormat::V0420Diagnostics);
+            let include_diagnostics = matches!(xeta_format, XetaFormat::V0420Diagnostics);
 
             let prompt = TeacherPrompt::format_prompt(
                 example,
@@ -67,11 +67,11 @@ pub async fn run_format_prompt(
         | PredictionProvider::TeacherMultiRegionNonBatching(_) => {
             step_progress.set_substatus("formatting teacher multi-region prompt");
 
-            let zeta_format = ZetaFormat::default();
+            let xeta_format = XetaFormat::default();
             let (editable_range, context_range) =
-                resolved_excerpt_ranges_for_format(prompt_inputs, zeta_format);
+                resolved_excerpt_ranges_for_format(prompt_inputs, xeta_format);
 
-            let include_diagnostics = matches!(zeta_format, ZetaFormat::V0420Diagnostics);
+            let include_diagnostics = matches!(xeta_format, XetaFormat::V0420Diagnostics);
 
             let prompt = TeacherMultiRegionPrompt::format_prompt(
                 example,
@@ -87,11 +87,11 @@ pub async fn run_format_prompt(
                 provider: args.provider,
             });
         }
-        PredictionProvider::Zeta2(zeta_format) => {
-            step_progress.set_substatus("formatting zeta2 prompt");
+        PredictionProvider::Xeta2(xeta_format) => {
+            step_progress.set_substatus("formatting xeta2 prompt");
 
-            let prompt = format_zeta_prompt(prompt_inputs, zeta_format);
-            let prefill = zeta_prompt::get_prefill(prompt_inputs, zeta_format);
+            let prompt = format_xeta_prompt(prompt_inputs, xeta_format);
+            let prefill = xeta_prompt::get_prefill(prompt_inputs, xeta_format);
             let expected_output = example
                 .spec
                 .expected_patches_with_cursor_positions()
@@ -100,7 +100,7 @@ pub async fn run_format_prompt(
                 .and_then(|(expected_patch, expected_cursor_offset)| {
                     format_expected_output(
                         prompt_inputs,
-                        zeta_format,
+                        xeta_format,
                         &expected_patch,
                         expected_cursor_offset,
                     )
@@ -108,7 +108,7 @@ pub async fn run_format_prompt(
                 });
 
             let rejected_output = example.spec.rejected_patch.as_ref().and_then(|patch| {
-                format_expected_output(prompt_inputs, zeta_format, patch, None).ok()
+                format_expected_output(prompt_inputs, xeta_format, patch, None).ok()
             });
 
             example.prompt = prompt.map(|prompt| ExamplePrompt {
@@ -271,7 +271,7 @@ impl TeacherPrompt {
         let prefix = "`````";
         let suffix = "`````\n\n";
         let max_tokens = 1024;
-        zeta_prompt::format_related_files_within_budget(related_files, &prefix, &suffix, max_tokens)
+        xeta_prompt::format_related_files_within_budget(related_files, &prefix, &suffix, max_tokens)
     }
 
     fn format_cursor_excerpt(
@@ -384,8 +384,8 @@ impl TeacherMultiRegionPrompt {
             .as_ref()
             .context("example is missing prompt inputs")?;
 
-        let zeta_format = ZetaFormat::default();
-        let (editable_range, _) = resolved_excerpt_ranges_for_format(prompt_inputs, zeta_format);
+        let xeta_format = XetaFormat::default();
+        let (editable_range, _) = resolved_excerpt_ranges_for_format(prompt_inputs, xeta_format);
         let excerpt = prompt_inputs.cursor_excerpt.as_ref();
         let old_editable_region = &excerpt[editable_range.clone()];
         let marker_offsets = multi_region::compute_marker_offsets(old_editable_region);
@@ -499,7 +499,7 @@ impl TeacherMultiRegionPrompt {
         let prefix = "`````";
         let suffix = "`````\n\n";
         let max_tokens = 1024;
-        zeta_prompt::format_related_files_within_budget(related_files, &prefix, &suffix, max_tokens)
+        xeta_prompt::format_related_files_within_budget(related_files, &prefix, &suffix, max_tokens)
     }
 
     fn format_cursor_excerpt(
@@ -877,7 +877,7 @@ mod tests {
             .map(|index| format!("line{index:02}\n"))
             .collect::<String>();
         let cursor_offset = excerpt.find("line40").expect("cursor line exists");
-        let prompt_inputs = zeta_prompt::ZetaPromptInput {
+        let prompt_inputs = xeta_prompt::XetaPromptInput {
             cursor_path: std::path::Path::new("src/main.rs").into(),
             cursor_excerpt: excerpt.clone().into(),
             cursor_offset_in_excerpt: cursor_offset,
@@ -885,7 +885,7 @@ mod tests {
             events: Vec::new(),
             related_files: Some(Vec::new()),
             active_buffer_diagnostics: Vec::new(),
-            excerpt_ranges: zeta_prompt::ExcerptRanges {
+            excerpt_ranges: xeta_prompt::ExcerptRanges {
                 editable_150: 0..32,
                 editable_180: 0..32,
                 editable_350: 0..32,
@@ -904,14 +904,14 @@ mod tests {
             repo_url: None,
         };
 
-        let (stored_editable_range, stored_context_range) = zeta_prompt::excerpt_range_for_format(
-            ZetaFormat::V0327SingleFile,
+        let (stored_editable_range, stored_context_range) = xeta_prompt::excerpt_range_for_format(
+            XetaFormat::V0327SingleFile,
             &prompt_inputs.excerpt_ranges,
         );
         assert!(stored_context_range.start > stored_editable_range.start);
 
         let (editable_range, context_range) =
-            resolved_excerpt_ranges_for_format(&prompt_inputs, ZetaFormat::V0327SingleFile);
+            resolved_excerpt_ranges_for_format(&prompt_inputs, XetaFormat::V0327SingleFile);
         assert_eq!(context_range, 0..excerpt.len());
         assert!(editable_range.start < cursor_offset);
         assert!(editable_range.end > cursor_offset);

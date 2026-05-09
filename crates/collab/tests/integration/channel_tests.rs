@@ -380,7 +380,7 @@ async fn test_channel_room(
 
     let zed_id = server
         .make_channel(
-            "zed",
+            "xenomorphic",
             None,
             (&client_a, cx_a),
             &mut [(&client_b, cx_b), (&client_c, cx_c)],
@@ -415,7 +415,7 @@ async fn test_channel_room(
         cx_b,
         &[ExpectedChannel {
             id: zed_id,
-            name: "zed".into(),
+            name: "xenomorphic".into(),
             depth: 0,
         }],
     );
@@ -595,7 +595,7 @@ async fn test_channel_jumping(executor: BackgroundExecutor, cx_a: &mut TestAppCo
     let client_a = server.create_client(cx_a, "user_a").await;
 
     let zed_id = server
-        .make_channel("zed", None, (&client_a, cx_a), &mut [])
+        .make_channel("xenomorphic", None, (&client_a, cx_a), &mut [])
         .await;
     let rust_id = server
         .make_channel("rust", None, (&client_a, cx_a), &mut [])
@@ -959,7 +959,7 @@ async fn test_channel_link_notifications(
     let user_c = client_c.user_id().unwrap();
 
     let channels = server
-        .make_channel_tree(&[("zed", None)], (&client_a, cx_a))
+        .make_channel_tree(&[("xenomorphic", None)], (&client_a, cx_a))
         .await;
     let zed_channel = channels[0];
 
@@ -1115,7 +1115,7 @@ async fn test_channel_membership_notifications(
 
     let channels = server
         .make_channel_tree(
-            &[("zed", None), ("vim", Some("zed")), ("opensource", None)],
+            &[("xenomorphic", None), ("vim", Some("xenomorphic")), ("opensource", None)],
             (&client_a, cx_a),
         )
         .await;
@@ -1154,7 +1154,7 @@ async fn test_channel_membership_notifications(
             ExpectedChannel {
                 depth: 0,
                 id: zed_channel,
-                name: "zed".into(),
+                name: "xenomorphic".into(),
             },
             ExpectedChannel {
                 depth: 1,

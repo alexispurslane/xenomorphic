@@ -274,7 +274,7 @@ mod tests {
     };
 
     pub fn init_test(cx: &mut gpui::TestAppContext) {
-        zlog::init_test();
+        xlog::init_test();
 
         cx.update(|cx| {
             let settings = SettingsStore::test(cx);
@@ -317,7 +317,7 @@ mod tests {
 
         let response = client
             .request::<Initialize>(InitializeRequestArguments {
-                client_id: Some("zed".to_owned()),
+                client_id: Some("xenomorphic".to_owned()),
                 client_name: Some("Xenomorphic".to_owned()),
                 adapter_id: "fake-adapter".to_owned(),
                 locale: Some("en-US".to_owned()),

@@ -1932,7 +1932,7 @@ RUN sed -i -E 's/((^|\s)PATH=)([^\$]*)$/\1\${PATH:-\3}/g' /etc/profile || true
         self.dev_container()
             .customizations
             .as_ref()
-            .map(|c| c.zed.extensions.clone())
+            .map(|c| c.xenomorphic.extensions.clone())
             .unwrap_or_default()
     }
 
@@ -3521,7 +3521,7 @@ mod test {
                     "GitHub.vscode-pull-request-github",
                   ],
                 },
-                "zed": {
+                "xenomorphic": {
                   "extensions": ["vue", "ruby"],
                 },
                 "codespaces": {
@@ -4252,7 +4252,7 @@ ENV DOCKER_BUILDKIT=1
         // that directory IS `<config>/.devcontainer`. A compose file at the
         // workspace root (as `"dockerComposeFile": "../docker-compose.yml"`
         // produces) must derive to the plain dir basename, not
-        // `project_devcontainer` — otherwise Zed diverges from the CLI.
+        // `project_devcontainer` — otherwise Xenomorphic diverges from the CLI.
         use crate::devcontainer_manifest::derive_project_name;
 
         let got = derive_project_name(
@@ -4946,7 +4946,7 @@ ENV DOCKER_BUILDKIT=1
                     "GitHub.vscode-pull-request-github",
                   ],
                 },
-                "zed": {
+                "xenomorphic": {
                   "extensions": ["vue", "ruby"],
                 },
                 "codespaces": {

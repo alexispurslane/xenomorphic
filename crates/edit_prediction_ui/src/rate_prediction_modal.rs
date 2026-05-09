@@ -22,7 +22,7 @@ use ui::{
 use workspace::{ModalView, Workspace};
 
 actions!(
-    zeta,
+    xeta,
     [
         /// Rates the active completion with a thumbs up.
         ThumbsUpActivePrediction,
@@ -389,7 +389,7 @@ impl RatePredictionsModal {
 
             for event in &prediction.inputs.events {
                 formatted_inputs.push_str("```diff\n");
-                zeta_prompt::write_event(&mut formatted_inputs, event.as_ref());
+                xeta_prompt::write_event(&mut formatted_inputs, event.as_ref());
                 formatted_inputs.push_str("```\n\n");
             }
 

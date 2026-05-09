@@ -1512,15 +1512,15 @@ impl acp_thread::AgentModelSelector for NativeAgentModelSelector {
     }
 }
 
-pub static ZED_AGENT_ID: LazyLock<AgentId> = LazyLock::new(|| AgentId::new("Zed Agent"));
+pub static XENOMORPHIC_AGENT_ID: LazyLock<AgentId> = LazyLock::new(|| AgentId::new("Xenomorphic Agent"));
 
 impl acp_thread::AgentConnection for NativeAgentConnection {
     fn agent_id(&self) -> AgentId {
-        ZED_AGENT_ID.clone()
+        XENOMORPHIC_AGENT_ID.clone()
     }
 
     fn telemetry_id(&self) -> SharedString {
-        "zed".into()
+        "xenomorphic".into()
     }
 
     fn new_session(
@@ -2363,7 +2363,7 @@ mod internal_tests {
                     name: "Fake".into(),
                     description: None,
                     icon: Some(acp_thread::AgentModelIcon::Named(
-                        ui::IconName::ZedAssistant
+                        ui::IconName::XenomorphicAssistant
                     )),
                     is_latest: false,
                     cost: None,

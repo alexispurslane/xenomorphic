@@ -54,7 +54,7 @@ util.workspace = true
 wasmparser.workspace = true
 wasmtime-wasi.workspace = true
 wasmtime.workspace = true
-ztracing.workspace = true
+xtracing.workspace = true
 
 [dev-dependencies]
 criterion.workspace = true
@@ -70,7 +70,7 @@ reqwest_client.workspace = true
 theme = { workspace = true, features = ["test-support"] }
 theme_settings.workspace = true
 theme_extension.workspace = true
-zlog.workspace = true
+xlog.workspace = true
 
 [[bench]]
 name = "extension_compilation_benchmark"

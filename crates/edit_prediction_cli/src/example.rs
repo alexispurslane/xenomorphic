@@ -16,7 +16,7 @@ use std::{
     io::Read,
     path::{Path, PathBuf},
 };
-use zeta_prompt::ZetaPromptInput;
+use xeta_prompt::XetaPromptInput;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Example {
@@ -26,7 +26,7 @@ pub struct Example {
     /// The full content of the file where an edit is being predicted, and the
     /// actual cursor offset.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub prompt_inputs: Option<ZetaPromptInput>,
+    pub prompt_inputs: Option<XetaPromptInput>,
 
     /// The input and expected output from the edit prediction model.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -45,7 +45,7 @@ pub struct Example {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub qa: Vec<Option<QaResult>>,
 
-    /// The Zed version used to generate this example.
+    /// The Xenomorphic version used to generate this example.
     pub zed_version: Option<String>,
 
     /// The application state used to process this example.

@@ -4,7 +4,7 @@ use std::borrow::Cow;
 use std::ops::Range;
 use strum::{AsRefStr, EnumString};
 
-pub const PREDICT_EDITS_MODE_HEADER_NAME: &str = "X-Zed-Predict-Edits-Mode";
+pub const PREDICT_EDITS_MODE_HEADER_NAME: &str = "X-Xenomorphic-Predict-Edits-Mode";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, AsRefStr, EnumString)]
 #[serde(rename_all = "snake_case")]
@@ -30,7 +30,7 @@ pub struct RawCompletionRequest {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PredictEditsV3Request {
     #[serde(flatten)]
-    pub input: zeta_prompt::ZetaPromptInput,
+    pub input: xeta_prompt::XetaPromptInput,
     #[serde(default)]
     pub trigger: PredictEditsRequestTrigger,
 }

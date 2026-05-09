@@ -199,7 +199,7 @@ fn git_panel_context_menu(
                 StashAll.boxed_clone(),
             )
             .action_disabled_when(!state.has_stash_items, "Stash Pop", StashPop.boxed_clone())
-            .action("View Stash", zed_actions::git::ViewStash.boxed_clone())
+            .action("View Stash", xenomorphic_actions::git::ViewStash.boxed_clone())
             .separator()
             .action("Open Diff", project_diff::Diff.boxed_clone())
             .separator()
@@ -4597,10 +4597,10 @@ impl GitPanel {
                                 this.flex_1().min_h_0().pb(footer_size)
                             })
                             .pr_2p5()
-                            .on_action(|&zed_actions::editor::MoveUp, _, cx| {
+                            .on_action(|&xenomorphic_actions::editor::MoveUp, _, cx| {
                                 cx.stop_propagation();
                             })
-                            .on_action(|&zed_actions::editor::MoveDown, _, cx| {
+                            .on_action(|&xenomorphic_actions::editor::MoveDown, _, cx| {
                                 cx.stop_propagation();
                             })
                             .child(EditorElement::new(&self.commit_editor, panel_editor_style)),
@@ -6483,7 +6483,7 @@ impl RenderOnce for PanelRepoFooter {
             .label_size(LabelSize::Small)
             .truncate(true)
             .on_click(|_, window, cx| {
-                window.dispatch_action(zed_actions::git::Switch.boxed_clone(), cx);
+                window.dispatch_action(xenomorphic_actions::git::Switch.boxed_clone(), cx);
             });
 
         let branch_selector = PopoverMenu::new("popover-button")
@@ -6494,7 +6494,7 @@ impl RenderOnce for PanelRepoFooter {
             })
             .trigger_with_tooltip(
                 branch_selector_button,
-                Tooltip::for_action_title("Switch Branch", &zed_actions::git::Switch),
+                Tooltip::for_action_title("Switch Branch", &xenomorphic_actions::git::Switch),
             )
             .anchor(Anchor::BottomLeft)
             .offset(gpui::Point {
@@ -6716,7 +6716,7 @@ impl Component for PanelRepoFooter {
                                     .w(example_width)
                                     .overflow_hidden()
                                     .child(PanelRepoFooter::new_preview(
-                                        SharedString::from("zed"),
+                                        SharedString::from("xenomorphic"),
                                         Some(custom("main", behind_upstream)),
                                     ))
                                     .into_any_element(),
@@ -6727,7 +6727,7 @@ impl Component for PanelRepoFooter {
                                     .w(example_width)
                                     .overflow_hidden()
                                     .child(PanelRepoFooter::new_preview(
-                                        SharedString::from("zed"),
+                                        SharedString::from("xenomorphic"),
                                         Some(custom(
                                             "redesign-and-update-git-ui-list-entry-style",
                                             behind_upstream,
@@ -6777,7 +6777,7 @@ impl Component for PanelRepoFooter {
                                     .w(example_width)
                                     .overflow_hidden()
                                     .child(PanelRepoFooter::new_preview(
-                                        SharedString::from("zed"),
+                                        SharedString::from("xenomorphic"),
                                         Some(custom("update-README", behind_upstream)),
                                     ))
                                     .into_any_element(),
@@ -6921,7 +6921,7 @@ mod tests {
     use super::*;
 
     fn init_test(cx: &mut gpui::TestAppContext) {
-        zlog::init_test();
+        xlog::init_test();
 
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
@@ -6980,7 +6980,7 @@ mod tests {
         fs.insert_tree(
             "/root",
             json!({
-                "zed": {
+                "xenomorphic": {
                     ".git": {},
                     "crates": {
                         "gpui": {

@@ -3,7 +3,7 @@ use std::error::Error;
 use std::fmt;
 use std::path::Path;
 use std::sync::Arc;
-use zeta_prompt::udiff::{apply_diff_to_string, apply_diff_to_string_with_hunk_offset};
+use xeta_prompt::udiff::{apply_diff_to_string, apply_diff_to_string_with_hunk_offset};
 
 use crate::patch_metrics::{
     ClassificationMetrics, DeltaChrFMetrics, braces_disbalance, count_patch_token_changes,
@@ -179,7 +179,7 @@ pub struct ActualPredictionCursor {
 
 #[derive(Clone, Copy, Debug)]
 pub struct PredictionReversalContext<'a> {
-    pub edit_history: &'a [Arc<zeta_prompt::Event>],
+    pub edit_history: &'a [Arc<xeta_prompt::Event>],
     pub excerpt_start_row: Option<u32>,
     pub cursor_path: &'a Path,
 }

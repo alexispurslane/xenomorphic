@@ -12,7 +12,7 @@ use std::{
     str,
 };
 use sum_tree::{Bias, Dimension, Dimensions, SumTree};
-use ztracing::instrument;
+use xtracing::instrument;
 
 pub use chunk::{Chunk, ChunkSlice};
 pub use offset_utf16::OffsetUtf16;
@@ -1734,7 +1734,7 @@ mod tests {
 
     #[ctor::ctor]
     fn init_logger() {
-        zlog::init_test();
+        xlog::init_test();
     }
 
     #[test]

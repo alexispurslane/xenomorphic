@@ -23,7 +23,7 @@ use std::{
     str::FromStr,
     sync::{Arc, OnceLock},
 };
-use task::{SpawnInTerminal, ZedDebugConfig};
+use task::{SpawnInTerminal, XenomorphicDebugConfig};
 use url::Url;
 use util::{
     archive::extract_zip, fs::make_file_executable, maybe, paths::PathStyle, rel_path::RelPath,
@@ -45,11 +45,11 @@ wasmtime::component::bindgen!({
          "worktree": ExtensionWorktree,
          "project": ExtensionProject,
          "key-value-store": ExtensionKeyValueStore,
-         "zed:extension/http-client/http-response-stream": ExtensionHttpResponseStream
+         "xenomorphic:extension/http-client/http-response-stream": ExtensionHttpResponseStream
     },
 });
 
-pub use self::zed::extension::*;
+pub use self::xenomorphic::extension::*;
 
 mod settings {
     #![allow(dead_code)]
@@ -231,8 +231,8 @@ impl From<AttachRequest> for task::AttachRequest {
     }
 }
 
-impl From<ZedDebugConfig> for DebugConfig {
-    fn from(value: ZedDebugConfig) -> Self {
+impl From<XenomorphicDebugConfig> for DebugConfig {
+    fn from(value: XenomorphicDebugConfig) -> Self {
         Self {
             label: value.label.into(),
             adapter: value.adapter.into(),

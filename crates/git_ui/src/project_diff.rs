@@ -46,8 +46,8 @@ use workspace::{
     notifications::NotifyTaskExt,
     searchable::SearchableItemHandle,
 };
-use zed_actions::agent::ReviewBranchDiff;
-use ztracing::instrument;
+use xenomorphic_actions::agent::ReviewBranchDiff;
+use xtracing::instrument;
 
 actions!(
     git,
@@ -812,7 +812,7 @@ impl ProjectDiff {
                     }
 
                     this.buffer_diff_subscriptions.remove(&path.path);
-                    let _span = ztracing::info_span!("remove_excerpts_for_path");
+                    let _span = xtracing::info_span!("remove_excerpts_for_path");
                     _span.enter();
                     editor.remove_excerpts_for_path(path, cx);
                 }
@@ -1573,7 +1573,7 @@ fn render_send_review_to_agent_button(review_count: usize, focus_handle: &FocusH
         format!("Send Review to Agent ({})", review_count),
     )
     .start_icon(
-        Icon::new(IconName::ZedAssistant)
+        Icon::new(IconName::XenomorphicAssistant)
             .size(IconSize::Small)
             .color(Color::Muted),
     )
@@ -1670,7 +1670,7 @@ impl Render for BranchDiffToolbar {
                 this.child(Divider::vertical()).child(
                     Button::new("review-diff", "Review Diff")
                         .start_icon(
-                            Icon::new(IconName::ZedAssistant)
+                            Icon::new(IconName::XenomorphicAssistant)
                                 .size(IconSize::Small)
                                 .color(Color::Muted),
                         )
@@ -1744,7 +1744,7 @@ mod tests {
 
     #[ctor::ctor]
     fn init_logger() {
-        zlog::init_test();
+        xlog::init_test();
     }
 
     fn init_test(cx: &mut TestAppContext) {

@@ -83,7 +83,7 @@ pub enum EditPredictionProvider {
     None,
     #[default]
     Copilot,
-    Zed,
+    Xenomorphic,
     Codestral,
     Ollama,
     OpenAiCompatibleApi,
@@ -93,7 +93,7 @@ pub enum EditPredictionProvider {
 impl EditPredictionProvider {
     pub fn is_zed(&self) -> bool {
         match self {
-            EditPredictionProvider::Zed => true,
+            EditPredictionProvider::Xenomorphic => true,
             EditPredictionProvider::None
             | EditPredictionProvider::Copilot
             | EditPredictionProvider::Codestral
@@ -105,7 +105,7 @@ impl EditPredictionProvider {
 
     pub fn display_name(&self) -> Option<&'static str> {
         match self {
-            EditPredictionProvider::Zed => Some("Zed AI"),
+            EditPredictionProvider::Xenomorphic => Some("Xenomorphic AI"),
             EditPredictionProvider::Copilot => Some("GitHub Copilot"),
             EditPredictionProvider::Codestral => Some("Codestral"),
             EditPredictionProvider::Mercury => Some("Mercury"),
@@ -139,7 +139,7 @@ pub struct EditPredictionSettingsContent {
     pub open_ai_compatible_api: Option<CustomEditPredictionProviderSettingsContent>,
     /// The directory where manually captured edit prediction examples are stored.
     pub examples_dir: Option<Arc<Path>>,
-    /// Controls whether Zed may collect training data when using Zed's Edit Predictions.
+    /// Controls whether Xenomorphic may collect training data when using Xenomorphic's Edit Predictions.
     /// Data is only ever captured for files in projects that are detected as open source.
     ///
     /// - `"default"`: use the preference previously set via the status-bar toggle,
@@ -188,9 +188,9 @@ pub struct CustomEditPredictionProviderSettingsContent {
 pub enum EditPredictionPromptFormatContent {
     #[default]
     Infer,
-    Zeta,
-    Zeta2,
-    Zeta2_1,
+    Xeta,
+    Xeta2,
+    Xeta2_1,
     CodeLlama,
     StarCoder,
     DeepseekCoder,
@@ -284,7 +284,7 @@ pub struct OllamaEditPredictionSettingsContent {
     pub prompt_format: Option<EditPredictionPromptFormatContent>,
 }
 
-/// Controls whether Zed collects training data when using Zed's Edit Predictions.
+/// Controls whether Zed collects training data when using Xenomorphic's Edit Predictions.
 #[derive(
     Copy,
     Clone,
@@ -305,7 +305,7 @@ pub enum EditPredictionDataCollectionChoice {
     /// if no preference has been stored.
     #[default]
     Default,
-    /// Allow Zed to collect training data from open-source projects.
+    /// Allow Xenomorphic to collect training data from open-source projects.
     Yes,
     /// Never allow training data collection.
     No,
@@ -463,7 +463,7 @@ pub struct LanguageSettingsContent {
     ///
     /// Default: auto
     pub formatter: Option<FormatterList>,
-    /// Zed's Prettier integration settings.
+    /// Xenomorphic's Prettier integration settings.
     /// Allows to enable/disable formatting with Prettier
     /// and configure default Prettier, used when no project-level Prettier installation is found.
     ///
@@ -550,12 +550,12 @@ pub struct LanguageSettingsContent {
     /// Inlay hint related settings.
     pub inlay_hints: Option<InlayHintSettingsContent>,
     /// Whether to automatically type closing characters for you. For example,
-    /// when you type '(', Zed will automatically add a closing ')' at the correct position.
+    /// when you type '(', Xenomorphic will automatically add a closing ')' at the correct position.
     ///
     /// Default: true
     pub use_autoclose: Option<bool>,
     /// Whether to automatically surround text with characters for you. For example,
-    /// when you select text and type '(', Zed will automatically surround text with ().
+    /// when you select text and type '(', Xenomorphic will automatically surround text with ().
     ///
     /// Default: true
     pub use_auto_surround: Option<bool>,
@@ -972,13 +972,13 @@ impl AsRef<[Formatter]> for FormatterList {
 #[derive(Clone, Default, Debug, Serialize, Deserialize, PartialEq, Eq, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub enum Formatter {
-    /// Format files using Zed's Prettier integration (if applicable),
+    /// Format files using Xenomorphic's Prettier integration (if applicable),
     /// or falling back to formatting via language server.
     #[default]
     Auto,
     /// Do not format code.
     None,
-    /// Format code using Zed's Prettier integration.
+    /// Format code using Xenomorphic's Prettier integration.
     Prettier,
     /// Format code using an external command.
     External {
@@ -1091,13 +1091,13 @@ pub struct LanguageTaskSettingsContent {
     /// Extra task variables to set for a particular language.
     pub variables: Option<HashMap<String, String>>,
     pub enabled: Option<bool>,
-    /// Use LSP tasks over Zed language extension ones.
+    /// Use LSP tasks over Xenomorphic language extension ones.
     /// If no LSP tasks are returned due to error/timeout or regular execution,
-    /// Zed language extension tasks will be used instead.
+    /// Xenomorphic language extension tasks will be used instead.
     ///
-    /// Other Zed tasks will still be shown:
-    /// * Zed task from either of the task config file
-    /// * Zed task from history (e.g. one-off task was spawned before)
+    /// Other Xenomorphic tasks will still be shown:
+    /// * Xenomorphic task from either of the task config file
+    /// * Xenomorphic task from history (e.g. one-off task was spawned before)
     pub prefer_lsp: Option<bool>,
 }
 

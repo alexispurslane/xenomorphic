@@ -40,4 +40,4 @@ clock= { workspace = true, "features" = ["test-support"] }
 futures.workspace = true
 gpui = { workspace = true, "features" = ["test-support"] }
 parking_lot.workspace = true
-zlog.workspace = true
+xlog.workspace = true

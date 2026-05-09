@@ -83,7 +83,7 @@ pub fn build_prompt(example: &Example) -> Result<String> {
 
     let mut edit_history = String::new();
     for event in &prompt_inputs.events {
-        let zeta_prompt::Event::BufferChange {
+        let xeta_prompt::Event::BufferChange {
             path,
             old_path,
             diff,

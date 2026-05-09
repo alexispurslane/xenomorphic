@@ -88,7 +88,7 @@ impl<T: InventoryContents> InventoryFor<T> {
         let has_zed_dir = worktree_dirs
             .map(|dirs| {
                 dirs.keys()
-                    .any(|dir| dir.file_name().is_some_and(|name| name == ".zed"))
+                    .any(|dir| dir.file_name().is_some_and(|name| name == ".xenomorphic"))
             })
             .unwrap_or(false);
 
@@ -151,7 +151,7 @@ pub enum TaskSourceKind {
         directory_in_worktree: Arc<RelPath>,
         id_base: Cow<'static, str>,
     },
-    /// ~/.config/zed/task.json - like global files with task definitions, applicable to any path
+    /// ~/.config/xenomorphic/task.json - like global files with task definitions, applicable to any path
     AbsPath {
         id_base: Cow<'static, str>,
         abs_path: PathBuf,
@@ -454,7 +454,7 @@ impl Inventory {
             .iter()
             .filter(|(_, dirs)| {
                 dirs.keys()
-                    .any(|dir| dir.file_name().is_some_and(|name| name == ".zed"))
+                    .any(|dir| dir.file_name().is_some_and(|name| name == ".xenomorphic"))
             })
             .map(|(id, _)| *id)
             .collect();

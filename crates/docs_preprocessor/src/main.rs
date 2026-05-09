@@ -61,11 +61,11 @@ impl KeymapOverlay {
     }
 }
 
-const FRONT_MATTER_COMMENT: &str = "<!-- ZED_META {} -->";
+const FRONT_MATTER_COMMENT: &str = "<!-- XENOMORPHIC_META {} -->";
 
 fn main() -> Result<()> {
-    zlog::init();
-    zlog::init_output_stderr();
+    xlog::init();
+    xlog::init_output_stderr();
     let args = std::env::args().skip(1).collect::<Vec<_>>();
 
     match args.get(0).map(String::as_str) {
@@ -656,7 +656,7 @@ fn load_all_actions() -> ActionManifest {
 }
 
 fn handle_postprocessing() -> Result<()> {
-    let logger = zlog::scoped!("render");
+    let logger = xlog::scoped!("render");
     let mut ctx = mdbook::renderer::RenderContext::from_json(io::stdin())?;
     let output = ctx
         .config
@@ -710,7 +710,7 @@ fn handle_postprocessing() -> Result<()> {
                 )
             {
                 if ignore_list.contains(&&*entry.file_name().to_string_lossy()) {
-                    zlog::info!(logger => "Ignoring {}", entry.path().to_string_lossy());
+                    xlog::info!(logger => "Ignoring {}", entry.path().to_string_lossy());
                 } else {
                     files.push(entry.path());
                 }
@@ -718,7 +718,7 @@ fn handle_postprocessing() -> Result<()> {
         }
     }
 
-    zlog::info!(logger => "Processing {} `.html` files", files.len());
+    xlog::info!(logger => "Processing {} `.html` files", files.len());
     let meta_regex = Regex::new(&FRONT_MATTER_COMMENT.replace("{}", "(.*)")).unwrap();
     for file in files {
         let contents = std::fs::read_to_string(&file)?;
@@ -735,23 +735,23 @@ fn handle_postprocessing() -> Result<()> {
                         meta_title = Some(content);
                     }
                     _ => {
-                        zlog::warn!(logger => "Unrecognized frontmatter key: {} in {:?}", kind, pretty_path(&file, &root_dir));
+                        xlog::warn!(logger => "Unrecognized frontmatter key: {} in {:?}", kind, pretty_path(&file, &root_dir));
                     }
                 }
             }
             String::new()
         });
         let meta_description = meta_description.as_ref().unwrap_or_else(|| {
-            zlog::warn!(logger => "No meta description found for {:?}", pretty_path(&file, &root_dir));
+            xlog::warn!(logger => "No meta description found for {:?}", pretty_path(&file, &root_dir));
             &default_description
         });
         let page_title = extract_title_from_page(&contents, pretty_path(&file, &root_dir));
         let meta_title = meta_title.as_ref().unwrap_or_else(|| {
-            zlog::debug!(logger => "No meta title found for {:?}", pretty_path(&file, &root_dir));
+            xlog::debug!(logger => "No meta title found for {:?}", pretty_path(&file, &root_dir));
             &default_title
         });
         let meta_title = format!("{} | {}", page_title, meta_title);
-        zlog::trace!(logger => "Updating {:?}", pretty_path(&file, &root_dir));
+        xlog::trace!(logger => "Updating {:?}", pretty_path(&file, &root_dir));
         let contents = contents.replace("#description#", meta_description);
         let contents = contents.replace("#amplitude_key#", &amplitude_key);
         let contents = contents.replace("#consent_io_instance#", &consent_io_instance);
@@ -780,7 +780,7 @@ fn handle_postprocessing() -> Result<()> {
 
         title_tag_contents
             .trim()
-            .strip_suffix("- Zed")
+            .strip_suffix("- Xenomorphic")
             .unwrap_or(title_tag_contents)
             .trim()
             .to_string()

@@ -10,7 +10,7 @@ use cloud_llm_client::{
     EditPredictionRejectReason, EditPredictionRejection,
     MAX_EDIT_PREDICTION_REJECTIONS_PER_REQUEST, MINIMUM_REQUIRED_VERSION_HEADER_NAME,
     PREFERRED_EXPERIMENT_HEADER_NAME, PredictEditsRequestTrigger, RejectEditPredictionsBodyRef,
-    ZED_VERSION_HEADER_NAME,
+    XENOMORPHIC_VERSION_HEADER_NAME,
 };
 use collections::{HashMap, HashSet};
 use copilot::{Copilot, Reinstall, SignIn, SignOut};
@@ -48,7 +48,7 @@ use std::collections::{VecDeque, hash_map};
 use std::env;
 use text::{AnchorRangeExt, Edit};
 use workspace::{AppState, Workspace};
-use zeta_prompt::{ZetaFormat, ZetaPromptInput};
+use xeta_prompt::{XetaFormat, XetaPromptInput};
 
 use std::mem;
 use std::ops::Range;
@@ -76,8 +76,8 @@ pub mod udiff;
 
 mod capture_example;
 pub mod open_ai_compatible;
-mod zed_edit_prediction_delegate;
-pub mod zeta;
+mod xenomorphic_edit_prediction_delegate;
+pub mod xeta;
 
 #[cfg(test)]
 mod edit_prediction_tests;
@@ -87,14 +87,14 @@ use crate::example_spec::ExampleSpec;
 use crate::license_detection::LicenseDetectionWatcher;
 use crate::mercury::Mercury;
 pub use crate::metrics::{KeptRateResult, compute_kept_rate};
-use crate::onboarding_modal::ZedPredictModal;
+use crate::onboarding_modal::XenomorphicPredictModal;
 pub use crate::prediction::EditPrediction;
 pub use crate::prediction::EditPredictionId;
 use crate::prediction::EditPredictionResult;
 pub use capture_example::capture_example;
 pub use language_model::ApiKeyState;
 pub use telemetry_events::EditPredictionRating;
-pub use zed_edit_prediction_delegate::ZedEditPredictionDelegate;
+pub use xenomorphic_edit_prediction_delegate::XenomorphicEditPredictionDelegate;
 
 actions!(
     edit_prediction,
@@ -112,7 +112,7 @@ const CHANGE_GROUPING_LINE_SPAN: u32 = 8;
 const EDIT_HISTORY_DIFF_SIZE_LIMIT: usize = 2048 * 3; // ~2048 tokens or ~50% of typical prompt budget
 const COLLABORATOR_EDIT_LOCALITY_CONTEXT_TOKENS: usize = 512;
 const LAST_CHANGE_GROUPING_TIME: Duration = Duration::from_secs(1);
-const ZED_PREDICT_DATA_COLLECTION_CHOICE: &str = "zed_predict_data_collection_choice";
+const XENOMORPHIC_PREDICT_DATA_COLLECTION_CHOICE: &str = "zed_predict_data_collection_choice";
 const REJECT_REQUEST_DEBOUNCE: Duration = Duration::from_secs(15);
 const EDIT_PREDICTION_SETTLED_EVENT: &str = "Edit Prediction Settled";
 const EDIT_PREDICTION_SETTLED_TTL: Duration = Duration::from_secs(60 * 5);
@@ -131,14 +131,14 @@ struct EditPredictionStoreGlobal(Entity<EditPredictionStore>);
 
 impl Global for EditPredictionStoreGlobal {}
 
-/// Configuration for using the raw Zeta2 endpoint.
+/// Configuration for using the raw Xeta2 endpoint.
 /// When set, the client uses the raw endpoint and constructs the prompt itself.
 /// The version is also used as the Baseten environment name (lowercased).
 #[derive(Clone)]
-pub struct Zeta2RawConfig {
+pub struct Xeta2RawConfig {
     pub model_id: Option<String>,
     pub environment: Option<String>,
-    pub format: ZetaFormat,
+    pub format: XetaFormat,
 }
 
 pub struct EditPredictionStore {
@@ -149,7 +149,7 @@ pub struct EditPredictionStore {
     projects: HashMap<EntityId, ProjectState>,
     update_required: bool,
     edit_prediction_model: EditPredictionModel,
-    zeta2_raw_config: Option<Zeta2RawConfig>,
+    xeta2_raw_config: Option<Xeta2RawConfig>,
     preferred_experiment: Option<String>,
     available_experiments: Vec<String>,
     pub mercury: Mercury,
@@ -170,7 +170,7 @@ pub(crate) struct EditPredictionRejectionPayload {
 
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum EditPredictionModel {
-    Zeta,
+    Xeta,
     Fim { format: EditPredictionPromptFormat },
     Mercury,
 }
@@ -181,7 +181,7 @@ pub struct EditPredictionModelInput {
     buffer: Entity<Buffer>,
     snapshot: BufferSnapshot,
     position: Anchor,
-    events: Vec<Arc<zeta_prompt::Event>>,
+    events: Vec<Arc<xeta_prompt::Event>>,
     related_files: Vec<RelatedFile>,
     mode: PredictEditsMode,
     trigger: PredictEditsRequestTrigger,
@@ -230,7 +230,7 @@ pub struct EditPredictionFinishedDebugEvent {
 /// An event with associated metadata for reconstructing buffer state.
 #[derive(Clone)]
 pub struct StoredEvent {
-    pub event: Arc<zeta_prompt::Event>,
+    pub event: Arc<xeta_prompt::Event>,
     pub old_snapshot: TextBufferSnapshot,
     pub new_snapshot_version: clock::Global,
     pub total_edit_range: Range<Anchor>,
@@ -262,14 +262,14 @@ impl StoredEvent {
 
         let a_is_predicted = matches!(
             self.event.as_ref(),
-            zeta_prompt::Event::BufferChange {
+            xeta_prompt::Event::BufferChange {
                 predicted: true,
                 ..
             }
         );
         let b_is_predicted = matches!(
             next_old_event.event.as_ref(),
-            zeta_prompt::Event::BufferChange {
+            xeta_prompt::Event::BufferChange {
                 predicted: true,
                 ..
             }
@@ -553,7 +553,7 @@ impl LastEvent {
             None
         } else {
             Some(StoredEvent {
-                event: Arc::new(zeta_prompt::Event::BufferChange {
+                event: Arc::new(xeta_prompt::Event::BufferChange {
                     old_path,
                     path,
                     diff,
@@ -801,7 +801,7 @@ impl EditPredictionStore {
             .log_err();
         });
 
-        let credentials_provider = zed_credentials_provider::global(cx);
+        let credentials_provider = xenomorphic_credentials_provider::global(cx);
 
         let this = Self {
             projects: HashMap::default(),
@@ -810,8 +810,8 @@ impl EditPredictionStore {
             llm_token,
             _fetch_experiments_task: fetch_experiments_task,
             update_required: false,
-            edit_prediction_model: EditPredictionModel::Zeta,
-            zeta2_raw_config: Self::zeta2_raw_config_from_env(),
+            edit_prediction_model: EditPredictionModel::Xeta,
+            xeta2_raw_config: Self::xeta2_raw_config_from_env(),
             preferred_experiment: None,
             available_experiments: Vec::new(),
             mercury: Mercury::new(cx),
@@ -830,12 +830,12 @@ impl EditPredictionStore {
         this
     }
 
-    fn zeta2_raw_config_from_env() -> Option<Zeta2RawConfig> {
-        let version_str = env::var("ZED_ZETA_FORMAT").ok()?;
-        let format = ZetaFormat::parse(&version_str).ok()?;
-        let model_id = env::var("ZED_ZETA_MODEL").ok();
-        let environment = env::var("ZED_ZETA_ENVIRONMENT").ok();
-        Some(Zeta2RawConfig {
+    fn xeta2_raw_config_from_env() -> Option<Xeta2RawConfig> {
+        let version_str = env::var("XENOMORPHIC_ZETA_FORMAT").ok()?;
+        let format = XetaFormat::parse(&version_str).ok()?;
+        let model_id = env::var("XENOMORPHIC_ZETA_MODEL").ok();
+        let environment = env::var("XENOMORPHIC_ZETA_ENVIRONMENT").ok();
+        Some(Xeta2RawConfig {
             model_id,
             environment,
             format,
@@ -846,12 +846,12 @@ impl EditPredictionStore {
         self.edit_prediction_model = model;
     }
 
-    pub fn set_zeta2_raw_config(&mut self, config: Zeta2RawConfig) {
-        self.zeta2_raw_config = Some(config);
+    pub fn set_xeta2_raw_config(&mut self, config: Xeta2RawConfig) {
+        self.xeta2_raw_config = Some(config);
     }
 
-    pub fn zeta2_raw_config(&self) -> Option<&Zeta2RawConfig> {
-        self.zeta2_raw_config.as_ref()
+    pub fn xeta2_raw_config(&self) -> Option<&Xeta2RawConfig> {
+        self.xeta2_raw_config.as_ref()
     }
 
     pub fn preferred_experiment(&self) -> Option<&str> {
@@ -871,7 +871,7 @@ impl EditPredictionStore {
             self.shown_predictions
                 .iter()
                 .find_map(|p| p.model_version.as_ref())
-                .and_then(|model_version| model_version.strip_prefix("zeta2:"))
+                .and_then(|model_version| model_version.strip_prefix("xeta2:"))
         })
     }
 
@@ -897,7 +897,7 @@ impl EditPredictionStore {
                         .method(Method::GET)
                         .uri(url.as_ref())
                         .header("Authorization", format!("Bearer {}", token))
-                        .header(ZED_VERSION_HEADER_NAME, app_version.to_string())
+                        .header(XENOMORPHIC_VERSION_HEADER_NAME, app_version.to_string())
                         .body(Default::default())?;
                     let mut response = http_client.send(request).await?;
                     if response.status().is_success() {
@@ -931,12 +931,12 @@ impl EditPredictionStore {
             EditPredictionModel::Mercury => {
                 edit_prediction_types::EditPredictionIconSet::new(IconName::Inception)
             }
-            EditPredictionModel::Zeta => {
-                edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict)
-                    .with_disabled(IconName::ZedPredictDisabled)
-                    .with_up(IconName::ZedPredictUp)
-                    .with_down(IconName::ZedPredictDown)
-                    .with_error(IconName::ZedPredictError)
+            EditPredictionModel::Xeta => {
+                edit_prediction_types::EditPredictionIconSet::new(IconName::XenomorphicPredict)
+                    .with_disabled(IconName::XenomorphicPredictDisabled)
+                    .with_up(IconName::XenomorphicPredictUp)
+                    .with_down(IconName::XenomorphicPredictDown)
+                    .with_error(IconName::XenomorphicPredictError)
             }
             EditPredictionModel::Fim { .. } => {
                 let settings = &all_language_settings(None, cx).edit_predictions;
@@ -1060,7 +1060,7 @@ impl EditPredictionStore {
     }
 
     pub fn usage(&self, cx: &App) -> Option<EditPredictionUsage> {
-        if matches!(self.edit_prediction_model, EditPredictionModel::Zeta) {
+        if matches!(self.edit_prediction_model, EditPredictionModel::Xeta) {
             self.user_store.read(cx).edit_prediction_usage()
         } else {
             None
@@ -1205,7 +1205,7 @@ impl EditPredictionStore {
         if !is_ep_store_provider(all_language_settings(None, cx).edit_predictions.provider) {
             return;
         }
-        // TODO [zeta2] init with recent paths
+        // TODO [xeta2] init with recent paths
         match event {
             project::Event::ActiveEntryChanged(Some(active_entry_id)) => {
                 let Some(project_state) = self.projects.get_mut(&project.entity_id()) else {
@@ -1512,13 +1512,13 @@ impl EditPredictionStore {
                     cx,
                 );
             }
-            EditPredictionModel::Zeta => {
+            EditPredictionModel::Xeta => {
                 let is_cloud = !matches!(
                     all_language_settings(None, cx).edit_predictions.provider,
                     EditPredictionProvider::Ollama | EditPredictionProvider::OpenAiCompatibleApi
                 );
                 if is_cloud {
-                    zeta::edit_prediction_accepted(self, current_prediction, cx)
+                    xeta::edit_prediction_accepted(self, current_prediction, cx)
                 }
             }
             EditPredictionModel::Fim { .. } => {}
@@ -1846,7 +1846,7 @@ impl EditPredictionStore {
         cx: &App,
     ) {
         match self.edit_prediction_model {
-            EditPredictionModel::Zeta => {
+            EditPredictionModel::Xeta => {
                 let is_cloud = !matches!(
                     all_language_settings(None, cx).edit_predictions.provider,
                     EditPredictionProvider::Ollama | EditPredictionProvider::OpenAiCompatibleApi
@@ -2107,7 +2107,7 @@ fn currently_following(project: &Entity<Project>, cx: &App) -> bool {
 
 fn is_ep_store_provider(provider: EditPredictionProvider) -> bool {
     match provider {
-        EditPredictionProvider::Zed
+        EditPredictionProvider::Xenomorphic
         | EditPredictionProvider::Mercury
         | EditPredictionProvider::Ollama
         | EditPredictionProvider::OpenAiCompatibleApi => true,
@@ -2145,7 +2145,7 @@ impl EditPredictionStore {
 
         let (needs_acceptance_tracking, max_pending_predictions) =
             match all_language_settings(None, cx).edit_predictions.provider {
-                EditPredictionProvider::Zed | EditPredictionProvider::Mercury => (true, 2),
+                EditPredictionProvider::Xenomorphic | EditPredictionProvider::Mercury => (true, 2),
                 EditPredictionProvider::Ollama => (false, 1),
                 EditPredictionProvider::OpenAiCompatibleApi => (false, 2),
                 EditPredictionProvider::None
@@ -2359,7 +2359,7 @@ impl EditPredictionStore {
         let project_state = self.projects.get(&project.entity_id()).unwrap();
         let stored_events = project_state.events(cx);
         let has_events = !stored_events.is_empty();
-        let events: Vec<Arc<zeta_prompt::Event>> =
+        let events: Vec<Arc<xeta_prompt::Event>> =
             stored_events.iter().map(|e| e.event.clone()).collect();
         let debug_tx = project_state.debug_tx.clone();
 
@@ -2385,7 +2385,7 @@ impl EditPredictionStore {
         let can_collect_data = !cfg!(test)
             && is_open_source
             && self.is_data_collection_enabled(cx)
-            && matches!(self.edit_prediction_model, EditPredictionModel::Zeta);
+            && matches!(self.edit_prediction_model, EditPredictionModel::Xeta);
         let inputs = EditPredictionModelInput {
             project: project.clone(),
             buffer: active_buffer,
@@ -2404,8 +2404,8 @@ impl EditPredictionStore {
         let capture_data = (can_collect_data && rand::random_ratio(1, 1000)).then(|| stored_events);
 
         let task = match self.edit_prediction_model {
-            EditPredictionModel::Zeta => {
-                zeta::request_prediction_with_zeta(self, inputs, capture_data, cx)
+            EditPredictionModel::Xeta => {
+                xeta::request_prediction_with_zeta(self, inputs, capture_data, cx)
             }
             EditPredictionModel::Fim { format } => fim::request_prediction(inputs, format, cx),
             EditPredictionModel::Mercury => {
@@ -2587,7 +2587,7 @@ impl EditPredictionStore {
     }
 
     pub(crate) async fn send_v3_request(
-        input: ZetaPromptInput,
+        input: XetaPromptInput,
         preferred_experiment: Option<String>,
         client: Arc<Client>,
         llm_token: LlmApiToken,
@@ -2659,7 +2659,7 @@ impl EditPredictionStore {
 
             let mut request_builder = request_builder
                 .header("Content-Type", "application/json")
-                .header(ZED_VERSION_HEADER_NAME, app_version.to_string());
+                .header(XENOMORPHIC_VERSION_HEADER_NAME, app_version.to_string());
 
             // Only add Authorization header if we have a token
             if let Some(ref token_value) = token {
@@ -2678,7 +2678,7 @@ impl EditPredictionStore {
             {
                 anyhow::ensure!(
                     app_version >= minimum_required_version,
-                    ZedUpdateRequiredError {
+                    XenomorphicUpdateRequiredError {
                         minimum_version: minimum_required_version
                     }
                 );
@@ -2791,7 +2791,7 @@ impl EditPredictionStore {
 
     fn load_legacy_data_collection_enabled(cx: &App) -> bool {
         KeyValueStore::global(cx)
-            .read_kvp(ZED_PREDICT_DATA_COLLECTION_CHOICE)
+            .read_kvp(XENOMORPHIC_PREDICT_DATA_COLLECTION_CHOICE)
             .log_err()
             .flatten()
             .as_deref()
@@ -2941,13 +2941,13 @@ fn merge_trailing_events_if_needed(
         &merged_edit_range,
     ) {
         let merged_event = match oldest_event.event.as_ref() {
-            zeta_prompt::Event::BufferChange {
+            xeta_prompt::Event::BufferChange {
                 old_path,
                 path,
                 in_open_source_repo,
                 ..
             } => StoredEvent {
-                event: Arc::new(zeta_prompt::Event::BufferChange {
+                event: Arc::new(xeta_prompt::Event::BufferChange {
                     old_path: old_path.clone(),
                     path: path.clone(),
                     diff,
@@ -2955,7 +2955,7 @@ fn merge_trailing_events_if_needed(
                     predicted: events_to_merge.all(|e| {
                         matches!(
                             e.event.as_ref(),
-                            zeta_prompt::Event::BufferChange {
+                            xeta_prompt::Event::BufferChange {
                                 predicted: true,
                                 ..
                             }
@@ -2993,34 +2993,34 @@ fn merge_anchor_ranges(
 
 #[derive(Error, Debug)]
 #[error(
-    "You must update to Zed version {minimum_version} or higher to continue using edit predictions."
+    "You must update to Xenomorphic version {minimum_version} or higher to continue using edit predictions."
 )]
-pub struct ZedUpdateRequiredError {
+pub struct XenomorphicUpdateRequiredError {
     minimum_version: Version,
 }
 
-struct ZedPredictUpsell;
+struct XenomorphicPredictUpsell;
 
 fn is_upsell_dismissed(cx: &App) -> bool {
-    // To make this backwards compatible with older versions of Zed, we
+    // To make this backwards compatible with older versions of Xenomorphic, we
     // check if the user has seen the previous Edit Prediction Onboarding
     // before, by checking the data collection choice which was written to
     // the database once the user clicked on "Accept and Enable"
     let kvp = KeyValueStore::global(cx);
     if kvp
-        .read_kvp(ZED_PREDICT_DATA_COLLECTION_CHOICE)
+        .read_kvp(XENOMORPHIC_PREDICT_DATA_COLLECTION_CHOICE)
         .log_err()
         .is_some_and(|s| s.is_some())
     {
         return true;
     }
 
-    kvp.read_kvp(ZedPredictUpsell::KEY)
+    kvp.read_kvp(XenomorphicPredictUpsell::KEY)
         .log_err()
         .is_some_and(|s| s.is_some())
 }
 
-impl Dismissable for ZedPredictUpsell {
+impl Dismissable for XenomorphicPredictUpsell {
     const KEY: &'static str = "dismissed-edit-predict-upsell";
 
     fn dismissed(cx: &App) -> bool {
@@ -3035,8 +3035,8 @@ pub fn should_show_upsell_modal(cx: &App) -> bool {
 pub fn init(cx: &mut App) {
     cx.observe_new(move |workspace: &mut Workspace, _, _cx| {
         workspace.register_action(
-            move |workspace, _: &zed_actions::OpenZedPredictOnboarding, window, cx| {
-                ZedPredictModal::toggle(
+            move |workspace, _: &xenomorphic_actions::OpenZedPredictOnboarding, window, cx| {
+                XenomorphicPredictModal::toggle(
                     workspace,
                     workspace.user_store().clone(),
                     workspace.client().clone(),

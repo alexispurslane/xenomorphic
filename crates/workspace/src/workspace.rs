@@ -155,7 +155,7 @@ pub use workspace_settings::{
     AutosaveSetting, BottomDockLayout, EncodingDisplayOptions, FocusFollowsMouse,
     RestoreOnStartupBehavior, StatusBarSettings, TabBarSettings, WorkspaceSettings,
 };
-use zed_actions::{Spawn, feedback::FileBugReport, theme::ToggleMode};
+use xenomorphic_actions::{Spawn, feedback::FileBugReport, theme::ToggleMode};
 
 use crate::{dock::PanelSizeState, item::ItemBufferKind, notifications::NotificationId};
 use crate::{
@@ -168,15 +168,15 @@ use crate::{
 
 pub const SERIALIZATION_THROTTLE_TIME: Duration = Duration::from_millis(200);
 
-static ZED_WINDOW_SIZE: LazyLock<Option<Size<Pixels>>> = LazyLock::new(|| {
-    env::var("ZED_WINDOW_SIZE")
+static XENOMORPHIC_WINDOW_SIZE: LazyLock<Option<Size<Pixels>>> = LazyLock::new(|| {
+    env::var("XENOMORPHIC_WINDOW_SIZE")
         .ok()
         .as_deref()
         .and_then(parse_pixel_size_env_var)
 });
 
-static ZED_WINDOW_POSITION: LazyLock<Option<Point<Pixels>>> = LazyLock::new(|| {
-    env::var("ZED_WINDOW_POSITION")
+static XENOMORPHIC_WINDOW_POSITION: LazyLock<Option<Point<Pixels>>> = LazyLock::new(|| {
+    env::var("XENOMORPHIC_WINDOW_POSITION")
         .ok()
         .as_deref()
         .and_then(parse_pixel_position_env_var)
@@ -6273,7 +6273,7 @@ impl Workspace {
 
             let Some(task) = task else {
                 anyhow::bail!(
-                    "failed to construct view from leader (maybe from a different version of zed?)"
+                    "failed to construct view from leader (maybe from a different version of xenomorphic?)"
                 );
             };
 
@@ -8159,8 +8159,8 @@ fn leader_border_for_pane(
 }
 
 fn window_bounds_env_override() -> Option<Bounds<Pixels>> {
-    ZED_WINDOW_POSITION
-        .zip(*ZED_WINDOW_SIZE)
+    XENOMORPHIC_WINDOW_POSITION
+        .zip(*XENOMORPHIC_WINDOW_SIZE)
         .map(|(position, size)| Bounds {
             origin: position,
             size,
@@ -9186,9 +9186,9 @@ pub struct OpenChannelNotesById {
 actions!(
     zed,
     [
-        /// Opens the Zed log file.
+        /// Opens the Xenomorphic log file.
         OpenLog,
-        /// Reveals the Zed log file in the system file manager.
+        /// Reveals the Xenomorphic log file in the system file manager.
         RevealLogInFileManager
     ]
 );
@@ -9402,7 +9402,7 @@ pub fn join_channel(
                         let detail: SharedString = match err.error_code() {
                             ErrorCode::SignedOut => "Please sign in to continue.".into(),
                             ErrorCode::UpgradeRequired => concat!(
-                                "Your are running an unsupported version of Zed. ",
+                                "Your are running an unsupported version of Xenomorphic. ",
                                 "Please update to continue."
                             )
                             .into(),
@@ -15646,7 +15646,7 @@ mod tests {
     async fn test_toggle_theme_mode_persists_and_updates_active_theme(cx: &mut TestAppContext) {
         use settings::{ThemeName, ThemeSelection};
         use theme::SystemAppearance;
-        use zed_actions::theme::ToggleMode;
+        use xenomorphic_actions::theme::ToggleMode;
 
         init_test(cx);
 

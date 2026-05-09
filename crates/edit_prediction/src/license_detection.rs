@@ -423,7 +423,7 @@ mod tests {
     }
 
     /*
-    // Uncomment this and run with `cargo test -p zeta -- --no-capture &> licenses-output` to
+    // Uncomment this and run with `cargo test -p xeta -- --no-capture &> licenses-output` to
     // traverse your entire home directory and run license detection on every file that has a
     // license-like name.
     #[test]

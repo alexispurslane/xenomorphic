@@ -13,7 +13,7 @@ use crate::{
 };
 use anyhow::Context as _;
 use cloud_llm_client::predict_edits_v3::{RawCompletionRequest, RawCompletionResponse};
-use edit_prediction::{DebugEvent, EditPredictionStore, Zeta2RawConfig};
+use edit_prediction::{DebugEvent, EditPredictionStore, Xeta2RawConfig};
 use futures::{AsyncReadExt as _, FutureExt as _, StreamExt as _, future::Shared};
 use gpui::{AppContext as _, AsyncApp, Task};
 use http_client::{AsyncBody, HttpClient, Method};
@@ -25,7 +25,7 @@ use std::{
         atomic::{AtomicUsize, Ordering::SeqCst},
     },
 };
-use zeta_prompt::ZetaFormat;
+use xeta_prompt::XetaFormat;
 
 static ANTHROPIC_CLIENT: OnceLock<AnthropicClient> = OnceLock::new();
 static OPENAI_CLIENT: OnceLock<OpenAiClient> = OnceLock::new();
@@ -98,7 +98,7 @@ pub async fn run_prediction(
         run_format_prompt(
             example,
             &FormatPromptArgs {
-                provider: PredictionProvider::Zeta2(format),
+                provider: PredictionProvider::Xeta2(format),
             },
             app_state.clone(),
             example_progress,
@@ -117,7 +117,7 @@ pub async fn run_prediction(
 
     if matches!(
         provider,
-        PredictionProvider::Zeta1 | PredictionProvider::Zeta2(_)
+        PredictionProvider::Xeta1 | PredictionProvider::Xeta2(_)
     ) {
         step_progress.set_substatus("authenticating");
         static AUTHENTICATED: OnceLock<Shared<Task<()>>> = OnceLock::new();
@@ -141,8 +141,8 @@ pub async fn run_prediction(
 
     ep_store.update(&mut cx, |store, _cx| {
         let model = match provider {
-            PredictionProvider::Zeta1 => edit_prediction::EditPredictionModel::Zeta,
-            PredictionProvider::Zeta2(_) => edit_prediction::EditPredictionModel::Zeta,
+            PredictionProvider::Xeta1 => edit_prediction::EditPredictionModel::Xeta,
+            PredictionProvider::Xeta2(_) => edit_prediction::EditPredictionModel::Xeta,
             PredictionProvider::Mercury => edit_prediction::EditPredictionModel::Mercury,
             PredictionProvider::Teacher(..)
             | PredictionProvider::TeacherMultiRegion(..)
@@ -155,13 +155,13 @@ pub async fn run_prediction(
         };
         store.set_edit_prediction_model(model);
 
-        // If user specified a non-default Zeta2 version, configure raw endpoint.
-        // ZED_ZETA_MODEL env var is optional.
-        if let PredictionProvider::Zeta2(format) = provider {
-            if format != ZetaFormat::default() {
-                let model_id = std::env::var("ZED_ZETA_MODEL").ok();
-                let environment = std::env::var("ZED_ZETA_ENVIRONMENT").ok();
-                store.set_zeta2_raw_config(Zeta2RawConfig {
+        // If user specified a non-default Xeta2 version, configure raw endpoint.
+        // XENOMORPHIC_ZETA_MODEL env var is optional.
+        if let PredictionProvider::Xeta2(format) = provider {
+            if format != XetaFormat::default() {
+                let model_id = std::env::var("XENOMORPHIC_ZETA_MODEL").ok();
+                let environment = std::env::var("XENOMORPHIC_ZETA_ENVIRONMENT").ok();
+                store.set_xeta2_raw_config(Xeta2RawConfig {
                     model_id,
                     environment,
                     format,
@@ -198,7 +198,7 @@ pub async fn run_prediction(
 
                         if let Some(prompt) = request.prompt {
                             fs::write(run_dir.join("prediction_prompt.md"), &prompt)?;
-                            if matches!(provider, PredictionProvider::Zeta2(_)) {
+                            if matches!(provider, PredictionProvider::Xeta2(_)) {
                                 updated_example.prompt.get_or_insert(ExamplePrompt {
                                     input: prompt,
                                     expected_output: None,
@@ -422,14 +422,14 @@ async fn predict_anthropic(
                 .prompt
                 .as_ref()
                 .map(|prompt| prompt.provider)
-                .unwrap_or(PredictionProvider::Teacher(backend, ZetaFormat::default()))
+                .unwrap_or(PredictionProvider::Teacher(backend, XetaFormat::default()))
         } else {
             match example.prompt.as_ref().map(|prompt| prompt.provider) {
                 Some(PredictionProvider::TeacherMultiRegion(_))
                 | Some(PredictionProvider::TeacherMultiRegionNonBatching(_)) => {
                     PredictionProvider::TeacherMultiRegionNonBatching(backend)
                 }
-                _ => PredictionProvider::TeacherNonBatching(backend, ZetaFormat::default()),
+                _ => PredictionProvider::TeacherNonBatching(backend, XetaFormat::default()),
             }
         };
 
@@ -451,7 +451,7 @@ async fn predict_anthropic(
                     Some(PredictionProvider::TeacherMultiRegion(_)) => {
                         PredictionProvider::TeacherMultiRegion(backend)
                     }
-                    _ => PredictionProvider::Teacher(backend, ZetaFormat::default()),
+                    _ => PredictionProvider::Teacher(backend, XetaFormat::default()),
                 }
             } else {
                 match example.prompt.as_ref().map(|prompt| prompt.provider) {
@@ -459,7 +459,7 @@ async fn predict_anthropic(
                     | Some(PredictionProvider::TeacherMultiRegionNonBatching(_)) => {
                         PredictionProvider::TeacherMultiRegionNonBatching(backend)
                     }
-                    _ => PredictionProvider::TeacherNonBatching(backend, ZetaFormat::default()),
+                    _ => PredictionProvider::TeacherNonBatching(backend, XetaFormat::default()),
                 }
             },
             cumulative_logprob: None,
@@ -541,14 +541,14 @@ async fn predict_openai(
                 .prompt
                 .as_ref()
                 .map(|prompt| prompt.provider)
-                .unwrap_or(PredictionProvider::Teacher(backend, ZetaFormat::default()))
+                .unwrap_or(PredictionProvider::Teacher(backend, XetaFormat::default()))
         } else {
             match example.prompt.as_ref().map(|prompt| prompt.provider) {
                 Some(PredictionProvider::TeacherMultiRegion(_))
                 | Some(PredictionProvider::TeacherMultiRegionNonBatching(_)) => {
                     PredictionProvider::TeacherMultiRegionNonBatching(backend)
                 }
-                _ => PredictionProvider::TeacherNonBatching(backend, ZetaFormat::default()),
+                _ => PredictionProvider::TeacherNonBatching(backend, XetaFormat::default()),
             }
         };
 
@@ -570,7 +570,7 @@ async fn predict_openai(
                     Some(PredictionProvider::TeacherMultiRegion(_)) => {
                         PredictionProvider::TeacherMultiRegion(backend)
                     }
-                    _ => PredictionProvider::Teacher(backend, ZetaFormat::default()),
+                    _ => PredictionProvider::Teacher(backend, XetaFormat::default()),
                 }
             } else {
                 match example.prompt.as_ref().map(|prompt| prompt.provider) {
@@ -578,7 +578,7 @@ async fn predict_openai(
                     | Some(PredictionProvider::TeacherMultiRegionNonBatching(_)) => {
                         PredictionProvider::TeacherMultiRegionNonBatching(backend)
                     }
-                    _ => PredictionProvider::TeacherNonBatching(backend, ZetaFormat::default()),
+                    _ => PredictionProvider::TeacherNonBatching(backend, XetaFormat::default()),
                 }
             },
             cumulative_logprob: None,
@@ -592,11 +592,11 @@ async fn predict_openai(
 
 pub async fn predict_baseten(
     example: &mut Example,
-    format: ZetaFormat,
+    format: XetaFormat,
     step_progress: &StepProgress,
 ) -> anyhow::Result<()> {
     let model_id =
-        std::env::var("ZED_ZETA_MODEL").context("ZED_ZETA_MODEL environment variable required")?;
+        std::env::var("XENOMORPHIC_ZETA_MODEL").context("XENOMORPHIC_ZETA_MODEL environment variable required")?;
 
     let api_key =
         std::env::var("BASETEN_API_KEY").context("BASETEN_API_KEY environment variable not set")?;
@@ -659,7 +659,7 @@ pub async fn predict_baseten(
     let actual_output = format!("{prefill}{actual_output}");
 
     let (actual_patch, actual_cursor) =
-        parse_prediction_output(example, &actual_output, PredictionProvider::Zeta2(format))?;
+        parse_prediction_output(example, &actual_output, PredictionProvider::Xeta2(format))?;
 
     let prediction = ExamplePrediction {
         actual_patch: Some(actual_patch),

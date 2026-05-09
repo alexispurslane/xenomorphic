@@ -12,7 +12,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use telemetry_events::EditPredictionRating;
 
-use zeta_prompt::{ZetaFormat, ZetaPromptInput, excerpt_range_for_format};
+use xeta_prompt::{XetaFormat, XetaPromptInput, excerpt_range_for_format};
 
 use crate::PredictionProvider;
 use crate::example::{Example, ExamplePrompt};
@@ -23,7 +23,7 @@ pub(crate) const SNOWFLAKE_SUCCESS_CODE: &str = "090001";
 pub(crate) const SNOWFLAKE_ASYNC_IN_PROGRESS_CODE: &str = "333334";
 const SNOWFLAKE_TIMEOUT_CODE: &str = "000630";
 
-/// Minimum Zed version for filtering captured examples.
+/// Minimum Xenomorphic version for filtering captured examples.
 /// For example, `MinCaptureVersion { minor: 224, patch: 1 }` means only pull examples
 /// where `zed_version >= 0.224.1`.
 #[derive(Clone, Copy, Debug)]
@@ -1030,7 +1030,7 @@ fn rated_examples_from_response<'a>(
 
             let request_id = get_string("request_id");
             let inputs_json = get_json("inputs");
-            let inputs: Option<ZetaPromptInput> = match &inputs_json {
+            let inputs: Option<XetaPromptInput> = match &inputs_json {
                 Some(v) => match serde_json::from_value(v.clone()) {
                     Ok(parsed) => Some(parsed),
                     Err(e) => {
@@ -1086,7 +1086,7 @@ fn build_rated_example(
     request_id: Option<String>,
     device_id: String,
     time: String,
-    input: ZetaPromptInput,
+    input: XetaPromptInput,
     output: String,
     rating: String,
     feedback: String,
@@ -1179,7 +1179,7 @@ fn requested_examples_from_response<'a>(
             let device_id = get_string("device_id");
             let time = get_string("time");
             let input_json = get_json("input");
-            let input: Option<ZetaPromptInput> =
+            let input: Option<XetaPromptInput> =
                 input_json.clone().and_then(|v| serde_json::from_value(v).ok());
             let zed_version = get_string("zed_version");
 
@@ -1259,13 +1259,13 @@ fn settled_examples_from_response<'a>(
             let time = get_string("time");
             let input_raw = get_value("input");
             let input_json = parse_json_value(input_raw.as_ref());
-            let input: Option<ZetaPromptInput> = input_json
+            let input: Option<XetaPromptInput> = input_json
                 .as_ref()
                 .and_then(|parsed| serde_json::from_value(parsed.clone()).ok());
             let requested_output = get_string("requested_output");
             let settled_editable_region = get_string("settled_editable_region");
             let requested_format =
-                get_string("requested_format").and_then(|s| ZetaFormat::parse(&s).ok());
+                get_string("requested_format").and_then(|s| XetaFormat::parse(&s).ok());
             let zed_version = get_string("zed_version");
 
             match (
@@ -1380,7 +1380,7 @@ fn captured_examples_from_response<'a>(
             let time = get_string("time");
             let input_raw = get_value("input");
             let input_json = parse_json_value(input_raw.as_ref());
-            let input: Option<ZetaPromptInput> = input_json
+            let input: Option<XetaPromptInput> = input_json
                 .as_ref()
                 .and_then(|parsed| serde_json::from_value(parsed.clone()).ok());
             let example_raw = get_value("example");
@@ -1463,10 +1463,10 @@ fn build_settled_example(
     request_id: String,
     device_id: String,
     time: String,
-    input: ZetaPromptInput,
+    input: XetaPromptInput,
     requested_output: String,
     settled_editable_region: String,
-    requested_format: ZetaFormat,
+    requested_format: XetaFormat,
     zed_version: Option<String>,
 ) -> Example {
     let requested_editable_range =
@@ -1519,7 +1519,7 @@ fn build_captured_example(
     request_id: String,
     device_id: String,
     time: String,
-    input: ZetaPromptInput,
+    input: XetaPromptInput,
     mut example_spec: ExampleSpec,
     settled_editable_region: String,
     zed_version: Option<String>,
@@ -1604,7 +1604,7 @@ fn rejected_examples_from_response<'a>(
             let device_id = get_string("device_id");
             let time = get_string("time");
             let input_json = get_json("input");
-            let input: Option<ZetaPromptInput> =
+            let input: Option<XetaPromptInput> =
                 input_json.clone().and_then(|v| serde_json::from_value(v).ok());
             let prompt = get_string("prompt");
             let output = get_string("output");
@@ -1649,7 +1649,7 @@ fn build_rejected_example(
     request_id: String,
     device_id: String,
     time: String,
-    input: ZetaPromptInput,
+    input: XetaPromptInput,
     prompt: Option<String>,
     output: String,
     was_shown: bool,
@@ -1691,7 +1691,7 @@ fn build_example_from_snowflake(
     request_id: String,
     device_id: String,
     time: String,
-    input: ZetaPromptInput,
+    input: XetaPromptInput,
     tags: Vec<String>,
     rejection: Option<RejectionInfo>,
     zed_version: Option<String>,
@@ -1701,7 +1701,7 @@ fn build_example_from_snowflake(
 
     let mut edit_history = String::new();
     for event in &input.events {
-        zeta_prompt::write_event(&mut edit_history, event);
+        xeta_prompt::write_event(&mut edit_history, event);
         edit_history.push('\n');
     }
 

@@ -3597,7 +3597,7 @@ fn drain_git_repo_updates(events: &mut futures::channel::mpsc::UnboundedReceiver
 }
 
 fn init_test(cx: &mut gpui::TestAppContext) {
-    zlog::init_test();
+    xlog::init_test();
 
     cx.update(|cx| {
         let settings_store = SettingsStore::test(cx);

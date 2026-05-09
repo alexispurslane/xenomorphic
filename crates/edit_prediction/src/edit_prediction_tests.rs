@@ -42,7 +42,7 @@ use util::{
 };
 use uuid::Uuid;
 use workspace::{AppState, CollaboratorId, MultiWorkspace};
-use zeta_prompt::ZetaPromptInput;
+use xeta_prompt::XetaPromptInput;
 
 use crate::{
     BufferEditPrediction, EDIT_PREDICTION_SETTLED_QUIESCENCE, EditPredictionId,
@@ -550,7 +550,7 @@ async fn test_edit_history_getter_pause_splits_last_event(cx: &mut TestAppContex
     });
     assert_eq!(first_total_edit_range, Point::new(1, 0)..Point::new(1, 3));
 
-    let zeta_prompt::Event::BufferChange { diff, .. } = events[0].event.as_ref();
+    let xeta_prompt::Event::BufferChange { diff, .. } = events[0].event.as_ref();
     assert_eq!(
         diff.as_str(),
         indoc! {"
@@ -567,7 +567,7 @@ async fn test_edit_history_getter_pause_splits_last_event(cx: &mut TestAppContex
     });
     assert_eq!(second_total_edit_range, Point::new(1, 3)..Point::new(1, 13));
 
-    let zeta_prompt::Event::BufferChange { diff, .. } = events[1].event.as_ref();
+    let xeta_prompt::Event::BufferChange { diff, .. } = events[1].event.as_ref();
     assert_eq!(
         diff.as_str(),
         indoc! {"
@@ -763,7 +763,7 @@ fn render_events(events: &[StoredEvent]) -> String {
     events
         .iter()
         .map(|e| {
-            let zeta_prompt::Event::BufferChange { diff, .. } = e.event.as_ref();
+            let xeta_prompt::Event::BufferChange { diff, .. } = e.event.as_ref();
             diff.as_str()
         })
         .collect::<Vec<_>>()
@@ -774,7 +774,7 @@ fn render_events_with_predicted(events: &[StoredEvent]) -> Vec<String> {
     events
         .iter()
         .map(|e| {
-            let zeta_prompt::Event::BufferChange {
+            let xeta_prompt::Event::BufferChange {
                 diff, predicted, ..
             } = e.event.as_ref();
             let prefix = if *predicted { "predicted" } else { "manual" };
@@ -1380,7 +1380,7 @@ async fn test_empty_prediction(cx: &mut TestAppContext) {
 
     let (request, respond_tx) = requests.predict.next().await.unwrap();
     let mut response = model_response(&request, "");
-    response.model_version = Some("zeta2:test-empty".to_string());
+    response.model_version = Some("xeta2:test-empty".to_string());
     let id = response.request_id.clone();
     respond_tx.send(response).unwrap();
 
@@ -1403,7 +1403,7 @@ async fn test_empty_prediction(cx: &mut TestAppContext) {
             request_id: id,
             reason: EditPredictionRejectReason::Empty,
             was_shown: false,
-            model_version: Some("zeta2:test-empty".to_string()),
+            model_version: Some("xeta2:test-empty".to_string()),
             e2e_latency_ms: Some(0),
         }]
     );
@@ -1443,7 +1443,7 @@ async fn test_interpolated_empty(cx: &mut TestAppContext) {
     });
 
     let mut response = model_response(&request, SIMPLE_DIFF);
-    response.model_version = Some("zeta2:test-interpolated-empty".to_string());
+    response.model_version = Some("xeta2:test-interpolated-empty".to_string());
     let id = response.request_id.clone();
     respond_tx.send(response).unwrap();
 
@@ -1466,7 +1466,7 @@ async fn test_interpolated_empty(cx: &mut TestAppContext) {
             request_id: id,
             reason: EditPredictionRejectReason::InterpolatedEmpty,
             was_shown: false,
-            model_version: Some("zeta2:test-interpolated-empty".to_string()),
+            model_version: Some("xeta2:test-interpolated-empty".to_string()),
             e2e_latency_ms: Some(0),
         }]
     );
@@ -1630,7 +1630,7 @@ async fn test_current_preferred(cx: &mut TestAppContext) {
              Bye
         "},
     );
-    second_response.model_version = Some("zeta2:test-current-preferred".to_string());
+    second_response.model_version = Some("xeta2:test-current-preferred".to_string());
     let second_id = second_response.request_id.clone();
     respond_tx.send(second_response).unwrap();
 
@@ -1657,7 +1657,7 @@ async fn test_current_preferred(cx: &mut TestAppContext) {
             request_id: second_id,
             reason: EditPredictionRejectReason::CurrentPreferred,
             was_shown: false,
-            model_version: Some("zeta2:test-current-preferred".to_string()),
+            model_version: Some("xeta2:test-current-preferred".to_string()),
             e2e_latency_ms: Some(0),
         }]
     );
@@ -1722,7 +1722,7 @@ async fn test_cancel_earlier_pending_requests(cx: &mut TestAppContext) {
     });
 
     let mut first_response = model_response(&request1, SIMPLE_DIFF);
-    first_response.model_version = Some("zeta2:test-canceled".to_string());
+    first_response.model_version = Some("xeta2:test-canceled".to_string());
     let first_id = first_response.request_id.clone();
     respond_first.send(first_response).unwrap();
 
@@ -1751,7 +1751,7 @@ async fn test_cancel_earlier_pending_requests(cx: &mut TestAppContext) {
             request_id: first_id,
             reason: EditPredictionRejectReason::Canceled,
             was_shown: false,
-            model_version: Some("zeta2:test-canceled".to_string()),
+            model_version: Some("xeta2:test-canceled".to_string()),
             e2e_latency_ms: None,
         }]
     );
@@ -1836,7 +1836,7 @@ async fn test_cancel_second_on_third_request(cx: &mut TestAppContext) {
     });
 
     let mut cancelled_response = model_response(&request2, SIMPLE_DIFF);
-    cancelled_response.model_version = Some("zeta2:test-canceled-second".to_string());
+    cancelled_response.model_version = Some("xeta2:test-canceled-second".to_string());
     let cancelled_id = cancelled_response.request_id.clone();
     respond_second.send(cancelled_response).unwrap();
 
@@ -1884,7 +1884,7 @@ async fn test_cancel_second_on_third_request(cx: &mut TestAppContext) {
                 request_id: cancelled_id,
                 reason: EditPredictionRejectReason::Canceled,
                 was_shown: false,
-                model_version: Some("zeta2:test-canceled-second".to_string()),
+                model_version: Some("xeta2:test-canceled-second".to_string()),
                 e2e_latency_ms: None,
             },
             EditPredictionRejection {
@@ -2241,11 +2241,11 @@ fn test_active_buffer_diagnostics_fetching(cx: &mut TestAppContext) {
     let search_range = snapshot.offset_to_point(search_ranges[0].start)
         ..snapshot.offset_to_point(search_ranges[0].end);
 
-    let active_buffer_diagnostics = zeta::active_buffer_diagnostics(&snapshot, search_range, 100);
+    let active_buffer_diagnostics = xeta::active_buffer_diagnostics(&snapshot, search_range, 100);
 
     assert_eq!(
         active_buffer_diagnostics,
-        vec![zeta_prompt::ActiveBufferDiagnostic {
+        vec![xeta_prompt::ActiveBufferDiagnostic {
             severity: Some(1),
             message: "second error".to_string(),
             snippet: text,
@@ -2313,7 +2313,7 @@ fn test_active_buffer_diagnostics_fetching(cx: &mut TestAppContext) {
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
 
     let active_buffer_diagnostics =
-        zeta::active_buffer_diagnostics(&snapshot, Point::new(2, 0)..Point::new(4, 0), 100);
+        xeta::active_buffer_diagnostics(&snapshot, Point::new(2, 0)..Point::new(4, 0), 100);
 
     assert_eq!(
         active_buffer_diagnostics
@@ -2348,7 +2348,7 @@ fn test_active_buffer_diagnostics_fetching(cx: &mut TestAppContext) {
 // Generate a model response that would apply the given diff to the active file.
 fn model_response(request: &PredictEditsV3Request, diff_to_apply: &str) -> PredictEditsV3Response {
     let editable_range =
-        zeta_prompt::excerpt_range_for_format(Default::default(), &request.input.excerpt_ranges).1;
+        xeta_prompt::excerpt_range_for_format(Default::default(), &request.input.excerpt_ranges).1;
     let excerpt = request.input.cursor_excerpt[editable_range.clone()].to_string();
     let new_excerpt = apply_diff_to_string(diff_to_apply, &excerpt).unwrap();
 
@@ -2372,8 +2372,8 @@ fn empty_response() -> PredictEditsV3Response {
 }
 
 fn prompt_from_request(request: &PredictEditsV3Request) -> String {
-    zeta_prompt::format_zeta_prompt(&request.input, zeta_prompt::ZetaFormat::default())
-        .expect("default zeta prompt formatting should succeed in edit prediction tests")
+    xeta_prompt::format_xeta_prompt(&request.input, xeta_prompt::XetaFormat::default())
+        .expect("default xeta prompt formatting should succeed in edit prediction tests")
 }
 
 fn assert_no_predict_request_ready(
@@ -2409,12 +2409,12 @@ fn init_test_with_fake_client_and_legacy_data_collection(
         cx.set_global(AppDatabase::test_new());
         let settings_store = SettingsStore::test(cx);
         cx.set_global(settings_store);
-        zlog::init_test();
+        xlog::init_test();
 
         if let Some(legacy_data_collection_choice) = legacy_data_collection_choice {
             KeyValueStore::global(cx)
                 .write_kvp(
-                    ZED_PREDICT_DATA_COLLECTION_CHOICE.into(),
+                    XENOMORPHIC_PREDICT_DATA_COLLECTION_CHOICE.into(),
                     legacy_data_collection_choice.to_string(),
                 )
                 .now_or_never()
@@ -2502,7 +2502,7 @@ async fn test_edit_prediction_basic_interpolation(cx: &mut TestAppContext) {
         buffer: buffer.clone(),
         snapshot: cx.read(|cx| buffer.read(cx).snapshot()),
         id: EditPredictionId("the-id".into()),
-        inputs: ZetaPromptInput {
+        inputs: XetaPromptInput {
             events: Default::default(),
             related_files: Default::default(),
             active_buffer_diagnostics: vec![],
@@ -2671,9 +2671,9 @@ async fn test_edit_prediction_end_of_buffer(cx: &mut TestAppContext) {
 
 #[gpui::test]
 async fn test_edit_prediction_no_spurious_trailing_newline(cx: &mut TestAppContext) {
-    // Test that zeta2's newline normalization logic doesn't insert spurious newlines.
+    // Test that xeta2's newline normalization logic doesn't insert spurious newlines.
     // When the buffer ends without a trailing newline, but the model returns output
-    // with a trailing newline, zeta2 should normalize both sides before diffing
+    // with a trailing newline, xeta2 should normalize both sides before diffing
     // so no spurious newline is inserted.
     let (ep_store, mut requests) = init_test_with_fake_client(cx);
     let fs = FakeFs::new(cx.executor());
@@ -2708,7 +2708,7 @@ async fn test_edit_prediction_no_spurious_trailing_newline(cx: &mut TestAppConte
     let (request, respond_tx) = requests.predict.next().await.unwrap();
 
     // Model returns output WITH a trailing newline, even though the buffer doesn't have one.
-    // Zeta2 should normalize both sides before diffing, so no spurious newline is inserted.
+    // Xeta2 should normalize both sides before diffing, so no spurious newline is inserted.
     let excerpt_length = request.input.cursor_excerpt.len();
     let response = PredictEditsV3Response {
         request_id: Uuid::new_v4().to_string(),
@@ -2907,7 +2907,7 @@ async fn make_test_ep_store(
 
     let ep_store = cx.new(|cx| {
         let mut ep_store = EditPredictionStore::new(client, project.read(cx).user_store(), cx);
-        ep_store.set_edit_prediction_model(EditPredictionModel::Zeta);
+        ep_store.set_edit_prediction_model(EditPredictionModel::Xeta);
 
         let worktrees = project.read(cx).worktrees(cx).collect::<Vec<_>>();
         for worktree in worktrees {
@@ -3007,7 +3007,7 @@ async fn test_unauthenticated_without_custom_url_blocks_prediction_impl(cx: &mut
     cx.background_executor.run_until_parked();
 
     let completion_task = ep_store.update(cx, |ep_store, cx| {
-        ep_store.set_edit_prediction_model(EditPredictionModel::Zeta);
+        ep_store.set_edit_prediction_model(EditPredictionModel::Xeta);
         ep_store.request_prediction(&project, &buffer, cursor, Default::default(), cx)
     });
 
@@ -3471,7 +3471,7 @@ async fn test_data_collection_default_uses_cached_legacy_value(cx: &mut TestAppC
     });
 
     cx.update(|cx| KeyValueStore::global(cx))
-        .delete_kvp(ZED_PREDICT_DATA_COLLECTION_CHOICE.into())
+        .delete_kvp(XENOMORPHIC_PREDICT_DATA_COLLECTION_CHOICE.into())
         .await
         .unwrap();
 
@@ -3618,10 +3618,10 @@ async fn test_toggle_data_collection_from_kv_enabled_state(cx: &mut TestAppConte
 async fn test_upsell_shown_by_default(cx: &mut TestAppContext) {
     init_test(cx);
     let kvp = cx.update(|cx| KeyValueStore::global(cx));
-    kvp.delete_kvp(ZED_PREDICT_DATA_COLLECTION_CHOICE.into())
+    kvp.delete_kvp(XENOMORPHIC_PREDICT_DATA_COLLECTION_CHOICE.into())
         .await
         .ok();
-    kvp.delete_kvp(ZedPredictUpsell::KEY.into()).await.ok();
+    kvp.delete_kvp(XenomorphicPredictUpsell::KEY.into()).await.ok();
 
     cx.update(|cx| assert!(should_show_upsell_modal(cx)));
 }
@@ -3634,7 +3634,7 @@ async fn test_upsell_dismissed_when_data_collection_choice_in_kv_store(cx: &mut 
     // shown, regardless of whether data collection was accepted or declined.
     for value in &["true", "false"] {
         cx.update(|cx| KeyValueStore::global(cx))
-            .write_kvp(ZED_PREDICT_DATA_COLLECTION_CHOICE.into(), value.to_string())
+            .write_kvp(XENOMORPHIC_PREDICT_DATA_COLLECTION_CHOICE.into(), value.to_string())
             .await
             .unwrap();
 
@@ -3647,7 +3647,7 @@ async fn test_upsell_dismissed_when_data_collection_choice_in_kv_store(cx: &mut 
     }
 
     cx.update(|cx| KeyValueStore::global(cx))
-        .delete_kvp(ZED_PREDICT_DATA_COLLECTION_CHOICE.into())
+        .delete_kvp(XENOMORPHIC_PREDICT_DATA_COLLECTION_CHOICE.into())
         .await
         .unwrap();
 }
@@ -3656,39 +3656,39 @@ async fn test_upsell_dismissed_when_data_collection_choice_in_kv_store(cx: &mut 
 async fn test_upsell_dismissed_when_dismissed_key_set(cx: &mut TestAppContext) {
     init_test(cx);
     let kvp = cx.update(|cx| KeyValueStore::global(cx));
-    kvp.delete_kvp(ZED_PREDICT_DATA_COLLECTION_CHOICE.into())
+    kvp.delete_kvp(XENOMORPHIC_PREDICT_DATA_COLLECTION_CHOICE.into())
         .await
         .ok();
-    kvp.write_kvp(ZedPredictUpsell::KEY.into(), "1".into())
+    kvp.write_kvp(XenomorphicPredictUpsell::KEY.into(), "1".into())
         .await
         .unwrap();
 
     cx.update(|cx| assert!(!should_show_upsell_modal(cx)));
 
-    kvp.delete_kvp(ZedPredictUpsell::KEY.into()).await.unwrap();
+    kvp.delete_kvp(XenomorphicPredictUpsell::KEY.into()).await.unwrap();
 }
 
 #[gpui::test]
 async fn test_upsell_dismissed_via_dismissable_api(cx: &mut TestAppContext) {
     init_test(cx);
     let kvp = cx.update(|cx| KeyValueStore::global(cx));
-    kvp.delete_kvp(ZED_PREDICT_DATA_COLLECTION_CHOICE.into())
+    kvp.delete_kvp(XENOMORPHIC_PREDICT_DATA_COLLECTION_CHOICE.into())
         .await
         .ok();
-    kvp.delete_kvp(ZedPredictUpsell::KEY.into()).await.ok();
+    kvp.delete_kvp(XenomorphicPredictUpsell::KEY.into()).await.ok();
 
     cx.update(|cx| {
         assert!(should_show_upsell_modal(cx));
-        ZedPredictUpsell::set_dismissed(true, cx);
+        XenomorphicPredictUpsell::set_dismissed(true, cx);
     });
     cx.run_until_parked();
 
     cx.update(|cx| assert!(!should_show_upsell_modal(cx)));
 
-    kvp.delete_kvp(ZedPredictUpsell::KEY.into()).await.unwrap();
+    kvp.delete_kvp(XenomorphicPredictUpsell::KEY.into()).await.unwrap();
 }
 
 #[ctor::ctor]
 fn init_logger() {
-    zlog::init_test();
+    xlog::init_test();
 }

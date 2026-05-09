@@ -25,7 +25,7 @@ mod edit_prediction_context_tests;
 #[cfg(test)]
 mod fake_definition_lsp;
 
-pub use zeta_prompt::{RelatedExcerpt, RelatedFile};
+pub use xeta_prompt::{RelatedExcerpt, RelatedFile};
 
 const IDENTIFIER_LINE_COUNT: u32 = 3;
 

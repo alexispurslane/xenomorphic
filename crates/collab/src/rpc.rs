@@ -31,7 +31,7 @@ use axum::{
     routing::get,
 };
 use collections::{HashMap, HashSet};
-pub use connection_pool::{ConnectionPool, ZedVersion};
+pub use connection_pool::{ConnectionPool, XenomorphicVersion};
 use core::fmt::{self, Debug, Formatter};
 use futures::TryFutureExt as _;
 use rpc::proto::split_repository_update;
@@ -743,7 +743,7 @@ impl Server {
         connection: Connection,
         address: String,
         principal: Principal,
-        zed_version: ZedVersion,
+        zed_version: XenomorphicVersion,
         release_channel: Option<String>,
         user_agent: Option<String>,
         geoip_country_code: Option<String>,
@@ -912,7 +912,7 @@ impl Server {
     async fn send_initial_client_update(
         &self,
         connection_id: ConnectionId,
-        zed_version: ZedVersion,
+        zed_version: XenomorphicVersion,
         mut send_connection_id: Option<oneshot::Sender<ConnectionId>>,
         session: &Session,
     ) -> Result<()> {
@@ -1003,8 +1003,8 @@ pub struct ProtocolVersion(u32);
 
 impl Header for ProtocolVersion {
     fn name() -> &'static HeaderName {
-        static ZED_PROTOCOL_VERSION: OnceLock<HeaderName> = OnceLock::new();
-        ZED_PROTOCOL_VERSION.get_or_init(|| HeaderName::from_static("x-zed-protocol-version"))
+        static XENOMORPHIC_PROTOCOL_VERSION: OnceLock<HeaderName> = OnceLock::new();
+        XENOMORPHIC_PROTOCOL_VERSION.get_or_init(|| HeaderName::from_static("x-xenomorphic-protocol-version"))
     }
 
     fn decode<'i, I>(values: &mut I) -> Result<Self, axum::headers::Error>
@@ -1030,8 +1030,8 @@ impl Header for ProtocolVersion {
 pub struct AppVersionHeader(Version);
 impl Header for AppVersionHeader {
     fn name() -> &'static HeaderName {
-        static ZED_APP_VERSION: OnceLock<HeaderName> = OnceLock::new();
-        ZED_APP_VERSION.get_or_init(|| HeaderName::from_static("x-zed-app-version"))
+        static XENOMORPHIC_APP_VERSION: OnceLock<HeaderName> = OnceLock::new();
+        XENOMORPHIC_APP_VERSION.get_or_init(|| HeaderName::from_static("x-zed-app-version"))
     }
 
     fn decode<'i, I>(values: &mut I) -> Result<Self, axum::headers::Error>
@@ -1059,8 +1059,8 @@ pub struct ReleaseChannelHeader(String);
 
 impl Header for ReleaseChannelHeader {
     fn name() -> &'static HeaderName {
-        static ZED_RELEASE_CHANNEL: OnceLock<HeaderName> = OnceLock::new();
-        ZED_RELEASE_CHANNEL.get_or_init(|| HeaderName::from_static("x-zed-release-channel"))
+        static XENOMORPHIC_RELEASE_CHANNEL: OnceLock<HeaderName> = OnceLock::new();
+        XENOMORPHIC_RELEASE_CHANNEL.get_or_init(|| HeaderName::from_static("x-xenomorphic-release-channel"))
     }
 
     fn decode<'i, I>(values: &mut I) -> Result<Self, axum::headers::Error>
@@ -1115,7 +1115,7 @@ pub async fn handle_websocket_request(
             .into_response();
     }
 
-    let Some(version) = app_version_header.map(|header| ZedVersion(header.0.0)) else {
+    let Some(version) = app_version_header.map(|header| XenomorphicVersion(header.0.0)) else {
         return (
             StatusCode::UPGRADE_REQUIRED,
             "no version header found".to_string(),
@@ -1861,7 +1861,7 @@ async fn join_project(
             .map(|c| c.zed_version.to_string());
         drop(pool);
         Err(anyhow!(
-            "The host (v{}) and guest (v{}) are using incompatible versions of Zed. The peer with the older version must update to collaborate.",
+            "The host (v{}) and guest (v{}) are using incompatible versions of Xenomorphic. The peer with the older version must update to collaborate.",
             host_version.as_deref().unwrap_or("unknown"),
             guest_version.as_deref().unwrap_or("unknown"),
         ))?;
@@ -3526,7 +3526,7 @@ async fn send_channel_message(
     _response: Response<proto::SendChannelMessage>,
     _session: MessageContext,
 ) -> Result<()> {
-    Err(anyhow!("chat has been removed in the latest version of Zed").into())
+    Err(anyhow!("chat has been removed in the latest version of Xenomorphic").into())
 }
 
 /// Delete a channel message
@@ -3535,7 +3535,7 @@ async fn remove_channel_message(
     _response: Response<proto::RemoveChannelMessage>,
     _session: MessageContext,
 ) -> Result<()> {
-    Err(anyhow!("chat has been removed in the latest version of Zed").into())
+    Err(anyhow!("chat has been removed in the latest version of Xenomorphic").into())
 }
 
 async fn update_channel_message(
@@ -3543,7 +3543,7 @@ async fn update_channel_message(
     _response: Response<proto::UpdateChannelMessage>,
     _session: MessageContext,
 ) -> Result<()> {
-    Err(anyhow!("chat has been removed in the latest version of Zed").into())
+    Err(anyhow!("chat has been removed in the latest version of Xenomorphic").into())
 }
 
 /// Mark a channel message as read
@@ -3551,7 +3551,7 @@ async fn acknowledge_channel_message(
     _request: proto::AckChannelMessage,
     _session: MessageContext,
 ) -> Result<()> {
-    Err(anyhow!("chat has been removed in the latest version of Zed").into())
+    Err(anyhow!("chat has been removed in the latest version of Xenomorphic").into())
 }
 
 /// Mark a buffer version as synced
@@ -3579,7 +3579,7 @@ async fn join_channel_chat(
     _response: Response<proto::JoinChannelChat>,
     _session: MessageContext,
 ) -> Result<()> {
-    Err(anyhow!("chat has been removed in the latest version of Zed").into())
+    Err(anyhow!("chat has been removed in the latest version of Xenomorphic").into())
 }
 
 /// Stop receiving chat updates for a channel
@@ -3587,7 +3587,7 @@ async fn leave_channel_chat(
     _request: proto::LeaveChannelChat,
     _session: MessageContext,
 ) -> Result<()> {
-    Err(anyhow!("chat has been removed in the latest version of Zed").into())
+    Err(anyhow!("chat has been removed in the latest version of Xenomorphic").into())
 }
 
 /// Retrieve the chat history for a channel
@@ -3596,7 +3596,7 @@ async fn get_channel_messages(
     _response: Response<proto::GetChannelMessages>,
     _session: MessageContext,
 ) -> Result<()> {
-    Err(anyhow!("chat has been removed in the latest version of Zed").into())
+    Err(anyhow!("chat has been removed in the latest version of Xenomorphic").into())
 }
 
 /// Retrieve specific chat messages
@@ -3605,7 +3605,7 @@ async fn get_channel_messages_by_id(
     _response: Response<proto::GetChannelMessagesById>,
     _session: MessageContext,
 ) -> Result<()> {
-    Err(anyhow!("chat has been removed in the latest version of Zed").into())
+    Err(anyhow!("chat has been removed in the latest version of Xenomorphic").into())
 }
 
 /// Retrieve the current users notifications

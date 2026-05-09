@@ -41,7 +41,7 @@ pub fn capture_example(
             collect_snapshots(&project, &git_store, worktree_id, &events, &mut cx).await?;
 
         events.retain(|stored_event| {
-            let zeta_prompt::Event::BufferChange { path, .. } = stored_event.event.as_ref();
+            let xeta_prompt::Event::BufferChange { path, .. } = stored_event.event.as_ref();
             let relative_path = strip_root_name(path, &root_name);
             snapshots_by_path.contains_key(relative_path)
         });
@@ -124,7 +124,7 @@ fn strip_root_name<'a>(path: &'a Path, root_name: &str) -> &'a Path {
 
 fn write_event_with_relative_paths(
     output: &mut String,
-    event: &zeta_prompt::Event,
+    event: &xeta_prompt::Event,
     root_name: &str,
 ) {
     fn write_relative_path(output: &mut String, path: &Path, root_name: &str) {
@@ -134,7 +134,7 @@ fn write_event_with_relative_paths(
         }
     }
 
-    let zeta_prompt::Event::BufferChange {
+    let xeta_prompt::Event::BufferChange {
         path,
         old_path,
         diff,
@@ -165,7 +165,7 @@ fn compute_cursor_excerpt(
         &excerpt_offset_range,
     );
     let excerpt_text: String = snapshot.text_for_range(excerpt_point_range).collect();
-    let (_, context_range) = zeta_prompt::compute_editable_and_context_ranges(
+    let (_, context_range) = xeta_prompt::compute_editable_and_context_ranges(
         &excerpt_text,
         cursor_offset_in_excerpt,
         &syntax_ranges,
@@ -193,7 +193,7 @@ async fn collect_snapshots(
 ) -> Result<HashMap<Arc<Path>, (TextBufferSnapshot, BufferDiffSnapshot)>> {
     let mut snapshots_by_path = HashMap::default();
     for stored_event in events {
-        let zeta_prompt::Event::BufferChange { path, .. } = stored_event.event.as_ref();
+        let xeta_prompt::Event::BufferChange { path, .. } = stored_event.event.as_ref();
         if let Some((project_path, relative_path)) = project.read_with(cx, |project, cx| {
             let project_path = project
                 .find_project_path(path, cx)
@@ -405,7 +405,7 @@ mod tests {
                     .unwrap()
                     .event
                     .as_ref(),
-                zeta_prompt::Event::BufferChange { path, .. } if path.as_ref() == "/external/external.rs"
+                xeta_prompt::Event::BufferChange { path, .. } if path.as_ref() == "/external/external.rs"
             ),
             "external file edit should be in events"
         );
@@ -545,7 +545,7 @@ mod tests {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
-            zlog::init_test();
+            xlog::init_test();
             let http_client = FakeHttpClient::with_404_response();
             let client = Client::new(Arc::new(FakeSystemClock::new()), http_client, cx);
             let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));

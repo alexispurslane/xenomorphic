@@ -10,7 +10,7 @@ use std::marker::PhantomData;
 use std::mem;
 use std::{cmp::Ordering, fmt, iter::FromIterator, sync::Arc};
 pub use tree_map::{MapSeekTarget, TreeMap, TreeSet};
-use ztracing::instrument;
+use xtracing::instrument;
 
 #[cfg(test)]
 pub const TREE_BASE: usize = 2;
@@ -90,7 +90,7 @@ impl ContextLessSummary for NoSummary {
 /// You can use dimensions to seek to a specific location in the [`SumTree`]
 ///
 /// # Example:
-/// Zed's rope has a `TextSummary` type that summarizes lines, characters, and bytes.
+/// Xenomorphic's rope has a `TextSummary` type that summarizes lines, characters, and bytes.
 /// Each of these are different dimensions we may want to seek to
 pub trait Dimension<'a, S: Summary>: Clone {
     fn zero(cx: S::Context<'_>) -> Self;
@@ -1398,7 +1398,7 @@ mod tests {
 
     #[ctor::ctor]
     fn init_logger() {
-        zlog::init_test();
+        xlog::init_test();
     }
 
     #[test]

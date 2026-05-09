@@ -67,9 +67,9 @@ ui_input.workspace = true
 util.workspace = true
 watch.workspace = true
 workspace.workspace = true
-zed_actions.workspace = true
+xenomorphic_actions.workspace = true
 zeroize.workspace = true
-ztracing.workspace = true
+xtracing.workspace = true
 tracing.workspace = true
 [target.'cfg(windows)'.dependencies]
 windows.workspace = true
@@ -86,7 +86,7 @@ settings = { workspace = true, features = ["test-support"] }
 task.workspace = true
 unindent.workspace = true
 workspace = { workspace = true, features = ["test-support"] }
-zlog.workspace = true
+xlog.workspace = true
 remote_connection = { workspace = true, features = ["test-support"] }
 
 [package.metadata.cargo-machete]

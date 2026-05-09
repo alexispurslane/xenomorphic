@@ -20,7 +20,7 @@ use project::AgentId;
 use serde::{Deserialize, Serialize};
 use settings::{LanguageModelProviderSetting, LanguageModelSelection};
 
-use zed_actions::{
+use xenomorphic_actions::{
     DecreaseBufferFontSize, IncreaseBufferFontSize, ResetBufferFontSize,
     agent::{
         AddSelectionToThread, ConflictContent, OpenSettings, ReauthenticateAgent, ResetAgentZoom,
@@ -3016,7 +3016,7 @@ impl Panel for AgentPanel {
     }
 
     fn icon(&self, _window: &Window, cx: &App) -> Option<IconName> {
-        (self.enabled(cx) && AgentSettings::get_global(cx).button).then_some(IconName::ZedAssistant)
+        (self.enabled(cx) && AgentSettings::get_global(cx).button).then_some(IconName::XenomorphicAssistant)
     }
 
     fn icon_tooltip(&self, _window: &Window, _cx: &App) -> Option<&'static str> {
@@ -3382,9 +3382,9 @@ impl AgentPanel {
                             .header("MCP Servers")
                             .action(
                                 "View Server Extensions",
-                                Box::new(zed_actions::Extensions {
+                                Box::new(xenomorphic_actions::Extensions {
                                     category_filter: Some(
-                                        zed_actions::ExtensionCategoryFilter::ContextServers,
+                                        xenomorphic_actions::ExtensionCategoryFilter::ContextServers,
                                     ),
                                     id: None,
                                 }),
@@ -3493,11 +3493,11 @@ impl AgentPanel {
                             }
                         })
                         .item(
-                            ContextMenuEntry::new("Zed Agent")
+                            ContextMenuEntry::new("Xenomorphic Agent")
                                 .when(is_agent_selected(Agent::NativeAgent), |this| {
                                     this.action(Box::new(NewExternalAgentThread { agent: None }))
                                 })
-                                .icon(IconName::ZedAgent)
+                                .icon(IconName::XenomorphicAgent)
                                 .icon_color(Color::Muted)
                                 .handler({
                                     let workspace = workspace.clone();
@@ -3651,7 +3651,7 @@ impl AgentPanel {
                                 .handler({
                                     move |window, cx| {
                                         window
-                                            .dispatch_action(Box::new(zed_actions::AcpRegistry), cx)
+                                            .dispatch_action(Box::new(xenomorphic_actions::AcpRegistry), cx)
                                     }
                                 }),
                         )
@@ -3758,7 +3758,7 @@ impl AgentPanel {
                     .size(IconSize::Small)
                     .color(icon_color)
             } else {
-                let icon_name = selected_agent_builtin_icon.unwrap_or(IconName::ZedAgent);
+                let icon_name = selected_agent_builtin_icon.unwrap_or(IconName::XenomorphicAgent);
                 Icon::new(icon_name).size(IconSize::Small).color(icon_color)
             };
 
@@ -3881,7 +3881,7 @@ impl AgentPanel {
                     .read(cx)
                     .default_model()
                     .is_some_and(|model| {
-                        model.provider.id() != language_model::ZED_CLOUD_PROVIDER_ID
+                        model.provider.id() != language_model::XENOMORPHIC_CLOUD_PROVIDER_ID
                     })
                 {
                     return false;
@@ -3895,7 +3895,7 @@ impl AgentPanel {
         let plan = self.user_store.read(cx).plan();
         let has_previous_trial = self.user_store.read(cx).trial_started_at().is_some();
 
-        plan.is_some_and(|plan| plan == Plan::ZedFree) && has_previous_trial
+        plan.is_some_and(|plan| plan == Plan::XenomorphicFree) && has_previous_trial
     }
 
     fn dismiss_ai_onboarding(&mut self, cx: &mut Context<Self>) {
@@ -3915,7 +3915,7 @@ impl AgentPanel {
 
         let user_store = self.user_store.read(cx);
 
-        if user_store.plan().is_some_and(|plan| plan == Plan::ZedPro)
+        if user_store.plan().is_some_and(|plan| plan == Plan::XenomorphicPro)
             && user_store
                 .subscription_period()
                 .and_then(|period| period.0.checked_add_days(chrono::Days::new(1)))
@@ -3930,12 +3930,12 @@ impl AgentPanel {
             return false;
         }
 
-        let has_configured_non_zed_providers = LanguageModelRegistry::read_global(cx)
+        let has_configured_non_xenomorphic_providers = LanguageModelRegistry::read_global(cx)
             .visible_providers()
             .iter()
             .any(|provider| {
                 provider.is_authenticated(cx)
-                    && provider.id() != language_model::ZED_CLOUD_PROVIDER_ID
+                    && provider.id() != language_model::XENOMORPHIC_CLOUD_PROVIDER_ID
             });
 
         match &self.base_view {
@@ -3943,7 +3943,7 @@ impl AgentPanel {
             BaseView::AgentThread { conversation_view } => {
                 if conversation_view.read(cx).as_native_thread(cx).is_some() {
                     let history_is_empty = ThreadStore::global(cx).read(cx).is_empty();
-                    history_is_empty || !has_configured_non_zed_providers
+                    history_is_empty || !has_configured_non_xenomorphic_providers
                 } else {
                     false
                 }
@@ -4436,7 +4436,7 @@ mod tests {
 
     impl AgentConnection for SessionTrackingConnection {
         fn agent_id(&self) -> AgentId {
-            agent::ZED_AGENT_ID.clone()
+            agent::XENOMORPHIC_AGENT_ID.clone()
         }
 
         fn telemetry_id(&self) -> SharedString {
@@ -7203,7 +7203,7 @@ mod tests {
 
     impl AgentConnection for DisassociationTrackingConnection {
         fn agent_id(&self) -> AgentId {
-            agent::ZED_AGENT_ID.clone()
+            agent::XENOMORPHIC_AGENT_ID.clone()
         }
 
         fn telemetry_id(&self) -> SharedString {

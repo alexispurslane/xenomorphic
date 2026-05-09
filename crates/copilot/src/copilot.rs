@@ -662,7 +662,7 @@ impl Copilot {
 
             let editor_info = request::SetEditorInfoParams {
                 editor_info: request::EditorInfo {
-                    name: "zed".into(),
+                    name: "xenomorphic".into(),
                     version: env!("CARGO_PKG_VERSION").into(),
                 },
                 editor_plugin_info: request::EditorPluginInfo {
@@ -713,9 +713,9 @@ impl Copilot {
         this.update(cx, |this, cx| {
             cx.notify();
 
-            if env::var("ZED_FORCE_COPILOT_ERROR").is_ok() {
+            if env::var("XENOMORPHIC_FORCE_COPILOT_ERROR").is_ok() {
                 this.server = CopilotServer::Error(
-                    "Forced error for testing (ZED_FORCE_COPILOT_ERROR)".into(),
+                    "Forced error for testing (XENOMORPHIC_FORCE_COPILOT_ERROR)".into(),
                 );
                 return;
             }
@@ -1887,7 +1887,7 @@ mod tests {
     }
 
     fn init_test(cx: &mut TestAppContext) {
-        zlog::init_test();
+        xlog::init_test();
 
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);

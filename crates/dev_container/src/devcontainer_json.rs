@@ -127,12 +127,12 @@ impl std::fmt::Display for FeatureOptionValue {
 }
 
 #[derive(Clone, Debug, Serialize, Eq, PartialEq, Default)]
-pub(crate) struct ZedCustomizationsWrapper {
-    pub(crate) zed: ZedCustomization,
+pub(crate) struct XenomorphicCustomizationsWrapper {
+    pub(crate) xenomorphic: XenomorphicCustomization,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Default)]
-pub(crate) struct ZedCustomization {
+pub(crate) struct XenomorphicCustomization {
     #[serde(default)]
     pub(crate) extensions: Vec<String>,
 }
@@ -221,7 +221,7 @@ pub(crate) struct DevContainer {
     pub(crate) mounts: Option<Vec<MountDefinition>>,
     pub(crate) features: Option<HashMap<String, FeatureOptions>>,
     pub(crate) override_feature_install_order: Option<Vec<String>>,
-    pub(crate) customizations: Option<ZedCustomizationsWrapper>,
+    pub(crate) customizations: Option<XenomorphicCustomizationsWrapper>,
     pub(crate) build: Option<ContainerBuild>,
     #[serde(default, deserialize_with = "deserialize_app_port")]
     pub(crate) app_port: Vec<String>,
@@ -306,22 +306,22 @@ impl DevContainer {
 }
 
 // Custom deserializer that parses the entire customizations object as a
-// serde_json_lenient::Value first, then extracts the "zed" portion.
+// serde_json_lenient::Value first, then extracts the "xenomorphic" portion.
 // This avoids a bug in serde_json_lenient's `ignore_value` codepath which
 // does not handle trailing commas in skipped values.
-impl<'de> Deserialize<'de> for ZedCustomizationsWrapper {
+impl<'de> Deserialize<'de> for XenomorphicCustomizationsWrapper {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
     {
         let value = Value::deserialize(deserializer)?;
-        let zed = value
-            .get("zed")
-            .map(|zed_value| serde_json_lenient::from_value::<ZedCustomization>(zed_value.clone()))
+        let xenomorphic = value
+            .get("xenomorphic")
+            .map(|xenomorphic_value| serde_json_lenient::from_value::<XenomorphicCustomization>(xenomorphic_value.clone()))
             .transpose()
             .map_err(serde::de::Error::custom)?
             .unwrap_or_default();
-        Ok(ZedCustomizationsWrapper { zed })
+        Ok(XenomorphicCustomizationsWrapper { xenomorphic })
     }
 }
 
@@ -629,8 +629,8 @@ mod test {
         devcontainer_json::{
             ContainerBuild, DevContainer, DevContainerBuildType, FeatureOptions, ForwardPort,
             HostRequirements, LifecycleCommand, LifecycleScript, MountDefinition, OnAutoForward,
-            PortAttributeProtocol, PortAttributes, ShutdownAction, UserEnvProbe, ZedCustomization,
-            ZedCustomizationsWrapper, deserialize_devcontainer_json,
+            PortAttributeProtocol, PortAttributes, ShutdownAction, UserEnvProbe, XenomorphicCustomization,
+            XenomorphicCustomizationsWrapper, deserialize_devcontainer_json,
         },
     };
 
@@ -646,7 +646,7 @@ mod test {
                       "GitHub.vscode-pull-request-github",
                     ],
                   },
-                  "zed": {
+                  "xenomorphic": {
                     "extensions": ["vue", "ruby"],
                   },
                   "codespaces": {
@@ -673,8 +673,8 @@ mod test {
         let devcontainer = result.expect("ok");
         assert_eq!(
             devcontainer.customizations,
-            Some(ZedCustomizationsWrapper {
-                zed: ZedCustomization {
+            Some(XenomorphicCustomizationsWrapper {
+                xenomorphic: XenomorphicCustomization {
                     extensions: vec!["vue".to_string(), "ruby".to_string()]
                 }
             })
@@ -704,8 +704,8 @@ mod test {
         let devcontainer = result.expect("ok");
         assert_eq!(
             devcontainer.customizations,
-            Some(ZedCustomizationsWrapper {
-                zed: ZedCustomization { extensions: vec![] }
+            Some(XenomorphicCustomizationsWrapper {
+                xenomorphic: XenomorphicCustomization { extensions: vec![] }
             })
         );
     }
@@ -815,7 +815,7 @@ mod test {
                     "vscode": {
                         // Just confirm that this can be included and ignored
                     },
-                    "zed": {
+                    "xenomorphic": {
                         "extensions": [
                             "html"
                         ]
@@ -947,8 +947,8 @@ mod test {
                     target: "/workspaces/app".to_string(),
                     mount_type: Some("bind".to_string())
                 }),
-                customizations: Some(ZedCustomizationsWrapper {
-                    zed: ZedCustomization {
+                customizations: Some(XenomorphicCustomizationsWrapper {
+                    xenomorphic: XenomorphicCustomization {
                         extensions: vec!["html".to_string()]
                     }
                 }),
@@ -1591,7 +1591,7 @@ mod test {
                     "vscode": {
                         // Just confirm that this can be included and ignored
                     },
-                    "zed": {
+                    "xenomorphic": {
                         "extensions": [
                             "html"
                         ]
@@ -1629,7 +1629,7 @@ mod test {
                     "vscode": {
                         // Just confirm that this can be included and ignored
                     },
-                    "zed": {
+                    "xenomorphic": {
                         "extensions": [
                             "html"
                         ]
@@ -1666,7 +1666,7 @@ mod test {
                     "vscode": {
                         // Just confirm that this can be included and ignored
                     },
-                    "zed": {
+                    "xenomorphic": {
                         "extensions": [
                             "html"
                         ]

@@ -8,11 +8,11 @@ use postage::stream::Stream as _;
 use project::Project;
 use util::{paths::PathStyle, rel_path::RelPath};
 use worktree::Worktree;
-use zeta_prompt::udiff::{
+use xeta_prompt::udiff::{
     DiffEvent, DiffParser, FileStatus, Hunk, disambiguate_by_line_number, find_context_candidates,
 };
 
-pub use zeta_prompt::udiff::{
+pub use xeta_prompt::udiff::{
     DiffLine, HunkLocation, apply_diff_to_string, apply_diff_to_string_with_hunk_offset,
     strip_diff_metadata, strip_diff_path_prefix,
 };

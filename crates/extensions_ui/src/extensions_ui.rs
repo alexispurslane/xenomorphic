@@ -7,7 +7,7 @@ use std::time::Duration;
 use std::{ops::Range, sync::Arc};
 
 use anyhow::Context as _;
-use client::zed_urls;
+use client::xenomorphic_urls;
 use cloud_api_types::{ExtensionMetadata, ExtensionProvides};
 use collections::{BTreeMap, BTreeSet};
 use editor::{Editor, EditorElement, EditorStyle};
@@ -34,7 +34,7 @@ use workspace::{
     Workspace,
     item::{Item, ItemEvent},
 };
-use zed_actions::ExtensionCategoryFilter;
+use xenomorphic_actions::ExtensionCategoryFilter;
 
 use crate::components::ExtensionCard;
 use crate::extension_version_selector::{
@@ -56,7 +56,7 @@ pub fn init(cx: &mut App) {
         };
         workspace
             .register_action(
-                move |workspace, action: &zed_actions::Extensions, window, cx| {
+                move |workspace, action: &xenomorphic_actions::Extensions, window, cx| {
                     let provides_filter = action.category_filter.map(|category| match category {
                         ExtensionCategoryFilter::Themes => ExtensionProvides::Themes,
                         ExtensionCategoryFilter::IconThemes => ExtensionProvides::IconThemes,
@@ -417,7 +417,7 @@ impl ExtensionsPage {
             workspace
                 .update(cx, |_workspace, cx| {
                     window.dispatch_action(
-                        zed_actions::theme_selector::Toggle {
+                        xenomorphic_actions::theme_selector::Toggle {
                             themes_filter: Some(themes),
                         }
                         .boxed_clone(),
@@ -436,7 +436,7 @@ impl ExtensionsPage {
             workspace
                 .update(cx, |_workspace, cx| {
                     window.dispatch_action(
-                        zed_actions::icon_theme_selector::Toggle {
+                        xenomorphic_actions::icon_theme_selector::Toggle {
                             themes_filter: Some(icon_themes),
                         }
                         .boxed_clone(),
@@ -1160,7 +1160,7 @@ impl ExtensionsPage {
                                     move |_, cx| {
                                         Tooltip::simple(
                                             format!(
-                                                "v{version} is not compatible with this version of Zed.",
+                                                "v{version} is not compatible with this version of Xenomorphic.",
                                             ),
                                              cx,
                                         )
@@ -1461,7 +1461,7 @@ impl ExtensionsPage {
     }
 
     fn render_acp_registry_upsell(&self, cx: &mut Context<Self>) -> impl IntoElement {
-        let registry_url = zed_urls::acp_registry_blog(cx);
+        let registry_url = xenomorphic_urls::acp_registry_blog(cx);
 
         let view_registry = Button::new("view_registry", "View Registry")
             .style(ButtonStyle::Tinted(ui::TintColor::Warning))
@@ -1473,7 +1473,7 @@ impl ExtensionsPage {
                         source = "ACP Registry Upsell",
                         url = registry_url,
                     );
-                    window.dispatch_action(Box::new(zed_actions::AcpRegistry), cx)
+                    window.dispatch_action(Box::new(xenomorphic_actions::AcpRegistry), cx)
                 }
             });
         let open_registry_button = Button::new("open_registry", "Learn More")
@@ -1591,110 +1591,110 @@ impl ExtensionsPage {
         for feature in &self.upsells {
             let banner = match feature {
                 Feature::AgentClaude => self.render_feature_upsell_banner(
-                    "Claude Agent support is built-in to Zed!".into(),
+                    "Claude Agent support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/ai/external-agents#claude-agent".into(),
                     false,
                     cx,
                 ),
                 Feature::AgentCodex => self.render_feature_upsell_banner(
-                    "Codex CLI support is built-in to Zed!".into(),
+                    "Codex CLI support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/ai/external-agents#codex-cli".into(),
                     false,
                     cx,
                 ),
                 Feature::AgentGemini => self.render_feature_upsell_banner(
-                    "Gemini CLI support is built-in to Zed!".into(),
+                    "Gemini CLI support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/ai/external-agents#gemini-cli".into(),
                     false,
                     cx,
                 ),
                 Feature::ExtensionBasedpyright => self.render_feature_upsell_banner(
-                    "Basedpyright (Python language server) support is built-in to Zed!".into(),
+                    "Basedpyright (Python language server) support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/python#basedpyright".into(),
                     false,
                     cx,
                 ),
                 Feature::ExtensionRuff => self.render_feature_upsell_banner(
-                    "Ruff (linter for Python) support is built-in to Zed!".into(),
+                    "Ruff (linter for Python) support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/python#code-formatting--linting".into(),
                     false,
                     cx,
                 ),
                 Feature::ExtensionTailwind => self.render_feature_upsell_banner(
-                    "Tailwind CSS support is built-in to Zed!".into(),
+                    "Tailwind CSS support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/tailwindcss".into(),
                     false,
                     cx,
                 ),
                 Feature::ExtensionTy => self.render_feature_upsell_banner(
-                    "Ty (Python language server) support is built-in to Zed!".into(),
+                    "Ty (Python language server) support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/python".into(),
                     false,
                     cx,
                 ),
                 Feature::Git => self.render_feature_upsell_banner(
-                    "Zed comes with basic Git support—more features are coming in the future."
+                    "Xenomorphic comes with basic Git support—more features are coming in the future."
                         .into(),
                     "https://zed.dev/docs/git".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageBash => self.render_feature_upsell_banner(
-                    "Shell support is built-in to Zed!".into(),
+                    "Shell support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/bash".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageC => self.render_feature_upsell_banner(
-                    "C support is built-in to Zed!".into(),
+                    "C support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/c".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageCpp => self.render_feature_upsell_banner(
-                    "C++ support is built-in to Zed!".into(),
+                    "C++ support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/cpp".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageGo => self.render_feature_upsell_banner(
-                    "Go support is built-in to Zed!".into(),
+                    "Go support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/go".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguagePython => self.render_feature_upsell_banner(
-                    "Python support is built-in to Zed!".into(),
+                    "Python support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/python".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageReact => self.render_feature_upsell_banner(
-                    "React support is built-in to Zed!".into(),
+                    "React support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/typescript".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageRust => self.render_feature_upsell_banner(
-                    "Rust support is built-in to Zed!".into(),
+                    "Rust support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/rust".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageTypescript => self.render_feature_upsell_banner(
-                    "Typescript support is built-in to Zed!".into(),
+                    "Typescript support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/languages/typescript".into(),
                     false,
                     cx,
                 ),
                 Feature::OpenIn => self.render_feature_upsell_banner(
-                    "Zed supports linking to a source line on GitHub and others.".into(),
+                    "Xenomorphic supports linking to a source line on GitHub and others.".into(),
                     "https://zed.dev/docs/git#git-integrations".into(),
                     false,
                     cx,
                 ),
                 Feature::Vim => self.render_feature_upsell_banner(
-                    "Vim support is built-in to Zed!".into(),
+                    "Vim support is built-in to Xenomorphic!".into(),
                     "https://zed.dev/docs/vim".into(),
                     true,
                     cx,

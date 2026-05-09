@@ -27,7 +27,7 @@ smallvec.workspace = true
 text.workspace = true
 tree-sitter.workspace = true
 util.workspace = true
-zeta_prompt.workspace = true
+xeta_prompt.workspace = true
 
 [dev-dependencies]
 env_logger.workspace = true

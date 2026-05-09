@@ -321,7 +321,7 @@ mod tests {
 
     #[test]
     fn test_parse_backtick_spans_single_span() {
-        let (text, ranges) = parse_backtick_spans("use `zed` to open").unwrap();
+        let (text, ranges) = parse_backtick_spans("use `xenomorphic` to open").unwrap();
         assert_eq!(text.as_ref(), "use zed to open");
         assert_eq!(ranges, vec![4..7]);
     }
@@ -366,7 +366,7 @@ impl Component for Label {
                         vec![
                             single_example("Default", Label::new("Project Explorer").into_any_element()),
                             single_example("Small", Label::new("File: main.rs").size(LabelSize::Small).into_any_element()),
-                            single_example("Large", Label::new("Welcome to Zed").size(LabelSize::Large).into_any_element()),
+                            single_example("Large", Label::new("Welcome to Xenomorphic").size(LabelSize::Large).into_any_element()),
                         ],
                     ),
                     example_group_with_title(

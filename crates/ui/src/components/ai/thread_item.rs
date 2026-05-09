@@ -66,7 +66,7 @@ impl ThreadItem {
     pub fn new(id: impl Into<ElementId>, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
-            icon: IconName::ZedAgent,
+            icon: IconName::XenomorphicAgent,
             icon_color: None,
             icon_visible: true,
             custom_icon_from_external_svg: None,
@@ -740,9 +740,9 @@ impl Component for ThreadItem {
                 container()
                     .child(
                         ThreadItem::new("ti-5e", "Main worktree branch with diff stats")
-                            .icon(IconName::ZedAgent)
+                            .icon(IconName::XenomorphicAgent)
                             .worktrees(vec![ThreadItemWorktreeInfo {
-                                worktree_name: Some("zed".into()),
+                                worktree_name: Some("xenomorphic".into()),
                                 full_path: "/projects/zed".into(),
                                 highlight_positions: Vec::new(),
                                 kind: WorktreeKind::Main,
@@ -821,7 +821,7 @@ impl Component for ThreadItem {
                 container()
                     .child(
                         ThreadItem::new("ti-5i", "Multi-root with per-worktree branches")
-                            .icon(IconName::ZedAgent)
+                            .icon(IconName::XenomorphicAgent)
                             .worktrees(vec![
                                 ThreadItemWorktreeInfo {
                                     worktree_name: Some("jade-glen".into()),
@@ -886,7 +886,7 @@ impl Component for ThreadItem {
                 container()
                     .child(
                         ThreadItem::new("ti-5l", "Thread with every metadata field populated")
-                            .icon(IconName::ZedAgent)
+                            .icon(IconName::XenomorphicAgent)
                             .project_name("remote-dev")
                             .worktrees(vec![ThreadItemWorktreeInfo {
                                 worktree_name: Some("my-worktree".into()),

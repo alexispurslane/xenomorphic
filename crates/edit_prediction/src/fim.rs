@@ -10,7 +10,7 @@ use language::{
     language_settings::all_language_settings,
 };
 use std::{path::Path, sync::Arc, time::Instant};
-use zeta_prompt::{ZetaPromptInput, compute_editable_and_context_ranges};
+use xeta_prompt::{XetaPromptInput, compute_editable_and_context_ranges};
 
 const FIM_CONTEXT_TOKENS: usize = 512;
 
@@ -18,7 +18,7 @@ struct FimRequestOutput {
     request_id: String,
     edits: Vec<(std::ops::Range<Anchor>, Arc<str>)>,
     snapshot: BufferSnapshot,
-    inputs: ZetaPromptInput,
+    inputs: XetaPromptInput,
     buffer: Entity<Buffer>,
 }
 
@@ -76,7 +76,7 @@ pub fn request_prediction(
             0,
         );
 
-        let inputs = ZetaPromptInput {
+        let inputs = XetaPromptInput {
             events,
             related_files: Some(Vec::new()),
             active_buffer_diagnostics: Vec::new(),

@@ -295,7 +295,7 @@ mod tests {
     use indoc::indoc;
     use language::{Buffer, rust_lang};
     use util::test::{TextRangeMarker, marked_text_ranges_by};
-    use zeta_prompt::compute_editable_and_context_ranges;
+    use xeta_prompt::compute_editable_and_context_ranges;
 
     struct TestCase {
         name: &'static str,

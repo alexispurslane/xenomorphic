@@ -1030,7 +1030,7 @@ impl SettingsStore {
         let content = settings_content
             .map(|content| content.trim())
             .filter(|content| !content.is_empty());
-        let mut zed_settings_changed = false;
+        let mut xenomorphic_settings_changed = false;
         match (path.clone(), kind, content) {
             (LocalSettingsPath::InWorktree(directory_path), LocalSettingsKind::Tasks, _) => {
                 return Err(InvalidSettingsError::Tasks {
@@ -1052,7 +1052,7 @@ impl SettingsStore {
                 });
             }
             (LocalSettingsPath::InWorktree(directory_path), LocalSettingsKind::Settings, None) => {
-                zed_settings_changed = self
+                xenomorphic_settings_changed = self
                     .local_settings
                     .remove(&(root_id, directory_path.clone()))
                     .is_some();
@@ -1084,7 +1084,7 @@ impl SettingsStore {
                                 project: new_settings,
                                 ..Default::default()
                             });
-                            zed_settings_changed = true;
+                            xenomorphic_settings_changed = true;
                         }
                         btree_map::Entry::Occupied(mut o) => {
                             if &o.get().project != &new_settings {
@@ -1092,7 +1092,7 @@ impl SettingsStore {
                                     project: new_settings,
                                     ..Default::default()
                                 });
-                                zed_settings_changed = true;
+                                xenomorphic_settings_changed = true;
                             }
                         }
                     }
@@ -1113,7 +1113,7 @@ impl SettingsStore {
             }
         }
         if let LocalSettingsPath::InWorktree(directory_path) = &path {
-            if zed_settings_changed {
+            if xenomorphic_settings_changed {
                 self.recompute_values(Some((root_id, &directory_path)), cx);
             }
         }

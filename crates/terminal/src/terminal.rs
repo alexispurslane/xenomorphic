@@ -118,14 +118,14 @@ const DEBUG_TERMINAL_HEIGHT: Pixels = px(30.);
 const DEBUG_CELL_WIDTH: Pixels = px(5.);
 const DEBUG_LINE_HEIGHT: Pixels = px(5.);
 
-/// Inserts Zed-specific environment variables for terminal sessions.
+/// Inserts Xenomorphic-specific environment variables for terminal sessions.
 /// Used by both local terminals and remote terminals (via SSH).
 pub fn insert_zed_terminal_env(
     env: &mut HashMap<String, String>,
     version: &impl std::fmt::Display,
 ) {
-    env.insert("ZED_TERM".to_string(), "true".to_string());
-    env.insert("TERM_PROGRAM".to_string(), "zed".to_string());
+    env.insert("XENOMORPHIC_TERM".to_string(), "true".to_string());
+    env.insert("TERM_PROGRAM".to_string(), "xenomorphic".to_string());
     env.insert("TERM".to_string(), "xterm-256color".to_string());
     env.insert("COLORTERM".to_string(), "truecolor".to_string());
     env.insert("TERM_PROGRAM_VERSION".to_string(), version.to_string());
@@ -185,9 +185,9 @@ enum InternalEvent {
 
 ///A translation struct for Alacritty to communicate with us from their event loop
 #[derive(Clone)]
-pub struct ZedListener(pub UnboundedSender<AlacTermEvent>);
+pub struct XenomorphicListener(pub UnboundedSender<AlacTermEvent>);
 
-impl EventListener for ZedListener {
+impl EventListener for XenomorphicListener {
     fn send_event(&self, event: AlacTermEvent) {
         self.0.unbounded_send(event).ok();
     }
@@ -374,7 +374,7 @@ impl TerminalBuilder {
         let mut term = Term::new(
             config.clone(),
             &TerminalBounds::default(),
-            ZedListener(events_tx),
+            XenomorphicListener(events_tx),
         );
 
         if let AlternateScroll::Off = alternate_scroll {
@@ -585,7 +585,7 @@ impl TerminalBuilder {
             let mut term = Term::new(
                 config.clone(),
                 &TerminalBounds::default(),
-                ZedListener(events_tx.clone()),
+                XenomorphicListener(events_tx.clone()),
             );
 
             //Alacritty defaults to alternate scrolling being on, so we just need to turn it off.
@@ -600,7 +600,7 @@ impl TerminalBuilder {
             //And connect them together
             let event_loop = EventLoop::new(
                 term.clone(),
-                ZedListener(events_tx),
+                XenomorphicListener(events_tx),
                 pty,
                 pty_options.drain_on_exit,
                 false,
@@ -855,7 +855,7 @@ enum TerminalType {
 pub struct Terminal {
     terminal_type: TerminalType,
     completion_tx: Option<Sender<Option<ExitStatus>>>,
-    term: Arc<FairMutex<Term<ZedListener>>>,
+    term: Arc<FairMutex<Term<XenomorphicListener>>>,
     term_config: Config,
     events: VecDeque<InternalEvent>,
     /// This is only used for mouse mode cell change detection
@@ -1022,7 +1022,7 @@ impl Terminal {
     fn process_terminal_event(
         &mut self,
         event: &InternalEvent,
-        term: &mut Term<ZedListener>,
+        term: &mut Term<XenomorphicListener>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1651,7 +1651,7 @@ impl Terminal {
         self.last_content = Self::make_content(&terminal, &self.last_content);
     }
 
-    fn make_content(term: &Term<ZedListener>, last_content: &TerminalContent) -> TerminalContent {
+    fn make_content(term: &Term<XenomorphicListener>, last_content: &TerminalContent) -> TerminalContent {
         let content = term.renderable_content();
 
         // Pre-allocate with estimated size to reduce reallocations
@@ -2142,7 +2142,7 @@ impl Terminal {
     /// that's running inside the terminal.
     ///
     /// This does *not* return the working directory of the shell that runs on the
-    /// remote host, in case Zed is connected to a remote host.
+    /// remote host, in case Xenomorphic is connected to a remote host.
     fn client_side_working_directory(&self) -> Option<PathBuf> {
         match &self.terminal_type {
             TerminalType::Pty { info, .. } => info
@@ -2311,7 +2311,7 @@ impl Terminal {
         if !lines_to_show.is_empty() {
             // SAFETY: the invocation happens on non `TaskStatus::Running` tasks, once,
             // after either `AlacTermEvent::Exit` or `AlacTermEvent::ChildExit` events that are spawned
-            // when Zed task finishes and no more output is made.
+            // when Xenomorphic task finishes and no more output is made.
             // After the task summary is output once, no more text is appended to the terminal.
             unsafe { append_text_to_term(&mut self.term.lock(), &lines_to_show) };
         }
@@ -2428,7 +2428,7 @@ fn task_summary(task: &TaskState, exit_status: Option<ExitStatus>) -> (bool, Str
 /// do not properly set the scrolling state and display odd text after appending; also those manipulations are more tedious and error-prone.
 /// The function achieves proper display and scrolling capabilities, at a cost of grid state not properly synchronized.
 /// This is enough for printing moderately-sized texts like task summaries, but might break or perform poorly for larger texts.
-unsafe fn append_text_to_term(term: &mut Term<ZedListener>, text_lines: &[&str]) {
+unsafe fn append_text_to_term(term: &mut Term<XenomorphicListener>, text_lines: &[&str]) {
     term.newline();
     term.grid_mut().cursor.point.column = Column(0);
     for line in text_lines {

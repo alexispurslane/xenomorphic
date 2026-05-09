@@ -256,7 +256,7 @@ async fn test_editorconfig_support(cx: &mut gpui::TestAppContext) {
             tab_width = 10
             max_line_length = off
         "#,
-        ".zed": {
+        ".xenomorphic": {
             "settings.json": r#"{
                 "tab_size": 8,
                 "hard_tabs": false,
@@ -332,7 +332,7 @@ async fn test_editorconfig_support(cx: &mut gpui::TestAppContext) {
     // "indent_size" is not set, so "tab_width" is used
     assert_eq!(Some(settings_c.tab_size), NonZeroU32::new(10));
 
-    // When max_line_length is "off", default to .zed/settings.json
+    // When max_line_length is "off", default to .xenomorphic/settings.json
     assert_eq!(settings_b.preferred_line_length, 64);
     assert_eq!(settings_c.preferred_line_length, 64);
 
@@ -911,7 +911,7 @@ async fn test_git_provider_project_setting(cx: &mut gpui::TestAppContext) {
     fs.insert_tree(
         path!("/dir"),
         json!({
-            ".zed": {
+            ".xenomorphic": {
                 "settings.json": r#"{
                     "git_hosting_providers": [
                         {
@@ -942,7 +942,7 @@ async fn test_git_provider_project_setting(cx: &mut gpui::TestAppContext) {
     });
 
     fs.atomic_write(
-        Path::new(path!("/dir/.zed/settings.json")).to_owned(),
+        Path::new(path!("/dir/.xenomorphic/settings.json")).to_owned(),
         "{}".into(),
     )
     .await
@@ -970,7 +970,7 @@ async fn test_managing_project_specific_settings(cx: &mut gpui::TestAppContext) 
     fs.insert_tree(
         path!("/dir"),
         json!({
-            ".zed": {
+            ".xenomorphic": {
                 "settings.json": r#"{ "tab_size": 8 }"#,
                 "tasks.json": r#"[{
                     "label": "cargo check all",
@@ -982,7 +982,7 @@ async fn test_managing_project_specific_settings(cx: &mut gpui::TestAppContext) 
                 "a.rs": "fn a() {\n    A\n}"
             },
             "b": {
-                ".zed": {
+                ".xenomorphic": {
                     "settings.json": r#"{ "tab_size": 2 }"#,
                     "tasks.json": r#"[{
                         "label": "cargo check",
@@ -1012,7 +1012,7 @@ async fn test_managing_project_specific_settings(cx: &mut gpui::TestAppContext) 
 
     let topmost_local_task_source_kind = TaskSourceKind::Worktree {
         id: worktree_id,
-        directory_in_worktree: rel_path(".zed").into(),
+        directory_in_worktree: rel_path(".xenomorphic").into(),
         id_base: "local worktree tasks from directory \".zed\"".into(),
     };
 
@@ -1175,7 +1175,7 @@ async fn test_invalid_local_tasks_shows_toast_with_doc_link(cx: &mut gpui::TestA
     fs.insert_tree(
         path!("/dir"),
         json!({
-            ".zed": {
+            ".xenomorphic": {
                 "tasks.json": r#"[{ "label": "valid task", "command": "echo" }]"#,
             },
             "file.rs": ""
@@ -1190,7 +1190,7 @@ async fn test_invalid_local_tasks_shows_toast_with_doc_link(cx: &mut gpui::TestA
     // later assert that the `Event::Toast` even is emitted.
     fs.save(
         path!("/dir/.zed/tasks.json").as_ref(),
-        &r#"[{ "label": "test $ZED_FOO", "command": "echo" }]"#.into(),
+        &r#"[{ "label": "test ${XENOMORPHIC_FOO", "command": "echo" }]"#.into(),
         Default::default(),
     )
     .await
@@ -1206,7 +1206,7 @@ async fn test_invalid_local_tasks_shows_toast_with_doc_link(cx: &mut gpui::TestA
                 link: Some(ToastLink { url, .. }),
             } => {
                 assert!(notification_id.starts_with("local-tasks-"));
-                assert!(message.contains("ZED_FOO"));
+                assert!(message.contains("XENOMORPHIC_FOO"));
                 assert_eq!(*url, "https://zed.dev/docs/tasks");
                 *saw_toast.borrow_mut() = true;
             }
@@ -1231,10 +1231,10 @@ async fn test_fallback_to_single_worktree_tasks(cx: &mut gpui::TestAppContext) {
     fs.insert_tree(
         path!("/dir"),
         json!({
-            ".zed": {
+            ".xenomorphic": {
                 "tasks.json": r#"[{
                     "label": "test worktree root",
-                    "command": "echo $ZED_WORKTREE_ROOT"
+                    "command": "echo $XENOMORPHIC_WORKTREE_ROOT"
                 }]"#,
             },
             "a": {
@@ -1271,7 +1271,7 @@ async fn test_fallback_to_single_worktree_tasks(cx: &mut gpui::TestAppContext) {
         .await;
     assert!(
         active_non_worktree_item_tasks.is_empty(),
-        "A task can not be resolved with context with no ZED_WORKTREE_ROOT data"
+        "A task can not be resolved with context with no XENOMORPHIC_WORKTREE_ROOT data"
     );
 
     let active_worktree_tasks = cx
@@ -1306,7 +1306,7 @@ async fn test_fallback_to_single_worktree_tasks(cx: &mut gpui::TestAppContext) {
         vec![(
             TaskSourceKind::Worktree {
                 id: worktree_id,
-                directory_in_worktree: rel_path(".zed").into(),
+                directory_in_worktree: rel_path(".xenomorphic").into(),
                 id_base: "local worktree tasks from directory \".zed\"".into(),
             },
             "echo /dir".to_string(),
@@ -1366,7 +1366,7 @@ async fn test_running_multiple_instances_of_a_single_server_in_one_worktree(
     fs.insert_tree(
         path!("/the-root"),
         json!({
-            ".zed": {
+            ".xenomorphic": {
                 "settings.json": r#"
                 {
                     "languages": {
@@ -2043,7 +2043,7 @@ async fn test_language_server_relative_path(cx: &mut gpui::TestAppContext) {
     fs.insert_tree(
         path!("/the-root"),
         json!({
-            ".zed": {
+            ".xenomorphic": {
                 "settings.json": settings_json_contents.to_string(),
             },
             ".relative_path": {
@@ -2120,7 +2120,7 @@ async fn test_language_server_tilde_path(cx: &mut gpui::TestAppContext) {
     fs.insert_tree(
         path!("/root"),
         json!({
-            ".zed": {
+            ".xenomorphic": {
                 "settings.json": settings_json_contents.to_string(),
             },
             "src": {
@@ -12411,14 +12411,14 @@ async fn test_initial_scan_complete(cx: &mut gpui::TestAppContext) {
         json!({
             "a": {
                 ".git": {},
-                ".zed": {
+                ".xenomorphic": {
                     "tasks.json": r#"[{"label": "task-a", "command": "echo a"}]"#
                 },
                 "src": { "main.rs": "" }
             },
             "b": {
                 ".git": {},
-                ".zed": {
+                ".xenomorphic": {
                     "tasks.json": r#"[{"label": "task-b", "command": "echo b"}]"#
                 },
                 "src": { "lib.rs": "" }
@@ -12473,7 +12473,7 @@ async fn test_initial_scan_complete(cx: &mut gpui::TestAppContext) {
 }
 
 pub fn init_test(cx: &mut gpui::TestAppContext) {
-    zlog::init_test();
+    xlog::init_test();
 
     cx.update(|cx| {
         let settings_store = SettingsStore::test(cx);

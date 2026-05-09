@@ -40,4 +40,4 @@ ctor.workspace = true
 gpui = { workspace = true, features = ["test-support"] }
 semver.workspace = true
 util = { workspace = true, features = ["test-support"] }
-zlog.workspace = true
+xlog.workspace = true

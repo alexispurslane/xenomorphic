@@ -4,10 +4,10 @@
 //! They are attached to a certain [`Anchor`], and display certain contents (usually, strings)
 //! between real text around that anchor.
 //!
-//! Inlay examples in Zed:
+//! Inlay examples in Xenomorphic:
 //! * inlay hints, received from LSP
 //! * inline values, shown in the debugger
-//! * inline predictions, showing the Zeta/Copilot/etc. predictions
+//! * inline predictions, showing the Xeta/Copilot/etc. predictions
 //! * document color values, if configured to be displayed as inlays
 //! * ... anything else, potentially.
 //!

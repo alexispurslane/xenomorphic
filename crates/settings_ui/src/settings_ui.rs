@@ -44,7 +44,7 @@ use util::{ResultExt as _, paths::PathStyle, rel_path::RelPath};
 use workspace::{
     AppState, MultiWorkspace, OpenOptions, OpenVisible, Workspace, client_side_decorations,
 };
-use zed_actions::{OpenProjectSettings, OpenSettings, OpenSettingsAt};
+use xenomorphic_actions::{OpenProjectSettings, OpenSettings, OpenSettingsAt};
 
 use crate::components::{
     EnumVariantDropdown, NumberField, NumberFieldMode, NumberFieldType, SettingsInputField,
@@ -658,7 +658,7 @@ pub fn open_settings_editor(
         let scaled_bounds: gpui::Size<Pixels> = default_bounds.map(|axis| axis * scale_factor);
 
         let app_id = ReleaseChannel::global(cx).app_id();
-        let window_decorations = match std::env::var("ZED_WINDOW_DECORATIONS") {
+        let window_decorations = match std::env::var("XENOMORPHIC_WINDOW_DECORATIONS") {
             Ok(val) if val == "server" => gpui::WindowDecorations::Server,
             Ok(val) if val == "client" => gpui::WindowDecorations::Client,
             _ => gpui::WindowDecorations::Client,
@@ -667,7 +667,7 @@ pub fn open_settings_editor(
         cx.open_window(
             WindowOptions {
                 titlebar: Some(TitlebarOptions {
-                    title: Some("Zed — Settings".into()),
+                    title: Some("Xenomorphic — Settings".into()),
                     appears_transparent: true,
                     traffic_light_position: Some(point(px(12.0), px(12.0))),
                 }),
@@ -1410,7 +1410,7 @@ fn all_language_names(cx: &App) -> Vec<SharedString> {
         .languages
         .language_names()
         .into_iter()
-        .filter(|name| name.as_ref() != "Zed Keybind Context")
+        .filter(|name| name.as_ref() != "Xenomorphic Keybind Context")
         .map(Into::into)
         .collect()
 }
@@ -5253,7 +5253,7 @@ mod project_settings_update_tests {
         let fs = FakeFs::new(cx.executor());
         let tree = if let Some(settings_content) = initial_settings {
             json!({
-                ".zed": {
+                ".xenomorphic": {
                     "settings.json": settings_content
                 },
                 "src": { "main.rs": "" }
@@ -5270,7 +5270,7 @@ mod project_settings_update_tests {
             (worktree.read(cx).id(), worktree.downgrade())
         });
 
-        let rel_path: Arc<RelPath> = RelPath::unix(".zed/settings.json")
+        let rel_path: Arc<RelPath> = RelPath::unix(".xenomorphic/settings.json")
             .expect("valid path")
             .into_arc();
         let project_path = ProjectPath {
@@ -5500,7 +5500,7 @@ mod project_settings_update_tests {
 
         let file_content = setup
             .fs
-            .load("/project/.zed/settings.json".as_ref())
+            .load("/project/.xenomorphic/settings.json".as_ref())
             .await
             .unwrap();
         assert_eq!(
@@ -5533,7 +5533,7 @@ mod project_settings_update_tests {
         setup
             .fs
             .save(
-                "/project/.zed/settings.json".as_ref(),
+                "/project/.xenomorphic/settings.json".as_ref(),
                 &r#"{ "tab_size": 99 }"#.into(),
                 Default::default(),
             )

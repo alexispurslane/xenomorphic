@@ -15,7 +15,7 @@ pub use young_account_banner::YoungAccountBanner;
 
 use std::sync::Arc;
 
-use client::{Client, UserStore, zed_urls};
+use client::{Client, UserStore, xenomorphic_urls};
 use gpui::{AnyElement, Entity, IntoElement, ParentElement, TaskExt};
 use ui::{Divider, RegisterComponent, Tooltip, Vector, VectorName, prelude::*};
 
@@ -39,7 +39,7 @@ impl From<client::Status> for SignInStatus {
 }
 
 #[derive(RegisterComponent, IntoElement)]
-pub struct ZedAiOnboarding {
+pub struct XenomorphicAiOnboarding {
     pub sign_in_status: SignInStatus,
     pub plan: Option<Plan>,
     pub account_too_young: bool,
@@ -48,7 +48,7 @@ pub struct ZedAiOnboarding {
     pub dismiss_onboarding: Option<Arc<dyn Fn(&mut Window, &mut App)>>,
 }
 
-impl ZedAiOnboarding {
+impl XenomorphicAiOnboarding {
     pub fn new(
         client: Arc<Client>,
         user_store: &Entity<UserStore>,
@@ -154,15 +154,15 @@ impl ZedAiOnboarding {
             .w_full()
             .relative()
             .gap_1()
-            .child(Headline::new("Welcome to Zed AI"))
+            .child(Headline::new("Welcome to Xenomorphic AI"))
             .child(
-                Label::new("Sign in to try Zed Pro free for 14 days.")
+                Label::new("Sign in to try Xenomorphic Pro free for 14 days.")
                     .color(Color::Muted)
                     .mb_2(),
             )
             .child(PlanDefinitions.sign_in_upsell())
             .child(
-                Button::new("sign_in", "Try Zed Pro for Free")
+                Button::new("sign_in", "Try Xenomorphic Pro for Free")
                     .disabled(signing_in)
                     .full_width()
                     .style(ButtonStyle::Tinted(ui::TintColor::Accent))
@@ -184,7 +184,7 @@ impl ZedAiOnboarding {
                 .relative()
                 .min_w_0()
                 .gap_1()
-                .child(Headline::new("Welcome to Zed AI"))
+                .child(Headline::new("Welcome to Xenomorphic AI"))
                 .child(YoungAccountBanner)
                 .child(
                     v_flex()
@@ -211,7 +211,7 @@ impl ZedAiOnboarding {
                                         "Upgrade To Pro Clicked",
                                         state = "young-account"
                                     );
-                                    cx.open_url(&zed_urls::upgrade_to_zed_pro_url(cx))
+                                    cx.open_url(&xenomorphic_urls::upgrade_to_xenomorphic_pro_url(cx))
                                 }),
                         ),
                 )
@@ -221,7 +221,7 @@ impl ZedAiOnboarding {
                 .w_full()
                 .relative()
                 .gap_1()
-                .child(Headline::new("Welcome to Zed AI"))
+                .child(Headline::new("Welcome to Xenomorphic AI"))
                 .child(
                     v_flex()
                         .mt_2()
@@ -273,7 +273,7 @@ impl ZedAiOnboarding {
                                         "Start Trial Clicked",
                                         state = "post-sign-in"
                                     );
-                                    cx.open_url(&zed_urls::start_trial_url(cx))
+                                    cx.open_url(&xenomorphic_urls::start_trial_url(cx))
                                 }),
                         ),
                 )
@@ -287,7 +287,7 @@ impl ZedAiOnboarding {
             .relative()
             .gap_1()
             .child(Self::pro_trial_stamp(cx))
-            .child(Headline::new("Welcome to the Zed Pro Trial"))
+            .child(Headline::new("Welcome to the Xenomorphic Pro Trial"))
             .child(
                 Label::new("Here's what you get for the next 14 days:")
                     .color(Color::Muted)
@@ -304,7 +304,7 @@ impl ZedAiOnboarding {
             .relative()
             .gap_1()
             .child(Self::certified_user_stamp(cx))
-            .child(Headline::new("Welcome to Zed Pro"))
+            .child(Headline::new("Welcome to Xenomorphic Pro"))
             .child(
                 Label::new("Here's what you get:")
                     .color(Color::Muted)
@@ -321,7 +321,7 @@ impl ZedAiOnboarding {
             .relative()
             .gap_1()
             .child(Self::business_stamp(cx))
-            .child(Headline::new("Welcome to Zed Business"))
+            .child(Headline::new("Welcome to Xenomorphic Business"))
             .child(
                 Label::new("Here's what you get:")
                     .color(Color::Muted)
@@ -338,7 +338,7 @@ impl ZedAiOnboarding {
             .relative()
             .gap_1()
             .child(Self::student_stamp(cx))
-            .child(Headline::new("Welcome to Zed Student"))
+            .child(Headline::new("Welcome to Xenomorphic Student"))
             .child(
                 Label::new("Here's what you get:")
                     .color(Color::Muted)
@@ -350,16 +350,16 @@ impl ZedAiOnboarding {
     }
 }
 
-impl RenderOnce for ZedAiOnboarding {
+impl RenderOnce for XenomorphicAiOnboarding {
     fn render(self, _window: &mut ui::Window, cx: &mut App) -> impl IntoElement {
         if matches!(self.sign_in_status, SignInStatus::SignedIn) {
             match self.plan {
                 None => self.render_free_plan_state(cx),
-                Some(Plan::ZedFree) => self.render_free_plan_state(cx),
-                Some(Plan::ZedProTrial) => self.render_trial_state(cx),
-                Some(Plan::ZedPro) => self.render_pro_plan_state(cx),
-                Some(Plan::ZedBusiness) => self.render_business_plan_state(cx),
-                Some(Plan::ZedStudent) => self.render_student_plan_state(cx),
+                Some(Plan::XenomorphicFree) => self.render_free_plan_state(cx),
+                Some(Plan::XenomorphicProTrial) => self.render_trial_state(cx),
+                Some(Plan::XenomorphicPro) => self.render_pro_plan_state(cx),
+                Some(Plan::XenomorphicBusiness) => self.render_business_plan_state(cx),
+                Some(Plan::XenomorphicStudent) => self.render_student_plan_state(cx),
             }
         } else {
             self.render_sign_in_disclaimer(cx)
@@ -367,7 +367,7 @@ impl RenderOnce for ZedAiOnboarding {
     }
 }
 
-impl Component for ZedAiOnboarding {
+impl Component for XenomorphicAiOnboarding {
     fn scope() -> ComponentScope {
         ComponentScope::Onboarding
     }
@@ -388,7 +388,7 @@ impl Component for ZedAiOnboarding {
                 .max_w(px(1100.))
                 .child(
                     AgentPanelOnboardingCard::new().child(
-                        ZedAiOnboarding {
+                        XenomorphicAiOnboarding {
                             sign_in_status,
                             plan,
                             account_too_young,
@@ -417,23 +417,23 @@ impl Component for ZedAiOnboarding {
                     ),
                     single_example(
                         "Free Plan",
-                        onboarding(SignInStatus::SignedIn, Some(Plan::ZedFree), false),
+                        onboarding(SignInStatus::SignedIn, Some(Plan::XenomorphicFree), false),
                     ),
                     single_example(
                         "Pro Trial",
-                        onboarding(SignInStatus::SignedIn, Some(Plan::ZedProTrial), false),
+                        onboarding(SignInStatus::SignedIn, Some(Plan::XenomorphicProTrial), false),
                     ),
                     single_example(
                         "Pro Plan",
-                        onboarding(SignInStatus::SignedIn, Some(Plan::ZedPro), false),
+                        onboarding(SignInStatus::SignedIn, Some(Plan::XenomorphicPro), false),
                     ),
                     single_example(
                         "Business Plan",
-                        onboarding(SignInStatus::SignedIn, Some(Plan::ZedBusiness), false),
+                        onboarding(SignInStatus::SignedIn, Some(Plan::XenomorphicBusiness), false),
                     ),
                     single_example(
                         "Student Plan",
-                        onboarding(SignInStatus::SignedIn, Some(Plan::ZedStudent), false),
+                        onboarding(SignInStatus::SignedIn, Some(Plan::XenomorphicStudent), false),
                     ),
                 ])
                 .into_any_element(),

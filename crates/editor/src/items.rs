@@ -57,7 +57,7 @@ use workspace::{
     item::{FollowEvent, ProjectItemKind},
     searchable::SearchOptions,
 };
-use zed_actions::preview::{
+use xenomorphic_actions::preview::{
     markdown::OpenPreview as OpenMarkdownPreview, svg::OpenPreview as OpenSvgPreview,
 };
 

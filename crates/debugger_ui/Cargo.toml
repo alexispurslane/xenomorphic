@@ -75,7 +75,7 @@ ui_input.workspace = true
 unindent = { workspace = true, optional = true }
 util.workspace = true
 workspace.workspace = true
-zed_actions.workspace = true
+xenomorphic_actions.workspace = true
 
 [dev-dependencies]
 dap = { workspace = true, features = ["test-support"] }
@@ -89,4 +89,4 @@ tree-sitter-go.workspace = true
 unindent.workspace = true
 util = { workspace = true, features = ["test-support"] }
 workspace = { workspace = true, features = ["test-support"] }
-zlog.workspace = true
+xlog.workspace = true

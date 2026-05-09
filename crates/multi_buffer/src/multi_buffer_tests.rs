@@ -14,7 +14,7 @@ use util::test::sample_text;
 
 #[ctor::ctor]
 fn init_logger() {
-    zlog::init_test();
+    xlog::init_test();
 }
 
 #[gpui::test]

@@ -5,7 +5,7 @@ use crate::{
     repair,
 };
 use anyhow::{Context as _, Result};
-use zeta_prompt::{ZetaFormat, parse_zeta2_model_output, parsed_output_to_patch};
+use xeta_prompt::{XetaFormat, parse_xeta2_model_output, parsed_output_to_patch};
 
 pub fn run_parse_output(example: &mut Example) -> Result<()> {
     example
@@ -44,26 +44,26 @@ pub fn parse_prediction_output(
         | PredictionProvider::TeacherMultiRegionNonBatching(_) => {
             TeacherMultiRegionPrompt::parse(example, actual_output)
         }
-        PredictionProvider::Zeta2(version) => parse_zeta2_output(example, actual_output, version),
+        PredictionProvider::Xeta2(version) => parse_xeta2_output(example, actual_output, version),
         PredictionProvider::Repair => repair::parse(example, actual_output),
         _ => anyhow::bail!(
-            "parse-output only supports Teacher and Zeta2 providers, got {:?}",
+            "parse-output only supports Teacher and Xeta2 providers, got {:?}",
             provider
         ),
     }
 }
 
-fn parse_zeta2_output(
+fn parse_xeta2_output(
     example: &Example,
     actual_output: &str,
-    format: ZetaFormat,
+    format: XetaFormat,
 ) -> Result<(String, Option<ActualCursor>)> {
     let prompt_inputs = example
         .prompt_inputs
         .as_ref()
         .context("prompt_inputs required")?;
 
-    let parsed = parse_zeta2_model_output(actual_output, format, prompt_inputs)?;
+    let parsed = parse_xeta2_model_output(actual_output, format, prompt_inputs)?;
     let range_in_excerpt = parsed.range_in_excerpt.clone();
     let excerpt = prompt_inputs.cursor_excerpt.as_ref();
     let editable_region_offset = range_in_excerpt.start;

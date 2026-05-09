@@ -44,7 +44,7 @@ use workspace::{
     Item, Pane, Workspace,
     dock::{DockPosition, Panel, PanelEvent},
 };
-use zed_actions::debug_panel::ToggleFocus;
+use xenomorphic_actions::debug_panel::ToggleFocus;
 
 pub struct DebuggerHistoryFeatureFlag;
 
@@ -639,7 +639,7 @@ impl DebugPanel {
             IconButton::new("debug-edit-debug-json", IconName::Code)
                 .icon_size(IconSize::Small)
                 .on_click(|_, window, cx| {
-                    window.dispatch_action(zed_actions::OpenProjectDebugTasks.boxed_clone(), cx);
+                    window.dispatch_action(xenomorphic_actions::OpenProjectDebugTasks.boxed_clone(), cx);
                 })
                 .tooltip(Tooltip::text("Edit debug.json"))
         };
@@ -1152,10 +1152,10 @@ impl DebugPanel {
                     return Task::ready(Err(anyhow!("Couldn't get worktree path")));
                 };
 
-                let serialized_scenario = serde_json::to_value(scenario);
+                let serialixenomorphic_scenario = serde_json::to_value(scenario);
 
                 cx.spawn_in(window, async move |workspace, cx| {
-                    let serialized_scenario = serialized_scenario?;
+                    let serialixenomorphic_scenario = serialixenomorphic_scenario?;
                     let fs =
                         workspace.read_with(cx, |workspace, _| workspace.app_state().fs.clone())?;
 
@@ -1184,7 +1184,7 @@ impl DebugPanel {
                             .read(cx)
                             .project_path_for_absolute_path(path, cx)
                             .context(
-                                "Couldn't get project path for .zed/debug.json in active worktree",
+                                "Couldn't get project path for .xenomorphic/debug.json in active worktree",
                             )
                     })??;
 
@@ -1199,7 +1199,7 @@ impl DebugPanel {
                         .update(|_, cx| editor.act_as::<Editor>(cx))?
                         .context("expected editor")?;
 
-                    let new_scenario = serde_json_lenient::to_string_pretty(&serialized_scenario)?
+                    let new_scenario = serde_json_lenient::to_string_pretty(&serialixenomorphic_scenario)?
                         .lines()
                         .map(|l| format!("  {l}"))
                         .join("\n");
@@ -1839,7 +1839,7 @@ impl Render for DebugPanel {
                                 )
                                 .on_click(|_, window, cx| {
                                     window.dispatch_action(
-                                        zed_actions::OpenProjectDebugTasks.boxed_clone(),
+                                        xenomorphic_actions::OpenProjectDebugTasks.boxed_clone(),
                                         cx,
                                     );
                                 }),
@@ -1865,9 +1865,9 @@ impl Render for DebugPanel {
                             )
                             .on_click(|_, window, cx| {
                                 window.dispatch_action(
-                                    zed_actions::Extensions {
+                                    xenomorphic_actions::Extensions {
                                         category_filter: Some(
-                                            zed_actions::ExtensionCategoryFilter::DebugAdapters,
+                                            xenomorphic_actions::ExtensionCategoryFilter::DebugAdapters,
                                         ),
                                         id: None,
                                     }

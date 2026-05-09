@@ -19,7 +19,7 @@ use std::{ops::Range, sync::Arc};
 use ui::{ButtonLike, Divider, Tooltip, prelude::*};
 use util::{ResultExt as _, debug_panic, maybe};
 use workspace::{HideStatusItem, StatusItemView, Workspace, item::ItemHandle};
-use zed_actions::agent::{
+use xenomorphic_actions::agent::{
     ConflictContent, ResolveConflictedFilesWithAgent, ResolveConflictsWithAgent,
 };
 
@@ -137,7 +137,7 @@ fn buffers_removed(editor: &mut Editor, removed_buffer_ids: &[BufferId], cx: &mu
     editor.remove_blocks(removed_block_ids, None, cx);
 }
 
-#[ztracing::instrument(skip_all)]
+#[xtracing::instrument(skip_all)]
 fn conflicts_updated(
     editor: &mut Editor,
     conflict_set: Entity<ConflictSet>,
@@ -242,7 +242,7 @@ fn conflicts_updated(
     }
 }
 
-#[ztracing::instrument(skip_all)]
+#[xtracing::instrument(skip_all)]
 fn update_conflict_highlighting(
     editor: &mut Editor,
     conflict: &ConflictRegion,
@@ -365,7 +365,7 @@ fn render_conflict_buttons(
                 Button::new("resolve-with-agent", "Resolve with Agent")
                     .label_size(LabelSize::Small)
                     .start_icon(
-                        Icon::new(IconName::ZedAssistant)
+                        Icon::new(IconName::XenomorphicAssistant)
                             .size(IconSize::Small)
                             .color(Color::Muted),
                     )

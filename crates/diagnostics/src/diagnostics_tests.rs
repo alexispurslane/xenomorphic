@@ -32,7 +32,7 @@ use workspace::MultiWorkspace;
 
 #[ctor::ctor]
 fn init_logger() {
-    zlog::init_test();
+    xlog::init_test();
 }
 
 #[gpui::test]
@@ -2029,7 +2029,7 @@ async fn test_buffer_diagnostics_multiple_servers(cx: &mut TestAppContext) {
 
 fn init_test(cx: &mut TestAppContext) {
     cx.update(|cx| {
-        zlog::init_test();
+        xlog::init_test();
         let settings = SettingsStore::test(cx);
         cx.set_global(settings);
         theme_settings::init(theme::LoadThemes::JustBase, cx);

@@ -244,7 +244,7 @@ fn heap_tracing_profile(heap_pid: Option<u32>) -> String {
         Some(pid) => (
             format!(
                 r#"
-    <HeapEventProvider Id="ZedHeapProvider">
+    <HeapEventProvider Id="XenomorphicHeapProvider">
       <HeapProcessIds Operation="Set">
         <HeapProcessId Value="{pid}"/>
       </HeapProcessIds>
@@ -254,7 +254,7 @@ fn heap_tracing_profile(heap_pid: Option<u32>) -> String {
       <Collectors Operation="Add">
         <HeapEventCollectorId Value="HeapCollector_WPRHeapCollector">
           <HeapEventProviders Operation="Set">
-            <HeapEventProviderId Value="ZedHeapProvider"/>
+            <HeapEventProviderId Value="XenomorphicHeapProvider"/>
           </HeapEventProviders>
         </HeapEventCollectorId>
       </Collectors>"#
@@ -269,7 +269,7 @@ fn heap_tracing_profile(heap_pid: Option<u32>) -> String {
   <Profiles>
     {heap_provider}
 
-    <Profile Id="ZedHeap.Verbose.Memory" Base="Heap.Verbose.Memory" Name="ZedHeap" DetailLevel="Verbose" LoggingMode="Memory" Description="Heap tracing">
+    <Profile Id="XenomorphicHeap.Verbose.Memory" Base="Heap.Verbose.Memory" Name="XenomorphicHeap" DetailLevel="Verbose" LoggingMode="Memory" Description="Heap tracing">
       {heap_collector}
     </Profile>
   </Profiles>
@@ -432,7 +432,7 @@ fn build_profile_collection(heap_pid: Option<u32>) -> Result<IProfileCollection>
         collection
             .Add(&heap_profile, VARIANT_BOOL(0))
             .wpr_context(&collection)
-            .context("Add ZedHeap profile to collection")?;
+            .context("Add XenomorphicHeap profile to collection")?;
     }
 
     Ok(collection)

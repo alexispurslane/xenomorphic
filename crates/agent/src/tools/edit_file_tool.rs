@@ -1087,12 +1087,12 @@ mod tests {
         // Test 1: Path with .zed component should require confirmation
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
         let _auth = cx
-            .update(|cx| edit_tool.authorize(&PathBuf::from(".zed/settings.json"), &stream_tx, cx));
+            .update(|cx| edit_tool.authorize(&PathBuf::from(".xenomorphic/settings.json"), &stream_tx, cx));
 
         let event = stream_rx.expect_authorization().await;
         assert_eq!(
             event.tool_call.fields.title,
-            Some("Edit `.zed/settings.json` (local settings)".into())
+            Some("Edit `.xenomorphic/settings.json` (local settings)".into())
         );
 
         // Test 2: Path outside project should require confirmation
@@ -1132,14 +1132,14 @@ mod tests {
             agent_settings::AgentSettings::override_global(settings, cx);
         });
 
-        // 5.1: .zed/settings.json is a sensitive path — still prompts
+        // 5.1: .xenomorphic/settings.json is a sensitive path — still prompts
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
         let _auth = cx
-            .update(|cx| edit_tool.authorize(&PathBuf::from(".zed/settings.json"), &stream_tx, cx));
+            .update(|cx| edit_tool.authorize(&PathBuf::from(".xenomorphic/settings.json"), &stream_tx, cx));
         let event = stream_rx.expect_authorization().await;
         assert_eq!(
             event.tool_call.fields.title,
-            Some("Edit `.zed/settings.json` (local settings)".into())
+            Some("Edit `.xenomorphic/settings.json` (local settings)".into())
         );
 
         // 5.2: /etc/hosts is outside the project, but Allow auto-approves
@@ -1437,7 +1437,7 @@ mod tests {
         fs.insert_tree(
             "/workspace/shared",
             json!({
-                ".zed": {
+                ".xenomorphic": {
                     "settings.json": "{}"
                 }
             }),
@@ -1458,9 +1458,9 @@ mod tests {
             ("frontend/src/main.js", false, "File in first worktree"),
             ("backend/src/main.rs", false, "File in second worktree"),
             (
-                "shared/.zed/settings.json",
+                "shared/.xenomorphic/settings.json",
                 true,
-                ".zed file in third worktree",
+                ".xenomorphic file in third worktree",
             ),
             ("/etc/hosts", true, "Absolute path outside all worktrees"),
             (
@@ -1495,11 +1495,11 @@ mod tests {
         fs.insert_tree(
             "/project",
             json!({
-                ".zed": {
+                ".xenomorphic": {
                     "settings.json": "{}"
                 },
                 "src": {
-                    ".zed": {
+                    ".xenomorphic": {
                         "local.json": "{}"
                     }
                 }
@@ -1556,7 +1556,7 @@ mod tests {
             "/project",
             json!({
                 "existing.txt": "content",
-                ".zed": {
+                ".xenomorphic": {
                     "settings.json": "{}"
                 }
             }),
@@ -1571,7 +1571,7 @@ mod tests {
             // Test .zed path with different modes
             let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
             let _auth = cx.update(|cx| {
-                edit_tool.authorize(&PathBuf::from("project/.zed/settings.json"), &stream_tx, cx)
+                edit_tool.authorize(&PathBuf::from("project/.xenomorphic/settings.json"), &stream_tx, cx)
             });
 
             stream_rx.expect_authorization().await;

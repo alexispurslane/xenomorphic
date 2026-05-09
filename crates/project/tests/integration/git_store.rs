@@ -270,7 +270,7 @@ mod conflict_set_tests {
 
     #[gpui::test]
     async fn test_conflict_updates(executor: BackgroundExecutor, cx: &mut TestAppContext) {
-        zlog::init_test();
+        xlog::init_test();
         cx.update(|cx| {
             settings::init(cx);
         });
@@ -368,7 +368,7 @@ mod conflict_set_tests {
         executor: BackgroundExecutor,
         cx: &mut TestAppContext,
     ) {
-        zlog::init_test();
+        xlog::init_test();
         cx.update(|cx| {
             settings::init(cx);
         });
@@ -467,7 +467,7 @@ mod conflict_set_tests {
         executor: BackgroundExecutor,
         cx: &mut TestAppContext,
     ) {
-        zlog::init_test();
+        xlog::init_test();
         cx.update(|cx| {
             settings::init(cx);
         });
@@ -1066,7 +1066,7 @@ mod git_traversal {
     }
 
     fn init_test(cx: &mut gpui::TestAppContext) {
-        zlog::init_test();
+        xlog::init_test();
 
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
@@ -1185,7 +1185,7 @@ mod git_worktrees {
     use util::{path, paths::PathStyle};
 
     fn init_test(cx: &mut gpui::TestAppContext) {
-        zlog::init_test();
+        xlog::init_test();
 
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
@@ -1432,7 +1432,7 @@ mod trust_tests {
     use crate::Project;
 
     fn init_test(cx: &mut TestAppContext) {
-        zlog::init_test();
+        xlog::init_test();
 
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);

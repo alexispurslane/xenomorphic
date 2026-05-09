@@ -76,12 +76,12 @@ pub trait Watcher: Send + Sync {
 /// Returns `true` for filesystem types where inotify/FSEvents/ReadDirectoryChanges
 /// silently fail to deliver events: 9P (WSL drvfs), NFS, CIFS/SMB, FUSE (sshfs), etc.
 ///
-/// Can be overridden with the `ZED_FILE_WATCHER_MODE` environment variable:
+/// Can be overridden with the `XENOMORPHIC_FILE_WATCHER_MODE` environment variable:
 /// - `native` — always use native OS watcher
 /// - `poll` — always use polling
 /// - `auto` (default) — auto-detect based on filesystem type
 pub fn requires_poll_watcher(path: &Path) -> bool {
-    match std::env::var("ZED_FILE_WATCHER_MODE")
+    match std::env::var("XENOMORPHIC_FILE_WATCHER_MODE")
         .as_deref()
         .unwrap_or("auto")
     {

@@ -14,7 +14,7 @@ use gpui::{
 use language::Buffer;
 use text::BufferId;
 use util::ResultExt;
-use ztracing::instrument;
+use xtracing::instrument;
 
 use crate::{
     Project,

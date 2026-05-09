@@ -873,7 +873,7 @@ impl LanguageServer {
                                     "command".to_string(),
                                     "detail".to_string(),
                                     "documentation".to_string(),
-                                    // NB: Do not have this resolved, otherwise Zed becomes slow to complete things
+                                    // NB: Do not have this resolved, otherwise Xenomorphic becomes slow to complete things
                                     // "textEdit".to_string(),
                                 ],
                             }),
@@ -2081,7 +2081,7 @@ mod tests {
 
     #[ctor::ctor]
     fn init_logger() {
-        zlog::init_test();
+        xlog::init_test();
     }
 
     #[gpui::test]

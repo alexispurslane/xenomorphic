@@ -89,7 +89,7 @@ pub struct LanguageSettings {
     pub line_ending: LineEndingSetting,
     /// How to perform a buffer format.
     pub formatter: settings::FormatterList,
-    /// Zed's Prettier integration settings.
+    /// Xenomorphic's Prettier integration settings.
     pub prettier: PrettierSettings,
     /// Whether to automatically close JSX tags.
     pub jsx_tag_auto_close: bool,
@@ -245,13 +245,13 @@ pub struct LanguageTaskSettings {
     /// Extra task variables to set for a particular language.
     pub variables: HashMap<String, String>,
     pub enabled: bool,
-    /// Use LSP tasks over Zed language extension ones.
+    /// Use LSP tasks over Xenomorphic language extension ones.
     /// If no LSP tasks are returned due to error/timeout or regular execution,
-    /// Zed language extension tasks will be used instead.
+    /// Xenomorphic language extension tasks will be used instead.
     ///
-    /// Other Zed tasks will still be shown:
-    /// * Zed task from either of the task config file
-    /// * Zed task from history (e.g. one-off task was spawned before)
+    /// Other Xenomorphic tasks will still be shown:
+    /// * Xenomorphic task from either of the task config file
+    /// * Xenomorphic task from history (e.g. one-off task was spawned before)
     pub prefer_lsp: bool,
 }
 
@@ -544,7 +544,7 @@ pub struct OpenAiCompatibleEditPredictionSettings {
 pub enum EditPredictionPromptFormat {
     #[default]
     Infer,
-    Zeta(ZetaVersion),
+    Xeta(XetaVersion),
     CodeLlama,
     StarCoder,
     DeepseekCoder,
@@ -555,20 +555,20 @@ pub enum EditPredictionPromptFormat {
 }
 
 #[derive(Copy, Clone, Debug, Default, Eq, PartialEq)]
-pub enum ZetaVersion {
-    Zeta1,
-    Zeta2,
+pub enum XetaVersion {
+    Xeta1,
+    Xeta2,
     #[default] // NOTE: make latest version default when adding
-    Zeta2_1,
+    Xeta2_1,
 }
 
 impl From<EditPredictionPromptFormatContent> for EditPredictionPromptFormat {
     fn from(value: EditPredictionPromptFormatContent) -> Self {
         match value {
             EditPredictionPromptFormatContent::Infer => Self::Infer,
-            EditPredictionPromptFormatContent::Zeta => Self::Zeta(ZetaVersion::Zeta1),
-            EditPredictionPromptFormatContent::Zeta2 => Self::Zeta(ZetaVersion::Zeta2),
-            EditPredictionPromptFormatContent::Zeta2_1 => Self::Zeta(ZetaVersion::Zeta2_1),
+            EditPredictionPromptFormatContent::Xeta => Self::Xeta(XetaVersion::Xeta1),
+            EditPredictionPromptFormatContent::Xeta2 => Self::Xeta(XetaVersion::Xeta2),
+            EditPredictionPromptFormatContent::Xeta2_1 => Self::Xeta(XetaVersion::Xeta2_1),
             EditPredictionPromptFormatContent::CodeLlama => Self::CodeLlama,
             EditPredictionPromptFormatContent::StarCoder => Self::StarCoder,
             EditPredictionPromptFormatContent::DeepseekCoder => Self::DeepseekCoder,
