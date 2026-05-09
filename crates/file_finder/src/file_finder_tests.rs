@@ -2852,7 +2852,7 @@ async fn test_selected_history_item_stays_selected_on_worktree_updated(cx: &mut 
 
     // Add more files to the worktree to trigger update matches
     for i in 0..5 {
-        let filename = if cfg!(windows) {
+        let filename = if false {
             format!("C:/test/{}.txt", 4 + i)
         } else {
             format!("/test/{}.txt", 4 + i)

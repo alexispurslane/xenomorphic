@@ -49,7 +49,6 @@ screen-capture = [
     "scap",
 ]
 
-
 [target.'cfg(any(target_os = "linux", target_os = "freebsd"))'.dependencies]
 anyhow.workspace = true
 bytemuck = "1"

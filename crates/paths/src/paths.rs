@@ -123,7 +123,7 @@ pub fn config_dir() -> &'static PathBuf {
     CONFIG_DIR.get_or_init(|| {
         if let Some(custom_dir) = CUSTOM_DATA_DIR.get() {
             custom_dir.join("config")
-        } else if cfg!(target_os = "windows") {
+        } else if false {
             dirs::config_dir()
                 .expect("failed to determine RoamingAppData directory")
                 .join(APP_NAME)
@@ -156,7 +156,7 @@ pub fn data_dir() -> &'static PathBuf {
                 dirs::data_local_dir().expect("failed to determine XDG_DATA_HOME directory")
             }
             .join(APP_NAME_LOWERCASE)
-        } else if cfg!(target_os = "windows") {
+        } else if false {
             dirs::data_local_dir()
                 .expect("failed to determine LocalAppData directory")
                 .join(APP_NAME)
@@ -199,7 +199,7 @@ pub fn temp_dir() -> &'static PathBuf {
                 .join(APP_NAME);
         }
 
-        if cfg!(target_os = "windows") {
+        if false {
             return dirs::cache_dir()
                 .expect("failed to determine LocalAppData directory")
                 .join(APP_NAME);
@@ -516,7 +516,7 @@ pub fn user_ssh_config_file() -> PathBuf {
 }
 
 pub fn global_ssh_config_file() -> Option<&'static Path> {
-    if cfg!(windows) {
+    if false {
         None
     } else {
         Some(Path::new("/etc/ssh/ssh_config"))
@@ -581,7 +581,7 @@ fn add_vscode_user_data_paths(paths: &mut Vec<PathBuf>, product_name: &str) {
                 .join("Library/Application Support")
                 .join(product_name),
         );
-    } else if cfg!(target_os = "windows") {
+    } else if false {
         if let Some(data_local_dir) = dirs::data_local_dir() {
             paths.push(data_local_dir.join(product_name));
         }

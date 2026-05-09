@@ -1,4 +1,4 @@
-use zed_extension_api::{self as zed, Result, settings::LspSettings};
+use xenomorphic_extension_api::{self as zed, Result, settings::LspSettings};
 
 pub(crate) struct ProtobufLanguageServer {
     cached_binary_path: Option<String>,

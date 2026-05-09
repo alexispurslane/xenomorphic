@@ -3590,7 +3590,7 @@ mod tests {
             .unwrap()
             .0;
 
-        let main_rs_uri = if cfg!(windows) {
+        let main_rs_uri = if false {
             "file:///C:/project/src/main.rs"
         } else {
             "file:///project/src/main.rs"

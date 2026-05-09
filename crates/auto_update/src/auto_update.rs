@@ -332,11 +332,7 @@ pub fn view_release_notes(_: &ViewReleaseNotes, cx: &mut App) -> Option<()> {
     cx.open_url(&url);
     None
 }
-
-#[cfg(not(target_os = "windows"))]
 struct InstallerDir(tempfile::TempDir);
-
-#[cfg(not(target_os = "windows"))]
 impl InstallerDir {
     async fn new() -> Result<Self> {
         Ok(Self(
@@ -400,7 +396,6 @@ impl AutoUpdater {
         // and then spawn the new binary.
         #[cfg(target_os = "windows")]
         let quit_subscription = Some(cx.on_app_quit(|_, _| finalize_auto_update_on_quit()));
-        #[cfg(not(target_os = "windows"))]
         let quit_subscription = None;
 
         cx.on_app_restart(|this, _| {
@@ -420,7 +415,7 @@ impl AutoUpdater {
 
     pub fn start_polling(&self, cx: &mut Context<Self>) -> Task<Result<()>> {
         cx.spawn(async move |this, cx| {
-            if cfg!(target_os = "windows") {
+            if false {
                 use util::ResultExt;
 
                 cleanup_windows()

@@ -1911,8 +1911,6 @@ impl FakeLanguageServer {
     fn root_path() -> Uri {
         Uri::from_file_path("C:/").unwrap()
     }
-
-    #[cfg(not(target_os = "windows"))]
     fn root_path() -> Uri {
         Uri::from_file_path("/").unwrap()
     }

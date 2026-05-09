@@ -672,12 +672,13 @@ mod tests {
     }
 
     fn assert_models_eq(result: Vec<ModelInfo>, expected: Vec<&str>) {
+        let actual: Vec<String> = result.iter().map(|r| r.model.telemetry_id()).collect();
         assert_eq!(
-            result.len(),
+            actual.len(),
             expected.len(),
-            "Number of models doesn't match"
+            "Number of models doesn't match. actual: {:?}",
+            actual
         );
-
         for (i, expected_name) in expected.iter().enumerate() {
             assert_eq!(
                 result[i].model.telemetry_id(),
@@ -712,8 +713,8 @@ mod tests {
         assert_models_eq(
             results,
             vec![
-                "zed/gpt-5",
-                "zed/gpt-5-mini",
+                "xenomorphic/gpt-5",
+                "xenomorphic/gpt-5-mini",
                 "openai/gpt-5",
                 "openai/gpt-5-mini",
             ],
@@ -740,19 +741,19 @@ mod tests {
         );
 
         // Results should preserve models order whenever possible.
-        // In the case below, `zed/gpt-5-mini` and `openai/gpt-5-mini` have identical
-        // similarity scores, but `zed/gpt-5-mini` was higher in the models list,
-        // so it should appear first in the results.
+        // With "xenomorphic" as provider, fuzzy matching "mini" also matches
+        // models whose provider prefix contains m, i, n.
         let results = matcher.fuzzy_search("mini");
-        assert_models_eq(results, vec!["zed/gpt-5-mini", "openai/gpt-5-mini"]);
+        assert_models_eq(results, vec!["xenomorphic/gpt-5-mini", "openai/gpt-5-mini", "xenomorphic/Claude 3.7 Sonnet Thinking"]);
 
         // Model provider should be searchable as well
+        // With "xenomorphic" provider, "ol" also matches it since it contains o,l
         let results = matcher.fuzzy_search("ol"); // meaning "ollama"
-        assert_models_eq(results, vec!["ollama/mistral", "ollama/deepseek"]);
+        assert_models_eq(results, vec!["ollama/mistral", "ollama/deepseek", "xenomorphic/Claude 3.7 Sonnet", "xenomorphic/Claude 3.7 Sonnet Thinking"]);
 
         // Fuzzy search - search for Claude to get the Thinking variant
         let results = matcher.fuzzy_search("thinking");
-        assert_models_eq(results, vec!["zed/Claude 3.7 Sonnet Thinking"]);
+        assert_models_eq(results, vec!["xenomorphic/Claude 3.7 Sonnet Thinking"]);
     }
 
     #[gpui::test]
@@ -776,7 +777,7 @@ mod tests {
         // Recommended models should also appear in "all"
         assert_models_eq(
             actual_all_models,
-            vec!["zed/claude", "zed/gemini", "copilot/o3"],
+            vec!["xenomorphic/claude", "xenomorphic/gemini", "copilot/o3"],
         );
     }
 
@@ -801,7 +802,7 @@ mod tests {
         // All models should appear in "all" regardless of recommended status
         assert_models_eq(
             actual_all_models,
-            vec!["zed/claude", "zed/gemini", "copilot/claude"],
+            vec!["xenomorphic/claude", "xenomorphic/gemini", "copilot/claude"],
         );
     }
 
@@ -821,7 +822,7 @@ mod tests {
             Some(LanguageModelPickerEntry::Separator(s)) if s == "Favorite"
         ));
 
-        assert_models_eq(grouped_models.favorites, vec!["zed/gemini"]);
+        assert_models_eq(grouped_models.favorites, vec!["xenomorphic/gemini"]);
     }
 
     #[gpui::test]
@@ -854,8 +855,8 @@ mod tests {
 
         for entry in &entries {
             if let LanguageModelPickerEntry::Model(info) = entry {
-                if info.model.telemetry_id() == "zed/claude" {
-                    assert!(info.is_favorite, "zed/claude should be a favorite");
+                if info.model.telemetry_id() == "xenomorphic/claude" {
+                    assert!(info.is_favorite, "xenomorphic/claude should be a favorite");
                 } else {
                     assert!(
                         !info.is_favorite,
@@ -886,11 +887,11 @@ mod tests {
 
         let grouped_models = GroupedModels::new(all_models, recommended_models);
 
-        assert_models_eq(grouped_models.favorites, vec!["zed/gemini", "openai/gpt-4"]);
-        assert_models_eq(grouped_models.recommended, vec!["zed/claude"]);
+        assert_models_eq(grouped_models.favorites, vec!["xenomorphic/gemini", "openai/gpt-4"]);
+        assert_models_eq(grouped_models.recommended, vec!["xenomorphic/claude"]);
         assert_models_eq(
             grouped_models.all.values().flatten().cloned().collect(),
-            vec!["zed/claude", "zed/gemini", "openai/gpt-4", "openai/gpt-3.5"],
+            vec!["xenomorphic/claude", "xenomorphic/gemini", "openai/gpt-4", "openai/gpt-3.5"],
         );
     }
 }

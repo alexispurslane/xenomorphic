@@ -71,8 +71,6 @@ xenomorphic_actions.workspace = true
 zeroize.workspace = true
 xtracing.workspace = true
 tracing.workspace = true
-[target.'cfg(windows)'.dependencies]
-windows.workspace = true
 
 [dev-dependencies]
 ctor.workspace = true

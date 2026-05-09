@@ -4096,8 +4096,6 @@ async fn test_rename_with_hide_root(cx: &mut gpui::TestAppContext) {
             panel.read_with(cx, |panel, _| panel.state.edit_state.is_none()),
             "Rename should be blocked on Windows even with multiple worktrees"
         );
-
-        #[cfg(not(target_os = "windows"))]
         {
             assert!(
                 panel.read_with(cx, |panel, _| panel.state.edit_state.is_some()),
@@ -9453,7 +9451,6 @@ fn visible_entries_as_strings(
             };
             #[cfg(windows)]
             let filename = details.filename.replace("\\", "/");
-            #[cfg(not(windows))]
             let filename = details.filename;
             let name = if details.is_editing {
                 format!("[EDITOR: '{}']", filename)

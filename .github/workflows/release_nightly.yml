@@ -115,7 +115,7 @@ jobs:
         set -eu
         version=$(git rev-parse --short HEAD)
         echo "Publishing version: ${version} on release channel nightly"
-        echo "nightly" > crates/zed/RELEASE_CHANNEL
+        echo "nightly" > crates/xenomorphic/RELEASE_CHANNEL
     - name: steps::setup_sentry
       uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b
       with:
@@ -161,7 +161,7 @@ jobs:
         set -eu
         version=$(git rev-parse --short HEAD)
         echo "Publishing version: ${version} on release channel nightly"
-        echo "nightly" > crates/zed/RELEASE_CHANNEL
+        echo "nightly" > crates/xenomorphic/RELEASE_CHANNEL
     - name: steps::setup_sentry
       uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b
       with:
@@ -210,7 +210,7 @@ jobs:
         set -eu
         version=$(git rev-parse --short HEAD)
         echo "Publishing version: ${version} on release channel nightly"
-        echo "nightly" > crates/zed/RELEASE_CHANNEL
+        echo "nightly" > crates/xenomorphic/RELEASE_CHANNEL
     - name: steps::setup_node
       uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
@@ -261,7 +261,7 @@ jobs:
         set -eu
         version=$(git rev-parse --short HEAD)
         echo "Publishing version: ${version} on release channel nightly"
-        echo "nightly" > crates/zed/RELEASE_CHANNEL
+        echo "nightly" > crates/xenomorphic/RELEASE_CHANNEL
     - name: steps::setup_node
       uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
@@ -316,7 +316,7 @@ jobs:
         $ErrorActionPreference = "Stop"
         $version = git rev-parse --short HEAD
         Write-Host "Publishing version: $version on release channel nightly"
-        "nightly" | Set-Content -Path "crates/zed/RELEASE_CHANNEL"
+        "nightly" | Set-Content -Path "crates/xenomorphic/RELEASE_CHANNEL"
       shell: pwsh
       working-directory: ${{ env.ZED_WORKSPACE }}
     - name: steps::setup_sentry
@@ -369,7 +369,7 @@ jobs:
         $ErrorActionPreference = "Stop"
         $version = git rev-parse --short HEAD
         Write-Host "Publishing version: $version on release channel nightly"
-        "nightly" | Set-Content -Path "crates/zed/RELEASE_CHANNEL"
+        "nightly" | Set-Content -Path "crates/xenomorphic/RELEASE_CHANNEL"
       shell: pwsh
       working-directory: ${{ env.ZED_WORKSPACE }}
     - name: steps::setup_sentry

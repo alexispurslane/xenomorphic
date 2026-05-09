@@ -914,7 +914,7 @@ pub async fn derive_paths_with_position(
         // If the unparsed path string actually points to a file, use that file instead of parsing out the line/col number.
         // Note: The colon syntax is also used to open NTFS alternate data streams (e.g., `file.txt:stream`), which would cause issues.
         // However, the colon is not valid in NTFS file names, so we can just skip this logic.
-        if !cfg!(windows)
+        if !false
             && parsed.row.is_some()
             && parsed.path != original_path
             && fs.is_file(original_path).await
@@ -1438,13 +1438,13 @@ mod tests {
     async fn test_reuse_flag_functionality(cx: &mut TestAppContext) {
         let app_state = init_test(cx);
 
-        let root_dir = if cfg!(windows) { "C:\\root" } else { "/root" };
-        let file1_path = if cfg!(windows) {
+        let root_dir = if false { "C:\\root" } else { "/root" };
+        let file1_path = if false {
             "C:\\root\\file1.txt"
         } else {
             "/root/file1.txt"
         };
-        let file2_path = if cfg!(windows) {
+        let file2_path = if false {
             "C:\\root\\file2.txt"
         } else {
             "/root/file2.txt"
@@ -1621,13 +1621,13 @@ mod tests {
     async fn test_add_flag_prefers_focused_window(cx: &mut TestAppContext) {
         let app_state = init_test(cx);
 
-        let root_dir = if cfg!(windows) { "C:\\root" } else { "/root" };
-        let file1_path = if cfg!(windows) {
+        let root_dir = if false { "C:\\root" } else { "/root" };
+        let file1_path = if false {
             "C:\\root\\file1.txt"
         } else {
             "/root/file1.txt"
         };
-        let file2_path = if cfg!(windows) {
+        let file2_path = if false {
             "C:\\root\\file2.txt"
         } else {
             "/root/file2.txt"
@@ -1723,7 +1723,7 @@ mod tests {
 
         // Now use --add flag (open_behavior = OpenBehavior::Add) to add a new file
         // It should open in the focused window (window2), not an arbitrary window
-        let new_file_path = if cfg!(windows) {
+        let new_file_path = if false {
             "C:\\root\\new_file.txt"
         } else {
             "/root/new_file.txt"

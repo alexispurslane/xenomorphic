@@ -172,8 +172,6 @@ impl TerminalCodegen {
 pub enum CodegenEvent {
     Finished,
 }
-
-#[cfg(not(target_os = "windows"))]
 pub const CLEAR_INPUT: &str = "\x15";
 #[cfg(target_os = "windows")]
 pub const CLEAR_INPUT: &str = "\x03";

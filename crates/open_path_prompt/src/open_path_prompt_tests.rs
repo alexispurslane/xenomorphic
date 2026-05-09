@@ -47,8 +47,6 @@ async fn test_open_path_prompt(cx: &mut TestAppContext) {
     let query = path!("/root");
     insert_query(query, &picker, cx).await;
     assert_eq!(collect_match_candidates(&picker, cx), vec!["root"]);
-
-    #[cfg(not(windows))]
     let expected_separator = "./";
     #[cfg(windows)]
     let expected_separator = ".\\";
@@ -391,8 +389,6 @@ async fn test_open_path_prompt_with_show_hidden(cx: &mut TestAppContext) {
     let project = Project::test(app_state.fs.clone(), [path!("/root").as_ref()], cx).await;
 
     let (picker, cx) = build_open_path_prompt(project, false, true, cx);
-
-    #[cfg(not(windows))]
     let expected_separator = "./";
     #[cfg(windows)]
     let expected_separator = ".\\";

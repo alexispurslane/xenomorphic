@@ -404,7 +404,7 @@ impl TitleBar {
                     None
                 }
             }
-            PlatformStyle::Linux | PlatformStyle::Windows => {
+            PlatformStyle::Linux => {
                 Some(cx.new(|cx| ApplicationMenu::new(window, cx)))
             }
         };

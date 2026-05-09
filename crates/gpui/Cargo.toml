@@ -12,12 +12,11 @@ readme = "README.md"
 keywords = ["desktop", "gui", "immediate"]
 categories = ["gui"]
 
-
 [lints]
 workspace = true
 
 [features]
-default = ["font-kit", "wayland", "x11", "windows-manifest"]
+default = ["font-kit", "wayland", "x11"]
 test-support = [
     "leak-detection",
     "collections/test-support",
@@ -37,7 +36,6 @@ x11 = [
 screen-capture = [
     "scap",
 ]
-windows-manifest = ["dep:embed-resource"]
 input-latency-histogram = ["dep:hdrhistogram"]
 
 [lib]
@@ -111,7 +109,6 @@ web-time.workspace = true
 getrandom = { version = "0.3.4", features = ["wasm_js"] }
 uuid = { workspace = true, features = ["js"] }
 
-
 [target.'cfg(target_os = "macos")'.dependencies]
 block = "0.1"
 cocoa.workspace = true
@@ -136,14 +133,8 @@ metal.workspace = true
 [target.'cfg(any(target_os = "linux", target_os = "freebsd", target_os = "macos"))'.dependencies]
 pathfinder_geometry = "0.5"
 
-[target.'cfg(any(target_os = "linux", target_os = "freebsd", target_os = "windows"))'.dependencies]
+[target.'cfg(any(target_os = "linux", target_os = "freebsd"))'.dependencies]
 scap = { workspace = true, optional = true }
-
-
-
-[target.'cfg(target_os = "windows")'.dependencies]
-windows = { version = "0.61", features = ["Win32_Foundation"] }
-
 
 [dev-dependencies]
 backtrace.workspace = true
@@ -166,14 +157,10 @@ wasm-bindgen = { workspace = true }
 gpui_web.workspace = true
 
 [build-dependencies]
-embed-resource = { version = "3.0", optional = true }
 
 [target.'cfg(target_os = "macos")'.build-dependencies]
 bindgen = "0.71"
 cbindgen = { version = "0.28.0", default-features = false }
-
-
-
 
 [[example]]
 name = "hello_world"

@@ -1190,7 +1190,7 @@ impl ExternalAgentServer for LocalExtensionArchiveAgent {
                 "darwin"
             } else if cfg!(target_os = "linux") {
                 "linux"
-            } else if cfg!(target_os = "windows") {
+            } else if false {
                 "windows"
             } else {
                 anyhow::bail!("unsupported OS");
@@ -1378,7 +1378,7 @@ impl ExternalAgentServer for LocalRegistryArchiveAgent {
                 "darwin"
             } else if cfg!(target_os = "linux") {
                 "linux"
-            } else if cfg!(target_os = "windows") {
+            } else if false {
                 "windows"
             } else {
                 anyhow::bail!("unsupported OS");

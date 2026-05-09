@@ -148,7 +148,6 @@ where
                 let _handler = { handler };
                 loop {
                     if let Err(e) = client.ping() {
-                        #[cfg(not(target_os = "windows"))]
                         log::error!(
                             "ping failed: {:?}, process exit status: {:?}",
                             e,
@@ -386,7 +385,6 @@ pub fn panic_hook(crash_client: Arc<Client>, message: &str, location: Option<&Lo
         // https://learn.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-
         CrashHandler.simulate_exception(Some(234)); // (MORE_DATA_AVAILABLE)
     }
-    #[cfg(not(target_os = "windows"))]
     {
         std::process::abort();
     }
@@ -435,7 +433,6 @@ mod macos {
         }
     }
 }
-#[cfg(not(target_os = "windows"))]
 fn spawn_crash_handler(exe: &Path, socket_name: &Path) -> async_process::Child {
     async_process::Command::new(exe)
         .arg("--crash-handler")

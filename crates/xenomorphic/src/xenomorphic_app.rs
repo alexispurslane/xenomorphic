@@ -674,7 +674,7 @@ fn show_software_emulation_warning_if_needed(
     cx: &mut Context<Workspace>,
 ) {
     if specs.is_software_emulated && std::env::var("XENOMORPHIC_ALLOW_EMULATED_GPU").is_err() {
-        let (graphics_api, docs_url, open_url) = if cfg!(target_os = "windows") {
+        let (graphics_api, docs_url, open_url) = if false {
             (
                 "DirectX",
                 "https://zed.dev/docs/windows",
@@ -1099,7 +1099,7 @@ fn register_actions(
                         Toast::new(
                             NotificationId::unique::<RegisterXenomorphicScheme>(),
                             format!(
-                                "zed:// links will now open in {}.",
+                                "xenomorphic:// links will now open in {}.",
                                 ReleaseChannel::global(cx).display_name()
                             ),
                         ),
@@ -1109,7 +1109,7 @@ fn register_actions(
                 Ok(())
             })
             .detach_and_prompt_err(
-                "Error registering zed:// scheme",
+                "Error registering xenomorphic:// scheme",
                 window,
                 cx,
                 |_, _, _| None,
@@ -1251,8 +1251,6 @@ fn register_actions(
                 .detach_and_log_err(cx);
             }
         });
-
-    #[cfg(not(target_os = "windows"))]
     workspace.register_action(install_cli);
 
     if workspace.project().read(cx).is_via_remote_server() {
@@ -1564,8 +1562,6 @@ fn open_about_window(cx: &mut App) {
     )
     .log_err();
 }
-
-#[cfg(not(target_os = "windows"))]
 fn install_cli(
     _: &mut Workspace,
     _: &install_cli::InstallCliBinary,
@@ -1937,8 +1933,6 @@ pub fn handle_keymap_file_changes(
         })
         .detach();
     }
-
-    #[cfg(not(target_os = "windows"))]
     {
         let mut current_mapping = cx.keyboard_mapper().get_key_equivalents().cloned();
         cx.on_keyboard_layout_change(move |cx| {
@@ -2092,7 +2086,6 @@ fn reload_keymaps(cx: &mut App, mut user_key_bindings: Vec<KeyBinding>) {
     let menus = app_menus(cx);
     cx.set_menus(menus);
     // On Windows, this is set in the `update_jump_list` method of the `HistoryManager`.
-    #[cfg(not(target_os = "windows"))]
     cx.set_dock_menu(vec![gpui::MenuItem::action(
         "New Window",
         workspace::NewWindow,
@@ -5241,9 +5234,9 @@ mod tests {
                 "workspace",
                 "worktree_picker",
                 "zed",
-                "zed_actions",
-                "zed_predict_onboarding",
+                "xenomorphic_actions",
                 "xeta",
+                "zed_predict_onboarding",
             ];
             assert_eq!(
                 all_namespaces,

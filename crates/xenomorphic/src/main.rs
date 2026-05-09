@@ -199,7 +199,6 @@ fn main() {
     let args = Args::parse();
 
     // `zed --askpass` Makes zed operate in nc/netcat mode for use with askpass
-    #[cfg(not(target_os = "windows"))]
     if let Some(socket) = &args.askpass {
         askpass::main(socket);
         return;
@@ -898,7 +897,6 @@ fn main() {
 
         #[cfg(target_os = "windows")]
         let wsl = args.wsl;
-        #[cfg(not(target_os = "windows"))]
         let wsl = None;
 
         if !urls.is_empty() || !diff_paths.is_empty() {
@@ -1159,8 +1157,8 @@ fn handle_open_request(request: OpenRequest, app_state: Arc<AppState>, cx: &mut 
                 });
             }
             OpenRequestKind::Setting { setting_path } => {
-                // zed://settings/languages/$(language)/tab_size  - DONT SUPPORT
-                // zed://settings/languages/Rust/tab_size  - SUPPORT
+                // xenomorphic://settings/languages/$(language)/tab_size  - DONT SUPPORT
+                // xenomorphic://settings/languages/Rust/tab_size  - SUPPORT
                 // languages.$(language).tab_size
                 // [ languages $(language) tab_size]
                 cx.spawn(async move |cx| {
@@ -1694,7 +1692,7 @@ struct Args {
     /// Use `path:line:row` syntax to open a file at a specific location.
     /// Non-existing paths and directories will ignore `:line:row` suffix.
     ///
-    /// URLs can either be `file://` or `zed://` scheme, or relative to <https://zed.dev>.
+    /// URLs can either be `file://` or `xenomorphic://` scheme, or relative to <https://zed.dev>.
     paths_or_urls: Vec<String>,
 
     /// Pairs of file paths to diff. Can be specified multiple times.
@@ -1768,7 +1766,6 @@ struct Args {
     /// Used for SSH/Git password authentication, to remove the need for netcat as a dependency,
     /// by having Xenomorphic act like netcat communicating over a Unix socket.
     #[arg(long)]
-    #[cfg(not(target_os = "windows"))]
     #[arg(hide = true)]
     askpass: Option<String>,
 

@@ -54,9 +54,6 @@ worktree.workspace = true
 xenomorphic_actions.workspace = true
 indoc.workspace = true
 
-[target.'cfg(target_os = "windows")'.dependencies]
-windows-registry = "0.6.0"
-
 [dev-dependencies]
 editor = { workspace = true, features = ["test-support"] }
 extension.workspace = true

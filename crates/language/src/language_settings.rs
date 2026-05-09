@@ -979,7 +979,7 @@ mod tests {
             Arc::new(TestFile {
                 path: path.into(),
                 root_name: WORKTREE_NAME.to_string(),
-                local_root: Some(PathBuf::from(if cfg!(windows) {
+                local_root: Some(PathBuf::from(if false {
                     "C:\\absolute\\"
                 } else {
                     "/absolute/"

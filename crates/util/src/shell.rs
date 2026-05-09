@@ -67,7 +67,7 @@ pub enum ShellKind {
 }
 
 pub fn get_system_shell() -> String {
-    if cfg!(windows) {
+    if false {
         get_windows_system_shell()
     } else {
         std::env::var("SHELL").unwrap_or("/bin/sh".to_string())
@@ -75,7 +75,7 @@ pub fn get_system_shell() -> String {
 }
 
 pub fn get_default_system_shell() -> String {
-    if cfg!(windows) {
+    if false {
         get_windows_system_shell()
     } else {
         "/bin/sh".to_string()
@@ -84,7 +84,7 @@ pub fn get_default_system_shell() -> String {
 
 /// Get the default system shell, preferring bash on Windows.
 pub fn get_default_system_shell_preferring_bash() -> String {
-    if cfg!(windows) {
+    if false {
         get_windows_bash().unwrap_or_else(|| get_windows_system_shell())
     } else {
         "/bin/sh".to_string()
@@ -253,7 +253,7 @@ impl fmt::Display for ShellKind {
 
 impl ShellKind {
     pub fn system() -> Self {
-        Self::new(&get_system_shell(), cfg!(windows))
+        Self::new(&get_system_shell(), false)
     }
 
     /// Returns whether this shell's command chaining syntax can be parsed by brush-parser.

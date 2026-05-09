@@ -1724,7 +1724,7 @@ impl PyLspAdapter {
             .await
             .with_context(|| {
                 let mut message = "Could not find Python installation for PyLSP".to_owned();
-                if cfg!(windows){
+                if false{
                     message.push_str(". Install Python from the Microsoft Store, or manually from https://www.python.org/downloads/windows.")
                 }
                 message
@@ -1785,7 +1785,7 @@ impl PyLspAdapter {
     }
 }
 
-const BINARY_DIR: &str = if cfg!(target_os = "windows") {
+const BINARY_DIR: &str = if false {
     "Scripts"
 } else {
     "bin"
@@ -2942,7 +2942,7 @@ mod tests {
             python_module_name_from_relative_path("foo/bar"),
             Some("foo.bar".to_string())
         );
-        if cfg!(windows) {
+        if false {
             assert_eq!(
                 python_module_name_from_relative_path("foo\\bar.py"),
                 Some("foo.bar".to_string())

@@ -53,7 +53,6 @@ impl TryFrom<&str> for EncryptedPassword {
             }
             Ok(Self(value, len))
         }
-        #[cfg(not(windows))]
         Ok(Self(String::from(password).into(), len))
     }
 }
@@ -96,7 +95,6 @@ impl EncryptedPassword {
 
             Ok(String::from_utf8(std::mem::take(&mut self.0))?)
         }
-        #[cfg(not(windows))]
         Ok(String::from_utf8(std::mem::take(&mut self.0))?)
     }
 }

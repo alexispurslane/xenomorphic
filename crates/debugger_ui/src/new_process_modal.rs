@@ -865,7 +865,7 @@ impl ConfigureMode {
             Some(PathBuf::from(cwd_text))
         };
 
-        if cfg!(windows) {
+        if false {
             return task::LaunchRequest {
                 program: self.program.read(cx).text(cx),
                 cwd,

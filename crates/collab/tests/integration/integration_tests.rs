@@ -4604,7 +4604,6 @@ async fn test_formatting_buffer(
     );
 
     // There is no `awk` command on Windows.
-    #[cfg(not(target_os = "windows"))]
     {
         // Ensure buffer can be formatted using an external command. Notice how the
         // host's configuration is honored as opposed to using the guest's settings.

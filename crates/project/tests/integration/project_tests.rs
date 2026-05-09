@@ -70,7 +70,6 @@ use project::{
 use rand::{Rng as _, rngs::StdRng};
 use serde_json::json;
 use settings::SettingsStore;
-#[cfg(not(windows))]
 use std::os;
 use std::{
     cell::RefCell,
@@ -103,7 +102,6 @@ async fn test_block_via_channel(cx: &mut gpui::TestAppContext) {
 
     let (tx, mut rx) = futures::channel::mpsc::unbounded();
     let _thread = std::thread::spawn(move || {
-        #[cfg(not(target_os = "windows"))]
         std::fs::metadata("/tmp").unwrap();
         #[cfg(target_os = "windows")]
         std::fs::metadata("C:/Windows").unwrap();
@@ -190,7 +188,6 @@ async fn test_default_session_work_dirs_falls_back_to_home_for_empty_project(
 // NOTE:
 // While POSIX symbolic links are somewhat supported on Windows, they are an opt in by the user, and thus
 // we assume that they are not supported out of the box.
-#[cfg(not(windows))]
 #[gpui::test]
 async fn test_symlinks(cx: &mut gpui::TestAppContext) {
     init_test(cx);
@@ -10035,7 +10032,6 @@ async fn test_single_file_diffs(cx: &mut gpui::TestAppContext) {
 
 // TODO: Should we test this on Windows also?
 #[gpui::test]
-#[cfg(not(windows))]
 async fn test_staging_hunk_preserve_executable_permission(cx: &mut gpui::TestAppContext) {
     use std::os::unix::fs::PermissionsExt;
     init_test(cx);

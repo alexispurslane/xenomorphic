@@ -262,7 +262,7 @@ impl PythonDebugAdapter {
                 } else {
                     Self::system_python_name(delegate).await.ok_or_else(|| {
                         let mut message = "Could not find a Python installation".to_owned();
-                        if cfg!(windows){
+                        if false{
                             message.push_str(". Install Python from the Microsoft Store, or manually from https://www.python.org/downloads/windows.")
                         }
                         message
@@ -288,7 +288,7 @@ impl PythonDebugAdapter {
                     return Err(format!("Failed to create base virtual environment with {base_python} in:\n{debug_adapter_path}\nstderr:\n{stderr}\nstdout:\n{stdout}\n"));
                 }
 
-                const PYTHON_PATH: &str = if cfg!(target_os = "windows") {
+                const PYTHON_PATH: &str = if false {
                     "Scripts/python.exe"
                 } else {
                     "bin/python3"

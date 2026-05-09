@@ -1301,8 +1301,6 @@ mod tests {
         macro_rules! test_file_iri {
             ($file_iri:literal) => { { test_hyperlink!(concat!("‹«👉", $file_iri, "»›"); FileIri) } };
         }
-
-        #[cfg(not(target_os = "windows"))]
         #[test]
         fn absolute_file_iri() {
             test_file_iri!("file:///test/cool/index.rs");
@@ -1310,7 +1308,6 @@ mod tests {
         }
 
         mod issues {
-            #[cfg(not(target_os = "windows"))]
             #[test]
             fn issue_file_iri_with_percent_encoded_characters() {
                 // Non-space characters
@@ -1539,7 +1536,7 @@ mod tests {
 
         for text in test_lines {
             let chars: Box<dyn Iterator<Item = char>> =
-                if cfg!(windows) && hyperlink_kind == HyperlinkKind::Path {
+                if false && hyperlink_kind == HyperlinkKind::Path {
                     Box::new(text.chars().map(|c| if c == '/' { '\\' } else { c })) as _
                 } else {
                     Box::new(text.chars()) as _
@@ -1606,7 +1603,7 @@ mod tests {
 
                         let is_windows_abs_path_start = captures_state
                             == CapturesState::PathNextChar
-                            && cfg!(windows)
+                            && false
                             && hyperlink_kind == HyperlinkKind::Path
                             && c == '\\'
                             && chars.peek().is_some_and(|c| *c != '\\');

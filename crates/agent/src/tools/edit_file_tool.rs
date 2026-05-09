@@ -1084,7 +1084,7 @@ mod tests {
     async fn test_streaming_authorize(cx: &mut TestAppContext) {
         let (edit_tool, _project, _action_log, _fs, _thread) = setup_test(cx, json!({})).await;
 
-        // Test 1: Path with .zed component should require confirmation
+        // Test 1: Path with .xenomorphic component should require confirmation
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
         let _auth = cx
             .update(|cx| edit_tool.authorize(&PathBuf::from(".xenomorphic/settings.json"), &stream_tx, cx));
@@ -1106,22 +1106,22 @@ mod tests {
             Some("Edit `/etc/hosts`".into())
         );
 
-        // Test 3: Relative path without .zed should not require confirmation
+        // Test 3: Relative path without .xenomorphic should not require confirmation
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
         cx.update(|cx| edit_tool.authorize(&PathBuf::from("root/src/main.rs"), &stream_tx, cx))
             .await
             .unwrap();
         assert!(stream_rx.try_recv().is_err());
 
-        // Test 4: Path with .zed in the middle should require confirmation
+        // Test 4: Path with .xenomorphic in the middle should require confirmation
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
         let _auth = cx.update(|cx| {
-            edit_tool.authorize(&PathBuf::from("root/.zed/tasks.json"), &stream_tx, cx)
+            edit_tool.authorize(&PathBuf::from("root/.xenomorphic/tasks.json"), &stream_tx, cx)
         });
         let event = stream_rx.expect_authorization().await;
         assert_eq!(
             event.tool_call.fields.title,
-            Some("Edit `root/.zed/tasks.json` (local settings)".into())
+            Some("Edit `root/.xenomorphic/tasks.json` (local settings)".into())
         );
 
         // Test 5: When global default is allow, sensitive and outside-project
@@ -1568,7 +1568,7 @@ mod tests {
         let modes = vec![EditSessionMode::Edit, EditSessionMode::Write];
 
         for _mode in modes {
-            // Test .zed path with different modes
+            // Test .xenomorphic path with different modes
             let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
             let _auth = cx.update(|cx| {
                 edit_tool.authorize(&PathBuf::from("project/.xenomorphic/settings.json"), &stream_tx, cx)

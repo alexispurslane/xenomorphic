@@ -40,8 +40,6 @@ pub struct EsLintLspAdapter {
 impl EsLintLspAdapter {
     const CURRENT_VERSION: &'static str = "3.0.24";
     const CURRENT_VERSION_TAG_NAME: &'static str = "release/3.0.24";
-
-    #[cfg(not(windows))]
     const GITHUB_ASSET_KIND: AssetKind = AssetKind::TarGz;
     #[cfg(windows)]
     const GITHUB_ASSET_KIND: AssetKind = AssetKind::Zip;
@@ -442,7 +440,6 @@ fn normalize_path_separators(path: &str) -> String {
     {
         path.replace('/', "\\")
     }
-    #[cfg(not(windows))]
     {
         path.to_string()
     }
@@ -1120,7 +1117,6 @@ mod tests {
                 path.replace('/', "\\")
             }
         }
-        #[cfg(not(windows))]
         {
             path.to_string()
         }

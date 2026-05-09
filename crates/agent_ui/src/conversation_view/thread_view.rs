@@ -433,7 +433,7 @@ impl ThreadView {
             editor
         });
 
-        let show_codex_windows_warning = cfg!(windows)
+        let show_codex_windows_warning = false
             && project.upgrade().is_some_and(|p| p.read(cx).is_local())
             && agent_id.as_ref() == "Codex";
 

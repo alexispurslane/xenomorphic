@@ -214,7 +214,7 @@ impl WorkflowType {
 }
 
 pub fn run_workflows(args: GenerateWorkflowArgs) -> Result<()> {
-    if !Path::new("crates/zed/").is_dir() {
+    if !Path::new("crates/xenomorphic/").is_dir() {
         anyhow::bail!("xtask workflows must be ran from the project root");
     }
 

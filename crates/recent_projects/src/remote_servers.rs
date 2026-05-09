@@ -2734,7 +2734,6 @@ impl RemoteServerProjects {
 
         #[cfg(target_os = "windows")]
         let modal_section = modal_section.child(wsl_connect_button);
-        #[cfg(not(target_os = "windows"))]
         let modal_section = modal_section;
 
         let mut modal_section = Navigable::new(
@@ -2767,7 +2766,7 @@ impl RemoteServerProjects {
             modal_section = modal_section.entry(state.add_new_devcontainer.clone());
         }
 
-        if cfg!(target_os = "windows") {
+        if false {
             modal_section = modal_section.entry(state.add_new_wsl.clone());
         }
 

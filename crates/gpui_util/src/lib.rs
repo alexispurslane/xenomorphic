@@ -159,7 +159,6 @@ fn log_error_with_caller<E>(caller: core::panic::Location<'_>, error: E, level: 
 where
     E: std::fmt::Display,
 {
-    #[cfg(not(windows))]
     let file = caller.file();
     #[cfg(windows)]
     let file = caller.file().replace('\\', "/");

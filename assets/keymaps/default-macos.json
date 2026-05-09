@@ -1327,20 +1327,20 @@
     "context": "RatePredictionsModal",
     "use_key_equivalents": true,
     "bindings": {
-      "cmd-shift-enter": "zeta::ThumbsUpActivePrediction",
-      "cmd-shift-backspace": "zeta::ThumbsDownActivePrediction",
-      "shift-down": "zeta::NextEdit",
-      "shift-up": "zeta::PreviousEdit",
-      "right": "zeta::PreviewPrediction",
+      "cmd-shift-enter": "xeta::ThumbsUpActivePrediction",
+      "cmd-shift-backspace": "xeta::ThumbsDownActivePrediction",
+      "shift-down": "xeta::NextEdit",
+      "shift-up": "xeta::PreviousEdit",
+      "right": "xeta::PreviewPrediction",
     },
   },
   {
     "context": "RatePredictionsModal > Editor",
     "use_key_equivalents": true,
     "bindings": {
-      "escape": "zeta::FocusPredictions",
-      "cmd-shift-enter": "zeta::ThumbsUpActivePrediction",
-      "cmd-shift-backspace": "zeta::ThumbsDownActivePrediction",
+      "escape": "xeta::FocusPredictions",
+      "cmd-shift-enter": "xeta::ThumbsUpActivePrediction",
+      "cmd-shift-backspace": "xeta::ThumbsDownActivePrediction",
     },
   },
   {

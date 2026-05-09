@@ -1828,7 +1828,7 @@ mod tests {
             result.command_label,
             format!(
                 "{system_shell} {interactive}-c '{user_command}'",
-                interactive = if cfg!(windows) { "" } else { "-i " }
+                interactive = if false { "" } else { "-i " }
             ),
             "We want to show to the user the entire command spawned"
         );

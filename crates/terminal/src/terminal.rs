@@ -493,7 +493,7 @@ impl TerminalBuilder {
 
             let shell_params = match shell.clone() {
                 Shell::System => {
-                    if cfg!(windows) {
+                    if false {
                         Some(ShellParams::new(
                             util::shell::get_windows_system_shell(),
                             None,
@@ -527,7 +527,7 @@ impl TerminalBuilder {
             // the compilation target. This is fine right now due to the restricted
             // way we use the return value, but would become incorrect if we
             // supported remoting into windows.
-            let shell_kind = shell.shell_kind(cfg!(windows));
+            let shell_kind = shell.shell_kind(false);
 
             let pty_options = {
                 let alac_shell = shell_params.as_ref().map(|params| {
@@ -689,7 +689,7 @@ impl TerminalBuilder {
             })
         };
         // the thread we spawn things on has an effect on signal handling
-        if !cfg!(target_os = "windows") {
+        if !false {
             cx.spawn(async move |_| fut.await)
         } else {
             cx.background_spawn(fut)
@@ -2596,8 +2596,6 @@ mod tests {
     use parking_lot::Mutex;
     use rand::{Rng, distr, rngs::StdRng};
     use task::{Shell, ShellBuilder};
-
-    #[cfg(not(target_os = "windows"))]
     fn init_test(cx: &mut TestAppContext) {
         cx.update(|cx| {
             let settings_store = settings::SettingsStore::test(cx);
@@ -2831,8 +2829,6 @@ mod tests {
             "EOF command sequence should have triggered a TTY terminal exit, but got events: {all_events:?}",
         );
     }
-
-    #[cfg(not(target_os = "windows"))]
     #[gpui::test(iterations = 10)]
     async fn test_terminal_closes_after_nonzero_exit(cx: &mut TestAppContext) {
         init_test(cx);
@@ -2950,7 +2946,6 @@ mod tests {
                 );
                 #[cfg(target_os = "windows")]
                 assert_eq!(exit_status.code(), Some(1));
-                #[cfg(not(target_os = "windows"))]
                 assert_eq!(exit_status.code(), Some(127)); // code 127 means "command not found" on Unix
             }
         });

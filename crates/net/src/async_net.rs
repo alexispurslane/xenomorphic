@@ -1,4 +1,3 @@
-#[cfg(not(target_os = "windows"))]
 pub use smol::net::unix::{UnixListener, UnixStream};
 
 #[cfg(target_os = "windows")]

@@ -210,7 +210,7 @@ pub fn render_keybinding_keystroke(
     let use_text = vim_mode
         || matches!(
             platform_style,
-            PlatformStyle::Linux | PlatformStyle::Windows
+            PlatformStyle::Linux
         );
     let size = size.into();
 
@@ -332,15 +332,11 @@ pub fn render_modifiers(
         .into_iter()
         .map(move |modifier| match platform_style {
             PlatformStyle::Mac => Some(modifier.mac),
-            PlatformStyle::Linux => Some(modifier.linux),
-            PlatformStyle::Windows => Some(modifier.windows),
-        });
+            PlatformStyle::Linux => Some(modifier.linux),        });
 
     let separator = match platform_style {
         PlatformStyle::Mac => None,
-        PlatformStyle::Linux => Some(KeyOrIcon::Plus),
-        PlatformStyle::Windows => Some(KeyOrIcon::Plus),
-    };
+        PlatformStyle::Linux => Some(KeyOrIcon::Plus),    };
 
     let platform_keys = itertools::intersperse(platform_keys, separator.clone());
 
@@ -501,7 +497,7 @@ fn keystroke_text(
     if modifiers.control {
         match (platform_style, vim_mode) {
             (PlatformStyle::Mac, false) => text.push_str("Control"),
-            (PlatformStyle::Linux | PlatformStyle::Windows, false) => text.push_str("Ctrl"),
+            (PlatformStyle::Linux, false) => text.push_str("Ctrl"),
             (_, true) => text.push_str("ctrl"),
         }
 
@@ -514,8 +510,6 @@ fn keystroke_text(
             (PlatformStyle::Mac, true) => text.push_str("cmd"),
             (PlatformStyle::Linux, false) => text.push_str("Super"),
             (PlatformStyle::Linux, true) => text.push_str("super"),
-            (PlatformStyle::Windows, false) => text.push_str("Win"),
-            (PlatformStyle::Windows, true) => text.push_str("win"),
         }
 
         text.push(delimiter);
@@ -525,7 +519,7 @@ fn keystroke_text(
         match (platform_style, vim_mode) {
             (PlatformStyle::Mac, false) => text.push_str("Option"),
             (PlatformStyle::Mac, true) => text.push_str("option"),
-            (PlatformStyle::Linux | PlatformStyle::Windows, false) => text.push_str("Alt"),
+            (PlatformStyle::Linux, false) => text.push_str("Alt"),
             (_, true) => text.push_str("alt"),
         }
 
@@ -669,15 +663,6 @@ mod tests {
             ),
             "Super-C".to_string()
         );
-        assert_eq!(
-            keystroke_text(
-                &keystroke.modifiers,
-                &keystroke.key,
-                PlatformStyle::Windows,
-                false
-            ),
-            "Win-C".to_string()
-        );
 
         let keystroke = Keystroke::parse("ctrl-alt-delete").unwrap();
         assert_eq!(
@@ -694,15 +679,6 @@ mod tests {
                 &keystroke.modifiers,
                 &keystroke.key,
                 PlatformStyle::Linux,
-                false
-            ),
-            "Ctrl-Alt-Delete".to_string()
-        );
-        assert_eq!(
-            keystroke_text(
-                &keystroke.modifiers,
-                &keystroke.key,
-                PlatformStyle::Windows,
                 false
             ),
             "Ctrl-Alt-Delete".to_string()
@@ -724,15 +700,6 @@ mod tests {
                 &keystroke.key,
                 PlatformStyle::Linux,
                 false,
-            ),
-            "Shift-PageUp".to_string()
-        );
-        assert_eq!(
-            keystroke_text(
-                &keystroke.modifiers,
-                &keystroke.key,
-                PlatformStyle::Windows,
-                false
             ),
             "Shift-PageUp".to_string()
         );

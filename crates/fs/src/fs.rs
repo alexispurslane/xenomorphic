@@ -978,8 +978,6 @@ impl Fs for RealFs {
             .await?;
         Ok(bytes)
     }
-
-    #[cfg(not(target_os = "windows"))]
     async fn atomic_write(&self, path: PathBuf, data: String) -> Result<()> {
         smol::unblock(move || {
             // Use the directory of the destination as temp dir to avoid
@@ -1065,8 +1063,6 @@ impl Fs for RealFs {
             .spawn(async move {
                 #[cfg(target_os = "windows")]
                 let result = Self::canonicalize(&path);
-
-                #[cfg(not(target_os = "windows"))]
                 let result = std::fs::canonicalize(&path);
 
                 result.with_context(|| format!("canonicalizing {path:?}"))

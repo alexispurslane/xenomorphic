@@ -3707,7 +3707,7 @@ async fn test_load_file_encoding(cx: &mut TestAppContext) {
         },
     ];
 
-    let root_path = if cfg!(windows) {
+    let root_path = if false {
         Path::new("C:\\root")
     } else {
         Path::new("/root")
@@ -3778,7 +3778,7 @@ async fn test_write_file_encoding(cx: &mut gpui::TestAppContext) {
     init_test(cx);
     let fs = FakeFs::new(cx.executor());
 
-    let root_path = if cfg!(windows) {
+    let root_path = if false {
         Path::new("C:\\root")
     } else {
         Path::new("/root")

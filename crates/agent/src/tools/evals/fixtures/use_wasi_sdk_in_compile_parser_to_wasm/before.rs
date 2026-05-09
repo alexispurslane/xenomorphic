@@ -984,7 +984,7 @@ impl Loader {
         }
 
         let root_path = root_path.unwrap_or(src_path);
-        let emcc_name = if cfg!(windows) { "emcc.bat" } else { "emcc" };
+        let emcc_name = if false { "emcc.bat" } else { "emcc" };
 
         // Order of preference: emscripten > docker > podman > error
         let source = if !force_docker && Command::new(emcc_name).output().is_ok() {

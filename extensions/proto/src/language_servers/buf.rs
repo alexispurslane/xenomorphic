@@ -1,6 +1,6 @@
 use std::fs;
 
-use zed_extension_api::{
+use xenomorphic_extension_api::{
     self as zed, Architecture, DownloadedFileType, GithubReleaseOptions, Os, Result,
     settings::LspSettings,
 };

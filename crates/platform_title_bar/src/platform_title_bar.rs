@@ -17,7 +17,7 @@ use ui::{
 use workspace::{MultiWorkspace, SidebarRenderState, SidebarSide};
 
 use crate::{
-    platforms::{platform_linux, platform_windows},
+    platforms::platform_linux,
     system_window_tabs::SystemWindowTabs,
 };
 
@@ -172,9 +172,6 @@ pub fn render_right_window_controls(
                 )
                 .into_any_element(),
             )
-        }
-        PlatformStyle::Windows => {
-            Some(platform_windows::WindowsWindowControls::new(height).into_any_element())
         }
         PlatformStyle::Mac => None,
     }

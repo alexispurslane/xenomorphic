@@ -23,8 +23,6 @@ pub fn new_std_command(program: impl AsRef<OsStr>) -> std::process::Command {
     command.creation_flags(CREATE_NO_WINDOW);
     command
 }
-
-#[cfg(not(target_os = "windows"))]
 pub fn new_std_command(program: impl AsRef<OsStr>) -> std::process::Command {
     std::process::Command::new(program)
 }
@@ -50,7 +48,6 @@ impl Command {
             cmd.creation_flags(CREATE_NO_WINDOW);
             Self(cmd)
         }
-        #[cfg(not(target_os = "windows"))]
         Self(smol::process::Command::new(program))
     }
 

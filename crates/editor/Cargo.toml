@@ -139,7 +139,6 @@ workspace = { workspace = true, features = ["test-support"] }
 
 xlog.workspace = true
 
-
 [[bench]]
 name = "editor_render"
 harness = false

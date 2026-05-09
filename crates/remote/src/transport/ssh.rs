@@ -140,7 +140,6 @@ impl From<settings::SshConnection> for SshConnectionOptions {
 
 struct SshSocket {
     connection_options: SshConnectionOptions,
-    #[cfg(not(windows))]
     socket_path: std::path::PathBuf,
     /// Extra environment variables needed for the ssh process
     envs: HashMap<String, String>,
@@ -151,8 +150,6 @@ struct SshSocket {
 struct MasterProcess {
     process: Child,
 }
-
-#[cfg(not(windows))]
 impl MasterProcess {
     pub fn new(
         askpass_script_path: &std::ffi::OsStr,
@@ -517,7 +514,6 @@ impl RemoteConnection for SshRemoteConnection {
 
 /// Check if the user already has an active SSH ControlMaster session for the
 /// given destination. See: https://github.com/zed-industries/zed/issues/45271
-#[cfg(not(windows))]
 async fn find_existing_control_master(
     destination: &str,
     additional_args: &[String],
@@ -607,11 +603,8 @@ impl SshRemoteConnection {
 
         // On non-Windows, check if the user already has an active ControlMaster
         // session for this host. If so, reuse it instead of prompting for auth.
-        #[cfg(not(windows))]
         let reused_socket =
             find_existing_control_master(&destination, &connection_options.additional_args()).await;
-
-        #[cfg(not(windows))]
         let (socket, master_process_option) = if let Some(reused_path) = reused_socket {
             delegate.set_status(Some("Connecting (reusing session)"), cx);
             log::info!("reusing existing ControlMaster, skipping authentication");
@@ -1245,7 +1238,6 @@ impl SshRemoteConnection {
 }
 
 impl SshSocket {
-    #[cfg(not(windows))]
     async fn new(options: SshConnectionOptions, socket_path: PathBuf) -> Result<Self> {
         Ok(Self {
             connection_options: options,
@@ -1357,10 +1349,9 @@ impl SshSocket {
             .stderr(Stdio::piped())
             .args(args);
 
-        if cfg!(windows) {
+        if false {
             cmd.envs(self.envs.clone());
         }
-        #[cfg(not(windows))]
         {
             cmd.args(["-o", "ControlMaster=no", "-o"])
                 .arg(format!("ControlPath={}", self.socket_path.display()));
@@ -1374,7 +1365,6 @@ impl SshSocket {
     // SSH command structure: ssh [options] destination [command]
     fn ssh_command_options(&self) -> Vec<String> {
         let arguments = self.connection_options.additional_args();
-        #[cfg(not(windows))]
         let arguments = {
             let mut args = arguments;
             args.extend(vec![

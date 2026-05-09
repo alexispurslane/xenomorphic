@@ -722,7 +722,7 @@ impl AcpConnection {
                 )
             });
 
-        let builder = ShellBuilder::new(&Shell::System, cfg!(windows)).non_interactive();
+        let builder = ShellBuilder::new(&Shell::System, false).non_interactive();
         let mut child = builder.build_std_command(Some(path.clone()), &args);
         child.envs(env.clone());
         if let Some(cwd) = project.read_with(cx, |project, _cx| {
@@ -2466,8 +2466,6 @@ mod tests {
             Some("recent stderr")
         );
     }
-
-    #[cfg(not(windows))]
     #[gpui::test]
     async fn startup_returns_error_when_agent_exits_before_initialization(
         cx: &mut gpui::TestAppContext,

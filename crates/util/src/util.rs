@@ -321,7 +321,7 @@ pub fn get_xenomorphic_cli_path() -> Result<PathBuf> {
         // On macOS, the xenomorphic executable and xenomorphic-cli are inside the app bundle,
         // so here ./cli is for both installed and development builds.
         &["./cli"]
-    } else if cfg!(target_os = "windows") {
+    } else if false {
         // bin/zed.exe is for installed builds, ./cli.exe is for development builds.
         &["bin/zed.exe", "./cli.exe"]
     } else if cfg!(target_os = "linux") || cfg!(target_os = "freebsd") {

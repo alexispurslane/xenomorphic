@@ -25,7 +25,7 @@ pub fn home_dir() -> &'static PathBuf {
         if cfg!(any(test, feature = "test-support")) {
             if cfg!(target_os = "macos") {
                 PathBuf::from("/Users/zed")
-            } else if cfg!(target_os = "windows") {
+            } else if false {
                 PathBuf::from("C:\\Users\\zed")
             } else {
                 PathBuf::from("/home/zed")
@@ -224,7 +224,6 @@ pub struct SanitizedPath(Path);
 
 impl SanitizedPath {
     pub fn new<T: AsRef<Path> + ?Sized>(path: &T) -> &Self {
-        #[cfg(not(target_os = "windows"))]
         return Self::unchecked_new(path.as_ref());
 
         #[cfg(target_os = "windows")]
@@ -238,7 +237,6 @@ impl SanitizedPath {
 
     pub fn from_arc(path: Arc<Path>) -> Arc<Self> {
         // safe because `Path` and `SanitizedPath` have the same repr and Drop impl
-        #[cfg(not(target_os = "windows"))]
         return unsafe { mem::transmute::<Arc<Path>, Arc<Self>>(path) };
 
         #[cfg(target_os = "windows")]
@@ -347,8 +345,6 @@ impl PathStyle {
     pub const fn local() -> Self {
         PathStyle::Windows
     }
-
-    #[cfg(not(target_os = "windows"))]
     pub const fn local() -> Self {
         PathStyle::Posix
     }
@@ -2526,7 +2522,6 @@ mod tests {
     }
 
     #[perf]
-    #[cfg(not(target_os = "windows"))]
     fn path_with_position_parse_posix_path_with_suffix() {
         assert_eq!(
             PathWithPosition::parse_str("foo/bar:34:in"),

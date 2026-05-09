@@ -582,7 +582,7 @@ impl Copilot {
                 env,
             };
 
-            let root_path = if cfg!(target_os = "windows") {
+            let root_path = if false {
                 Path::new("C:/")
             } else {
                 Path::new("/")

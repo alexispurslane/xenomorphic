@@ -7,7 +7,6 @@ pub fn main(_socket: &str) -> Result<()> {
 }
 
 /// The main function for when Xenomorphic is running in netcat mode
-#[cfg(not(windows))]
 pub fn main(socket: &str) -> Result<()> {
     use futures::{AsyncReadExt as _, AsyncWriteExt as _, FutureExt as _, io::BufReader, select};
     use net::async_net::UnixStream;

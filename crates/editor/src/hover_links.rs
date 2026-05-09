@@ -1738,8 +1738,6 @@ mod tests {
                 "This is file2.rs".as_bytes().to_vec(),
             )
             .await;
-
-        #[cfg(not(target_os = "windows"))]
         cx.set_state(indoc! {"
             You can't go to a file that does_not_exist.txt.
             Go to file2.rs if you want.
@@ -1757,7 +1755,6 @@ mod tests {
         "});
 
         // File does not exist
-        #[cfg(not(target_os = "windows"))]
         let screen_coord = cx.pixel_position(indoc! {"
             You can't go to a file that dˇoes_not_exist.txt.
             Go to file2.rs if you want.
@@ -1787,7 +1784,6 @@ mod tests {
         });
 
         // Moving the mouse over a file that does exist should highlight it.
-        #[cfg(not(target_os = "windows"))]
         let screen_coord = cx.pixel_position(indoc! {"
             You can't go to a file that does_not_exist.txt.
             Go to fˇile2.rs if you want.
@@ -1805,7 +1801,6 @@ mod tests {
         "});
 
         cx.simulate_mouse_move(screen_coord, None, Modifiers::secondary_key());
-        #[cfg(not(target_os = "windows"))]
         cx.assert_editor_text_highlights(
             HighlightKey::HoveredLinkState,
             indoc! {"
@@ -1829,7 +1824,6 @@ mod tests {
         );
 
         // Moving the mouse over a relative path that does exist should highlight it
-        #[cfg(not(target_os = "windows"))]
         let screen_coord = cx.pixel_position(indoc! {"
             You can't go to a file that does_not_exist.txt.
             Go to file2.rs if you want.
@@ -1847,7 +1841,6 @@ mod tests {
         "});
 
         cx.simulate_mouse_move(screen_coord, None, Modifiers::secondary_key());
-        #[cfg(not(target_os = "windows"))]
         cx.assert_editor_text_highlights(
             HighlightKey::HoveredLinkState,
             indoc! {"
@@ -1871,7 +1864,6 @@ mod tests {
         );
 
         // Moving the mouse over an absolute path that does exist should highlight it
-        #[cfg(not(target_os = "windows"))]
         let screen_coord = cx.pixel_position(indoc! {"
             You can't go to a file that does_not_exist.txt.
             Go to file2.rs if you want.
@@ -1890,7 +1882,6 @@ mod tests {
         "});
 
         cx.simulate_mouse_move(screen_coord, None, Modifiers::secondary_key());
-        #[cfg(not(target_os = "windows"))]
         cx.assert_editor_text_highlights(
             HighlightKey::HoveredLinkState,
             indoc! {"
@@ -1914,7 +1905,6 @@ mod tests {
         );
 
         // Moving the mouse over a path that exists, if we add the language-specific suffix, it should highlight it
-        #[cfg(not(target_os = "windows"))]
         let screen_coord = cx.pixel_position(indoc! {"
             You can't go to a file that does_not_exist.txt.
             Go to file2.rs if you want.
@@ -1932,7 +1922,6 @@ mod tests {
         "});
 
         cx.simulate_mouse_move(screen_coord, None, Modifiers::secondary_key());
-        #[cfg(not(target_os = "windows"))]
         cx.assert_editor_text_highlights(
             HighlightKey::HoveredLinkState,
             indoc! {"

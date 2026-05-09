@@ -1,8 +1,8 @@
 use std::fs;
 use zed::lsp::CompletionKind;
 use zed::{CodeLabel, CodeLabelSpan, LanguageServerId};
-use zed_extension_api::process::Command;
-use zed_extension_api::{self as zed, Result};
+use xenomorphic_extension_api::process::Command;
+use xenomorphic_extension_api::{self as zed, Result};
 
 struct TestExtension {
     cached_binary_path: Option<String>,

@@ -2338,7 +2338,7 @@ mod tests {
         let decision = path_perm(
             "copy_path",
             "src/../.xenomorphic/settings.json",
-            &["^\\.zed/"],
+            &["^\\.xenomorphic/"],
             &[],
             &[],
         );
@@ -2352,7 +2352,7 @@ mod tests {
             "src/../.xenomorphic/settings.json",
             &[],
             &[],
-            &["^\\.zed/"],
+            &["^\\.xenomorphic/"],
         );
         assert!(matches!(decision, ToolPermissionDecision::Confirm));
     }
@@ -2368,7 +2368,7 @@ mod tests {
         let decision = path_perm(
             "copy_path",
             "allowed/../.xenomorphic/settings.json",
-            &["^\\.zed/"],
+            &["^\\.xenomorphic/"],
             &["^allowed/"],
             &[],
         );
@@ -2380,7 +2380,7 @@ mod tests {
         let decision = path_perm(
             "delete_path",
             "./.xenomorphic/settings.json",
-            &["^\\.zed/"],
+            &["^\\.xenomorphic/"],
             &[],
             &[],
         );
@@ -2390,7 +2390,7 @@ mod tests {
     #[test]
     fn decide_permission_for_path_no_change_when_already_simple() {
         // When path has no `.` or `..` segments, behavior matches decide_permission_from_settings
-        let decision = path_perm("copy_path", ".xenomorphic/settings.json", &["^\\.zed/"], &[], &[]);
+        let decision = path_perm("copy_path", ".xenomorphic/settings.json", &["^\\.xenomorphic/"], &[], &[]);
         assert!(matches!(decision, ToolPermissionDecision::Deny(_)));
     }
 

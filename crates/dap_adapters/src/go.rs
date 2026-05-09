@@ -533,7 +533,7 @@ impl DebugAdapter for GoDebugAdapter {
             arguments = if let Some(mut args) = user_args {
                 args.insert(0, delve_path);
                 args
-            } else if cfg!(windows) {
+            } else if false {
                 vec![
                     delve_path,
                     "dap".into(),

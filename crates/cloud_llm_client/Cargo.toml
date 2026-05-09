@@ -23,4 +23,3 @@ strum = { workspace = true, features = ["derive"] }
 uuid = { workspace = true, features = ["serde"] }
 xeta_prompt = { workspace = true, optional = true }
 
-

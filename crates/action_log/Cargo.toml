@@ -30,7 +30,6 @@ text.workspace = true
 util.workspace = true
 watch.workspace = true
 
-
 [dev-dependencies]
 buffer_diff = { workspace = true, features = ["test-support"] }
 git.workspace = true

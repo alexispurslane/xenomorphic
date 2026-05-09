@@ -219,8 +219,6 @@ impl ShellBuilder {
         } else {
             child.args(args);
         }
-
-        #[cfg(not(windows))]
         child.args(args);
 
         child

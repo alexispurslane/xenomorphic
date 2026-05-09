@@ -397,13 +397,9 @@ struct ManagedNodeRuntime {
 
 impl ManagedNodeRuntime {
     const VERSION: &str = "v24.11.0";
-
-    #[cfg(not(windows))]
     const NODE_PATH: &str = "bin/node";
     #[cfg(windows)]
     const NODE_PATH: &str = "node.exe";
-
-    #[cfg(not(windows))]
     const NPM_PATH: &str = "bin/npm";
     #[cfg(windows)]
     const NPM_PATH: &str = "node_modules/npm/bin/npm-cli.js";

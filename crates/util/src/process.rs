@@ -22,7 +22,6 @@ impl std::ops::DerefMut for Child {
 }
 
 impl Child {
-    #[cfg(not(windows))]
     pub fn spawn(
         mut command: std::process::Command,
         stdin: Stdio,
@@ -73,8 +72,6 @@ impl Child {
     pub fn into_inner(self) -> smol::process::Child {
         self.process
     }
-
-    #[cfg(not(windows))]
     pub fn kill(&mut self) -> Result<()> {
         let pid = self.process.id();
         unsafe {

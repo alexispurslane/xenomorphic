@@ -627,7 +627,6 @@ impl DevContainerManifest {
         dockerfile_content: String,
         use_buildkit: bool,
     ) -> String {
-        #[cfg(not(target_os = "windows"))]
         let update_remote_user_uid = self.dev_container().update_remote_user_uid.unwrap_or(true);
         #[cfg(target_os = "windows")]
         let update_remote_user_uid = false;
@@ -1382,7 +1381,6 @@ RUN sed -i -E 's/((^|\s)PATH=)([^\$]*)$/\1\${{PATH:-\3}}/g' /etc/profile || true
     ) -> Result<DockerInspect, DevContainerError> {
         Ok(image)
     }
-    #[cfg(not(target_os = "windows"))]
     async fn update_remote_user_uid(
         &self,
         image: DockerInspect,
@@ -1492,8 +1490,6 @@ RUN sed -i -E 's/((^|\s)PATH=)([^\$]*)$/\1\${{PATH:-\3}}/g' /etc/profile || true
 
         self.docker_client.inspect(&updated_image_tag).await
     }
-
-    #[cfg(not(target_os = "windows"))]
     fn generate_update_uid_dockerfile(&self) -> String {
         let mut dockerfile = r#"ARG BASE_IMAGE
 FROM $BASE_IMAGE
@@ -2825,8 +2821,6 @@ mod test {
     };
     use serde_json_lenient::Value;
     use util::{command::Command, paths::SanitizedPath};
-
-    #[cfg(not(target_os = "windows"))]
     use crate::docker::DockerComposeServicePort;
     use crate::{
         DevContainerConfig, DevContainerContext,
@@ -2845,7 +2839,6 @@ mod test {
         },
         oci::TokenResponse,
     };
-    #[cfg(not(target_os = "windows"))]
     const TEST_PROJECT_PATH: &str = "/path/to/local/project";
     #[cfg(target_os = "windows")]
     const TEST_PROJECT_PATH: &str = r#"C:\\path\to\local\project"#;
@@ -3440,7 +3433,6 @@ mod test {
 
     // updateRemoteUserUID is treated as false in Windows, so this test will fail
     // It is covered by test_spawns_devcontainer_with_dockerfile_and_no_update_uid
-    #[cfg(not(target_os = "windows"))]
     #[gpui::test]
     async fn test_spawns_devcontainer_with_dockerfile_and_features(cx: &mut TestAppContext) {
         cx.executor().allow_parking();
@@ -3815,7 +3807,6 @@ chmod +x ./install.sh
 
     // updateRemoteUserUID is treated as false in Windows, so this test will fail
     // It is covered by test_spawns_devcontainer_with_docker_compose_and_no_update_uid
-    #[cfg(not(target_os = "windows"))]
     #[gpui::test]
     async fn test_spawns_devcontainer_with_docker_compose(cx: &mut TestAppContext) {
         cx.executor().allow_parking();
@@ -4645,8 +4636,6 @@ ENV DOCKER_BUILDKIT=1
 "#
         );
     }
-
-    #[cfg(not(target_os = "windows"))]
     #[gpui::test]
     async fn test_spawns_devcontainer_with_docker_compose_and_podman(cx: &mut TestAppContext) {
         cx.executor().allow_parking();
@@ -5155,8 +5144,6 @@ chmod +x ./install.sh
                 ])
         }))
     }
-
-    #[cfg(not(target_os = "windows"))]
     #[gpui::test]
     async fn test_spawns_devcontainer_with_plain_image(cx: &mut TestAppContext) {
         cx.executor().allow_parking();
@@ -5257,8 +5244,6 @@ RUN sed -i -E 's/((^|\s)PATH=)([^\$]*)$/\1\${PATH:-\3}/g' /etc/profile || true
             "/workspaces/project"
         );
     }
-
-    #[cfg(not(target_os = "windows"))]
     #[gpui::test]
     async fn test_spawns_devcontainer_with_docker_compose_and_plain_image(cx: &mut TestAppContext) {
         cx.executor().allow_parking();
@@ -5587,8 +5572,6 @@ FROM docker.io/hexpm/elixir:1.21-erlang-28.4.1-debian-trixie-20260316-slim AS de
             image_from_dockerfile(expanded, &None).expect("base image resolves from compose args");
         assert_eq!(base_image, "test_image:latest");
     }
-
-    #[cfg(not(target_os = "windows"))]
     #[gpui::test]
     async fn check_for_existing_container_errors_when_multiple_match(cx: &mut TestAppContext) {
         cx.executor().allow_parking();
@@ -5674,11 +5657,9 @@ FROM docker.io/hexpm/elixir:1.21-erlang-28.4.1-debian-trixie-20260316-slim AS de
                 duplicate_container_ids: Mutex::new(None),
             }
         }
-        #[cfg(not(target_os = "windows"))]
         fn set_podman(&mut self, podman: bool) {
             self.podman = podman;
         }
-        #[cfg(not(target_os = "windows"))]
         fn set_duplicate_container_ids(&self, ids: Vec<String>) {
             *self
                 .duplicate_container_ids

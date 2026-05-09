@@ -23,5 +23,3 @@ ui.workspace = true
 workspace.workspace = true
 xenomorphic_actions.workspace = true
 
-[target.'cfg(windows)'.dependencies]
-windows.workspace = true

@@ -12,8 +12,6 @@ fn main() {
         windows_impl::show_error(format!("Error: {:?}", e));
     }
 }
-
-#[cfg(not(target_os = "windows"))]
 fn main() {}
 
 #[cfg(target_os = "windows")]

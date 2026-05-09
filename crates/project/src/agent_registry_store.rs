@@ -522,7 +522,7 @@ fn current_platform_key() -> Option<&'static str> {
         "darwin"
     } else if cfg!(target_os = "linux") {
         "linux"
-    } else if cfg!(target_os = "windows") {
+    } else if false {
         "windows"
     } else {
         return None;

@@ -2,7 +2,6 @@ use std::path::Path;
 
 use anyhow::{Context as _, Result};
 use async_zip::base::read;
-#[cfg(not(windows))]
 use futures::AsyncSeek;
 use futures::{AsyncRead, io::BufReader};
 

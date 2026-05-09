@@ -80,7 +80,7 @@ pub struct AskPassSession {
     executor: BackgroundExecutor,
 }
 
-const ASKPASS_SCRIPT_NAME: &str = if cfg!(target_os = "windows") {
+const ASKPASS_SCRIPT_NAME: &str = if false {
     "askpass.ps1"
 } else {
     "askpass.sh"
@@ -184,7 +184,6 @@ impl AskPassSession {
 
 pub struct PasswordProxy {
     _task: Task<()>,
-    #[cfg(not(target_os = "windows"))]
     askpass_script_path: std::path::PathBuf,
     #[cfg(target_os = "windows")]
     askpass_helper: String,
@@ -207,7 +206,7 @@ impl PasswordProxy {
             std::env::current_exe().context("Failed to determine current zed executable path.")?;
 
         // TODO: inferred from the use of powershell.exe in askpass_helper_script
-        let shell_kind = if cfg!(windows) {
+        let shell_kind = if false {
             ShellKind::PowerShell
         } else {
             ShellKind::Posix
@@ -270,7 +269,6 @@ impl PasswordProxy {
 
         Ok(Self {
             _task,
-            #[cfg(not(target_os = "windows"))]
             askpass_script_path,
             #[cfg(target_os = "windows")]
             askpass_helper,
@@ -278,7 +276,6 @@ impl PasswordProxy {
     }
 
     pub fn script_path(&self) -> impl AsRef<OsStr> {
-        #[cfg(not(target_os = "windows"))]
         {
             &self.askpass_script_path
         }
@@ -341,7 +338,6 @@ pub fn set_askpass_program(path: std::path::PathBuf) {
 }
 
 #[inline]
-#[cfg(not(target_os = "windows"))]
 fn generate_askpass_script(
     shell_kind: ShellKind,
     askpass_program: &std::path::Path,

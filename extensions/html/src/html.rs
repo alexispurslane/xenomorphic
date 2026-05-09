@@ -1,6 +1,6 @@
 use std::{env, fs};
 use zed::settings::LspSettings;
-use zed_extension_api::{self as zed, LanguageServerId, Result, serde_json::json};
+use xenomorphic_extension_api::{self as zed, LanguageServerId, Result, serde_json::json};
 
 const BINARY_NAME: &str = "vscode-html-language-server";
 const SERVER_PATH: &str =
@@ -102,8 +102,8 @@ impl zed::Extension for HtmlExtension {
     fn language_server_initialization_options(
         &mut self,
         _server_id: &LanguageServerId,
-        _worktree: &zed_extension_api::Worktree,
-    ) -> Result<Option<zed_extension_api::serde_json::Value>> {
+        _worktree: &xenomorphic_extension_api::Worktree,
+    ) -> Result<Option<xenomorphic_extension_api::serde_json::Value>> {
         let initialization_options = json!({"provideFormatter": true });
         Ok(Some(initialization_options))
     }

@@ -82,7 +82,7 @@ fn main() {
         }
     }
 
-    if cfg!(windows) {
+    if false {
         if cfg!(target_env = "msvc") {
             // todo(windows): This is to avoid stack overflow. Remove it when solved.
             println!("cargo:rustc-link-arg=/stack:{}", 8 * 1024 * 1024);
@@ -230,7 +230,6 @@ fn icon_path() -> std::path::PathBuf {
 
     #[cfg(windows)]
     let icon = format!("resources/windows/app-icon{}.ico", channel);
-    #[cfg(not(windows))]
     let icon = format!("resources/app-icon{}.png", channel);
 
     std::path::PathBuf::from_str(&icon).unwrap()

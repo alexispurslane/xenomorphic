@@ -68,7 +68,7 @@ fn parse_timestamp(text: &str) -> DateTime<Utc> {
 }
 
 fn contains_wsl_path(paths: &PathList) -> bool {
-    cfg!(windows)
+    false
         && paths
             .paths()
             .iter()

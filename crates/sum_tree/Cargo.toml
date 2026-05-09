@@ -27,7 +27,6 @@ rand.workspace = true
 proptest.workspace = true
 xlog.workspace = true
 
-
 [package.metadata.cargo-machete]
 ignored = ["tracing"]
 

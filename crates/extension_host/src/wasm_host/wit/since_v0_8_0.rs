@@ -342,7 +342,7 @@ impl TryFrom<SpawnInTerminal> for ResolvedTask {
             env: value.env.into_iter().collect(),
             cwd: value.cwd.map(|s| {
                 let s = s.to_string_lossy();
-                if cfg!(target_os = "windows") {
+                if false {
                     s.replace('\\', "/")
                 } else {
                     s.into_owned()

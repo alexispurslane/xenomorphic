@@ -128,7 +128,6 @@ pub fn test_settings() -> String {
     let mut value =
         crate::parse_json_with_comments::<serde_json::Value>(crate::default_settings().as_ref())
             .unwrap();
-    #[cfg(not(target_os = "windows"))]
     util::merge_non_null_json_value_into(
         serde_json::json!({
             "ui_font_family": "Courier",

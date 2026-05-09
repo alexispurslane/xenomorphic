@@ -361,7 +361,6 @@ mod tests {
     // NOTE:
     // While POSIX symbolic links are somewhat supported on Windows, they are an opt in by the user, and thus
     // we assume that they are not supported out of the box.
-    #[cfg(not(windows))]
     #[test]
     fn test_parse_symlink_file() {
         let temp_tree = TempTree::new(json!({
@@ -380,8 +379,6 @@ mod tests {
             with_cwd(temp_tree.path(), || parse_path_with_position("symlink.txt")).unwrap();
         assert_eq!(result, target_path.to_string_lossy());
     }
-
-    #[cfg(not(windows))]
     #[test]
     fn test_parse_symlink_dir() {
         let temp_tree = TempTree::new(json!({
@@ -619,7 +616,6 @@ fn main() -> Result<()> {
 
     #[cfg(target_os = "windows")]
     let wsl = args.wsl.as_ref();
-    #[cfg(not(target_os = "windows"))]
     let wsl = None;
 
     for path in args.paths_with_position.iter() {
@@ -665,7 +661,6 @@ fn main() -> Result<()> {
 
                 #[cfg(target_os = "windows")]
                 let wsl = args.wsl;
-                #[cfg(not(target_os = "windows"))]
                 let wsl = None;
 
                 let open_request = CliRequest::Open {

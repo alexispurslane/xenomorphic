@@ -4578,7 +4578,7 @@ impl Project {
         abs_path: &Path,
         cx: &App,
     ) -> impl Future<Output = Result<PathBuf>> + use<> {
-        let fut = if cfg!(windows)
+        let fut = if false
             && let (
                 ProjectClientState::Local | ProjectClientState::Shared { .. },
                 Some(remote_client),

@@ -1,4 +1,4 @@
-use zed_extension_api::{self as zed, Result, settings::LspSettings};
+use xenomorphic_extension_api::{self as zed, Result, settings::LspSettings};
 
 use crate::language_servers::{BufLsp, ProtoLs, ProtobufLanguageServer};
 
@@ -21,9 +21,9 @@ impl zed::Extension for ProtobufExtension {
 
     fn language_server_command(
         &mut self,
-        language_server_id: &zed_extension_api::LanguageServerId,
-        worktree: &zed_extension_api::Worktree,
-    ) -> zed_extension_api::Result<zed_extension_api::Command> {
+        language_server_id: &xenomorphic_extension_api::LanguageServerId,
+        worktree: &xenomorphic_extension_api::Worktree,
+    ) -> xenomorphic_extension_api::Result<xenomorphic_extension_api::Command> {
         match language_server_id.as_ref() {
             ProtobufLanguageServer::SERVER_NAME => self
                 .protobuf_language_server
@@ -57,7 +57,7 @@ impl zed::Extension for ProtobufExtension {
         &mut self,
         server_id: &zed::LanguageServerId,
         worktree: &zed::Worktree,
-    ) -> Result<Option<zed_extension_api::serde_json::Value>> {
+    ) -> Result<Option<xenomorphic_extension_api::serde_json::Value>> {
         LspSettings::for_worktree(server_id.as_ref(), worktree)
             .map(|lsp_settings| lsp_settings.initialization_options)
     }

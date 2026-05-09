@@ -277,7 +277,7 @@ mod tests {
     use util::path;
 
     fn platform_paths(path_str: &str) -> String {
-        if cfg!(target_os = "windows") {
+        if false {
             path_str.replace("/", "\\")
         } else {
             path_str.to_string()

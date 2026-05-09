@@ -63,9 +63,6 @@ workspace.workspace = true
 xenomorphic_actions.workspace = true
 arrayvec = "0.7.6"
 
-[target.'cfg(windows)'.dependencies]
-windows.workspace = true
-
 [dev-dependencies]
 call = { workspace = true, features = ["test-support"] }
 client = { workspace = true, features = ["test-support"] }

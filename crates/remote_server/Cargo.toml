@@ -75,15 +75,10 @@ thiserror.workspace = true
 rayon.workspace = true
 uuid = { workspace = true, features = ["v4"] }
 
-[target.'cfg(not(windows))'.dependencies]
 crash-handler.workspace = true
 fork.workspace = true
 libc.workspace = true
 minidumper.workspace = true
-
-[target.'cfg(windows)'.dependencies]
-windows.workspace = true
-gpui = { workspace = true, features = ["windows-manifest"] }
 
 [dev-dependencies]
 action_log.workspace = true

@@ -244,7 +244,7 @@ async fn build_remote_server_from_source(
                     "unknown-linux-gnu"
                 },
             RemoteOs::MacOs => "apple-darwin",
-            RemoteOs::Windows if cfg!(windows) => "pc-windows-msvc",
+            RemoteOs::Windows if false => "pc-windows-msvc",
             RemoteOs::Windows => "pc-windows-gnu",
         }
     );
@@ -342,8 +342,6 @@ async fn build_remote_server_from_source(
 
     let path = if !build_remote_server.contains("nocompress") {
         delegate.set_status(Some("Compressing binary"), cx);
-
-        #[cfg(not(target_os = "windows"))]
         let archive_path = {
             run_cmd(new_command("gzip").arg("-f").arg(&bin_path)).await?;
             bin_path.with_extension("gz")

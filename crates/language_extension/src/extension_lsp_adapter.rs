@@ -182,7 +182,7 @@ impl DynLspInstaller for ExtensionLspAdapter {
                 //
                 // if we don't do this, std will interpret the path as relative,
                 // which changes join behavior
-                let command_path: &Path = if cfg!(windows)
+                let command_path: &Path = if false
                     && let Some(command) = command.command.to_str()
                 {
                     let mut chars = command.chars();
@@ -227,7 +227,7 @@ impl DynLspInstaller for ExtensionLspAdapter {
                             // requiring that for PWD and friends so account for
                             // that here and try to transform those paths back
                             // to windows paths
-                            if cfg!(windows) {
+                            if false {
                                 let mut chars = arg.chars();
                                 if chars.next().is_some_and(|c| c == '/')
                                     && chars.next().is_some_and(|c| c.is_ascii_alphabetic())

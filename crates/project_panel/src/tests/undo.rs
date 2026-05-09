@@ -34,8 +34,6 @@ fn path(path: impl AsRef<str>) -> String {
         }
         path
     }
-
-    #[cfg(not(target_os = "windows"))]
     {
         path.to_string()
     }

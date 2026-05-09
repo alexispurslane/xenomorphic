@@ -947,8 +947,6 @@ async fn spawn_server(paths: &ServerPaths) -> Result<(), SpawnServerError> {
     {
         spawn_server_windows(&binary_name, paths)?;
     }
-
-    #[cfg(not(windows))]
     {
         spawn_server_normal(&binary_name, paths)?;
     }
@@ -997,8 +995,6 @@ fn spawn_server_windows(binary_name: &Path, paths: &ServerPaths) -> Result<(), S
 
     Ok(())
 }
-
-#[cfg(not(windows))]
 fn spawn_server_normal(binary_name: &Path, paths: &ServerPaths) -> Result<(), SpawnServerError> {
     let mut server_process = new_command(binary_name);
     server_process

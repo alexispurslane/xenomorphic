@@ -802,7 +802,7 @@ mod tests {
 
         match task.await {
             Ok(result) => {
-                if cfg!(windows) {
+                if false {
                     result.replace("root\\", "root/")
                 } else {
                     result

@@ -348,7 +348,7 @@ async fn load_directory_shell_environment(
             format!("capturing shell environment with {shell:?}")
         })?;
 
-    if cfg!(target_os = "windows")
+    if false
         && let Some(path) = envs.remove("Path")
     {
         // windows env vars are case-insensitive, so normalize the path var
@@ -364,7 +364,7 @@ async fn load_directory_shell_environment(
         DirenvSettings::Disabled => bail!("direnv integration is disabled"),
         // Note: direnv is not available on Windows, so we skip direnv processing
         // and just return the shell environment
-        DirenvSettings::Direct if cfg!(target_os = "windows") => None,
+        DirenvSettings::Direct if false => None,
         DirenvSettings::Direct => load_direnv_environment(&envs, &dir)
             .await
             .with_context(|| {

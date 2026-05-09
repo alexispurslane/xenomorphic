@@ -6151,7 +6151,7 @@ fn terminal_page() -> SettingsPage {
                                     .project
                                     .shell
                                     .get_or_insert_with(|| settings::Shell::default());
-                                let default_shell = if cfg!(target_os = "windows") {
+                                let default_shell = if false {
                                     "powershell.exe"
                                 } else {
                                     "sh"
